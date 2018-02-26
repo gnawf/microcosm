@@ -1,0 +1,33 @@
+name: app
+description: A client for novels at Wuxiaworld.com
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_markdown: "0.1.3"
+  html: "0.13.2+2"
+  share: "0.3.1"
+  shared_preferences: "0.3.2"
+  sqflite: "0.6.2+2"
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+  fonts:
+    - family: Material Design Icons
+      fonts:
+        - asset: assets/fonts/material-design-icons.ttf
+    - family: Open Sans
+      fonts:
+        - asset: assets/fonts/open-sans-regular.ttf
+        - asset: assets/fonts/open-sans-light.ttf
+          weight: 300
+        - asset: assets/fonts/open-sans-semi-bold.ttf
+          weight: 600
+        - asset: assets/fonts/open-sans-bold.ttf
+          weight: 700
+        - asset: assets/fonts/open-sans-extra-bold.ttf
+          weight: 800
