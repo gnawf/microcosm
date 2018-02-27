@@ -1,3 +1,4 @@
+import "package:app/models/chapter.json.dart" as mapper;
 import "package:meta/meta.dart";
 
 String slugify({@required Uri uri}) {
@@ -34,11 +35,13 @@ String slugify({@required Uri uri}) {
     new RegExp(r"\d{1,19}"),
     (match) => "${zeroes[20 - match.end + match.start]}${match[0]}",
   );
-  return "@${host.toLowerCase()}${path.toLowerCase()}";
+  return host.toLowerCase() + path.toLowerCase();
 }
 
 @immutable
 class Chapter {
+  static const type = "chapter";
+
   const Chapter({
     this.slug,
     this.url,
@@ -48,12 +51,16 @@ class Chapter {
     this.content,
   });
 
+  factory Chapter.fromJson(Map<String, dynamic> json) => mapper.fromJson(json);
+
   final String slug;
   final Uri url;
   final Uri previousUrl;
   final Uri nextUrl;
   final String title;
   final String content;
+
+  Map<String, dynamic> toJson() => mapper.toJson(this);
 
   @override
   bool operator ==(Object other) =>

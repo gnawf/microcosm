@@ -25,10 +25,25 @@ class ChapterHolderState extends State<ChapterHolder> {
       return;
     }
 
-    final source = ChapterProvider.of(context).source(widget.url);
+    final slug = widget.slug;
+    final url = widget.url;
+
+    final chapterProvider = ChapterProvider.of(context);
+    final dao = chapterProvider.dao();
+    final source = chapterProvider.source(url);
 
     setState(() {
-      _chapter = source.get(slug: widget.slug, url: widget.url);
+      _chapter = dao.get(slug: slug, url: url).then((chapter) {
+        if (chapter == null) {
+          // If we can't find anything locally then load it remotely
+          return source.get(slug: slug, url: url).then((chapter) async {
+            // Save the chapter
+            dao.upsert(chapter);
+            return chapter;
+          });
+        }
+        return chapter;
+      });
     });
   }
 

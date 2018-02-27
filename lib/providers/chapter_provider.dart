@@ -1,4 +1,6 @@
+import "package:app/providers/persistence_provider.dart";
 import "package:app/sources/chapter_source.dart";
+import "package:app/sources/database/chapter_dao.dart";
 import "package:app/sources/wuxia_world/wuxia_world_chapters.dart";
 import "package:flutter/material.dart";
 import "package:meta/meta.dart";
@@ -22,6 +24,8 @@ class ChapterProviderState extends State<ChapterProvider> {
     const WuxiaWorldChapterParser(),
   );
 
+  ChapterDao _chapterDao;
+
   ChapterSource source(Uri url) {
     switch (url.host) {
       case "wuxiaworld.com":
@@ -30,6 +34,18 @@ class ChapterProviderState extends State<ChapterProvider> {
         return _wuxiaWorldChapters;
     }
     return null;
+  }
+
+  ChapterDao dao() {
+    return _chapterDao;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    final persistenceProvider = PersistenceProvider.of(context);
+    _chapterDao = new ChapterDao(persistenceProvider.persistence);
   }
 
   @override
