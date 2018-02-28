@@ -1,6 +1,5 @@
 import "dart:async";
 
-import "package:app/settings/settings.dart";
 import "package:app/ui/routes.dart" as routes;
 import "package:app/widgets/md_icons.dart";
 import "package:flutter/foundation.dart";
@@ -30,16 +29,13 @@ class _HomePageState extends State<HomePage> {
       return null;
     }
 
-    final settings = Settings.of(context);
-
     switch (index) {
       case 0:
         return routes.browse();
       case 1:
         return routes.recents();
       case 2:
-        final chapterUrl = Uri.parse(settings.lastChapterUrl);
-        return routes.reader(url: chapterUrl);
+        return routes.opener();
     }
 
     return null;
