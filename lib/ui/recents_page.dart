@@ -1,4 +1,5 @@
 import "package:app/widgets/novel_sliver_grid.dart";
+import "package:app/widgets/settings_icon_button.dart";
 import "package:flutter/material.dart";
 
 class RecentsPage extends StatelessWidget {
@@ -12,6 +13,9 @@ class RecentsPage extends StatelessWidget {
         leading: null,
         title: const Text("Recently Read"),
         centerTitle: false,
+        actions: const <Widget>[
+          const SettingsIconButton(),
+        ],
       ),
       body: new CustomScrollView(
         slivers: const <Widget>[

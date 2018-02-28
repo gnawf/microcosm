@@ -2,6 +2,7 @@ import "package:app/models/chapter.dart";
 import "package:app/settings/settings.dart";
 import "package:app/ui/routes.dart" as routes;
 import "package:app/widgets/chapter_holder.dart";
+import "package:app/widgets/settings_icon_button.dart";
 import "package:flutter/material.dart";
 import "package:flutter_markdown/flutter_markdown.dart";
 
@@ -31,6 +32,9 @@ class ReaderPage extends StatelessWidget {
               chapter?.title ?? "Loading",
             ),
             centerTitle: false,
+            actions: const <Widget>[
+              const SettingsIconButton(),
+            ],
           ),
           body: new ReaderPageBody(chapter),
         );

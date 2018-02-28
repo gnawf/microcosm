@@ -4,6 +4,7 @@ import "package:app/navigation/transitions.dart";
 import "package:app/ui/home_page.dart";
 import "package:app/ui/reader_page.dart";
 import "package:app/ui/recents_page.dart";
+import "package:app/ui/settings_page.dart";
 import "package:flutter/material.dart";
 import "package:meta/meta.dart";
 
@@ -51,6 +52,14 @@ Route reader({RouteType type, Uri url}) {
   return _route(
     settings: new RouteSettings(name: "reader/$slug"),
     builder: (BuildContext context) => new ReaderPage(url),
+    type: type,
+  );
+}
+
+Route settings({RouteType type}) {
+  return _route(
+    settings: const RouteSettings(name: "settings"),
+    builder: (BuildContext context) => new SettingsPage(),
     type: type,
   );
 }
