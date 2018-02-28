@@ -1,6 +1,7 @@
 import "package:app/models/chapter.dart";
 import "package:app/navigation/fade_transition_route.dart";
 import "package:app/navigation/transitions.dart";
+import "package:app/ui/browse_page.dart";
 import "package:app/ui/home_page.dart";
 import "package:app/ui/reader_page.dart";
 import "package:app/ui/recents_page.dart";
@@ -52,6 +53,14 @@ Route reader({RouteType type, Uri url}) {
   return _route(
     settings: new RouteSettings(name: "reader/$slug"),
     builder: (BuildContext context) => new ReaderPage(url),
+    type: type,
+  );
+}
+
+Route browse({RouteType type, Uri url}) {
+  return _route(
+    settings: const RouteSettings(name: "browse"),
+    builder: (BuildContext context) => const BrowsePage(),
     type: type,
   );
 }

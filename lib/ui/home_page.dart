@@ -34,7 +34,7 @@ class _HomePageState extends State<HomePage> {
 
     switch (index) {
       case 0:
-        return routes.recents();
+        return routes.browse();
       case 1:
         return routes.recents();
       case 2:

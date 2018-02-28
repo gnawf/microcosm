@@ -3,55 +3,23 @@ import "package:app/widgets/image_view.dart";
 import "package:flutter/material.dart";
 
 class NovelSliverGrid extends StatefulWidget {
-  const NovelSliverGrid();
+  const NovelSliverGrid({this.novels: const <Novel>[]});
+
+  final List<Novel> novels;
 
   @override
   State createState() => new _NovelSliverGridState();
 }
 
 class _NovelSliverGridState extends State<NovelSliverGrid> {
-  List<Novel> novels;
-
   Widget _builder(BuildContext context, int index) {
-    return new NovelGridItem(novels[index]);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    novels = <Novel>[
-      const Novel(
-        slug: "issth-index",
-        name: "I Shall Seal the Heavens",
-        posterImage: "https://cdn.novelupdates.com/images/2015/06/15_ISSTH.jpg",
-      ),
-      const Novel(
-        slug: "desolate-era-index",
-        name: "Desolate Era",
-        posterImage:
-            "https://cdn.novelupdates.com/images/2015/06/Cover-Mang-Huang-Ji.jpg",
-      ),
-      const Novel(
-        slug: "awe-index",
-        name: "A Will Eternal",
-        posterImage:
-            "https://cdn.novelupdates.com/images/2016/06/betacover.jpg",
-      ),
-      const Novel(
-        slug: "renegade-index",
-        name: "Renegade Immortal",
-        posterImage: "https://cdn.novelupdates.com/images/2016/03/xianni-1.jpg",
-      ),
-      const Novel(
-        slug: "cdindex-html",
-        name: "Coiling Dragon",
-        posterImage: "https://cdn.novelupdates.com/images/2016/03/s4437529.jpg",
-      ),
-    ];
+    return new NovelGridItem(widget.novels[index]);
   }
 
   @override
   Widget build(BuildContext context) {
+    final novels = widget.novels;
+
     return new SliverGrid(
       gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
         maxCrossAxisExtent: 115.0,
