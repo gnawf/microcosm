@@ -18,6 +18,8 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/images/1x1.png
   fonts:
     - family: Material Design Icons
       fonts:

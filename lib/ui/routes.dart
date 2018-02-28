@@ -1,21 +1,56 @@
 import "package:app/models/chapter.dart";
+import "package:app/navigation/fade_transition_route.dart";
 import "package:app/navigation/transitions.dart";
 import "package:app/ui/home_page.dart";
 import "package:app/ui/reader_page.dart";
+import "package:app/ui/recents_page.dart";
 import "package:flutter/material.dart";
+import "package:meta/meta.dart";
 
-Route home() {
-  return new CupertinoPageRoute(
+enum RouteType {
+  slide,
+  fade,
+}
+
+Route _route({
+  @required RouteSettings settings,
+  @required WidgetBuilder builder,
+  RouteType type,
+}) {
+  type ??= RouteType.fade;
+
+  switch (type) {
+    case RouteType.slide:
+      return new CupertinoPageRoute(settings: settings, builder: builder);
+    case RouteType.fade:
+      return new FadeTransitionPageRoute(settings: settings, builder: builder);
+  }
+
+  throw new UnsupportedError("no-op");
+}
+
+Route home({RouteType type}) {
+  return _route(
     settings: const RouteSettings(name: "home"),
-    builder: (BuildContext context) => new HomePage(),
+    builder: (BuildContext context) => const HomePage(),
+    type: type,
   );
 }
 
-Route reader({Uri url}) {
+Route recents({RouteType type}) {
+  return _route(
+    settings: const RouteSettings(name: "recents"),
+    builder: (BuildContext context) => const RecentsPage(),
+    type: type,
+  );
+}
+
+Route reader({RouteType type, Uri url}) {
   final slug = slugify(uri: url);
 
-  return new CupertinoPageRoute(
+  return _route(
     settings: new RouteSettings(name: "reader/$slug"),
     builder: (BuildContext context) => new ReaderPage(url),
+    type: type,
   );
 }
