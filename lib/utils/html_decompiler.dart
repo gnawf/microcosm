@@ -49,6 +49,23 @@ String decompile(String content) {
     anchor.replaceWith(new Text("[$text]($href)"));
   });
 
+  fragment.querySelectorAll("ol").forEach((list) {
+    final items = list.querySelectorAll("> li");
+
+    // Add numbers before list items then unwrap them
+    for (int i = 0; i < items.length; i++) {
+      final item = items[i];
+      final index = new Text("${i + 1}. ");
+      item.nodes.insert(0, index);
+      unwrap(item);
+    }
+
+    // Surround with newlines & unwrap list
+    list.nodes.insert(0, new Text("\n\n"));
+    list.nodes.add(new Text("\n\n"));
+    unwrap(list);
+  });
+
   // 1. Split by lines
   // 2. Trim lines
   // 3. Remove empty lines

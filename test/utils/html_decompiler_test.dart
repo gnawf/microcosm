@@ -18,4 +18,8 @@ void main() {
     final html = """hello<em>there</em>test""";
     expect(decompile(html), equals("hello*there*test"));
   });
+  test("it decompiles ordered lists", () {
+    final html = """hello<ol><li>hello</li><li>there</li></ol>test""";
+    expect(decompile(html), equals("hello\n\n1. hello2. there\n\ntest"));
+  });
 }
