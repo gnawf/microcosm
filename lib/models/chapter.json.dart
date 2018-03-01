@@ -1,4 +1,5 @@
 import "package:app/models/chapter.dart";
+import "package:app/models/novel.dart";
 
 Map<String, dynamic> toJson(Chapter chapter) {
   return {
@@ -8,6 +9,8 @@ Map<String, dynamic> toJson(Chapter chapter) {
     "nextUrl": chapter.nextUrl?.toString(),
     "title": chapter.title,
     "content": chapter.content,
+    "novelSlug": chapter.novelSlug,
+    "novel": chapter.novel?.toJson(),
   };
 }
 
@@ -18,6 +21,8 @@ Chapter fromJson(Map<String, dynamic> json) {
   final nextUrl = json["nextUrl"];
   final title = json["title"];
   final content = json["content"];
+  final novelSlug = json["novelSlug"];
+  final novel = json["novel"];
 
   return new Chapter(
     slug: slug,
@@ -26,5 +31,7 @@ Chapter fromJson(Map<String, dynamic> json) {
     nextUrl: nextUrl == null ? null : Uri.parse(nextUrl),
     title: title,
     content: content,
+    novelSlug: novelSlug,
+    novel: novel == null ? null : new Novel.fromJson(novel),
   );
 }

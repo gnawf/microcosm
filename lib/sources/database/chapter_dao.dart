@@ -26,7 +26,7 @@ class ChapterDao implements ChapterSource {
 
   Future<Null> upsert(Chapter chapter) async {
     // This creates a Map<String, dynamic> of the attributes
-    final attributes = chapter.toJson();
+    final attributes = chapter.toJson()..remove("novel");
 
     final count = await _persistence.count(
       table: Chapter.type,

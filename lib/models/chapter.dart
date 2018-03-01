@@ -1,4 +1,5 @@
 import "package:app/models/chapter.json.dart" as mapper;
+import "package:app/models/novel.dart";
 import "package:meta/meta.dart";
 
 String slugify({@required Uri uri}) {
@@ -49,6 +50,8 @@ class Chapter {
     this.nextUrl,
     this.title,
     this.content,
+    this.novelSlug,
+    this.novel,
   });
 
   factory Chapter.fromJson(Map<String, dynamic> json) => mapper.fromJson(json);
@@ -59,6 +62,9 @@ class Chapter {
   final Uri nextUrl;
   final String title;
   final String content;
+
+  final String novelSlug;
+  final Novel novel;
 
   Map<String, dynamic> toJson() => mapper.toJson(this);
 
@@ -72,7 +78,9 @@ class Chapter {
           previousUrl == other.previousUrl &&
           nextUrl == other.nextUrl &&
           title == other.title &&
-          content == other.content;
+          content == other.content &&
+          novelSlug == other.novelSlug &&
+          novel == other.novel;
 
   @override
   int get hashCode =>
@@ -81,7 +89,9 @@ class Chapter {
       previousUrl.hashCode ^
       nextUrl.hashCode ^
       title.hashCode ^
-      content.hashCode;
+      content.hashCode ^
+      novelSlug.hashCode ^
+      novel.hashCode;
 
   @override
   String toString() {
@@ -91,7 +101,9 @@ class Chapter {
         "previousUrl: $previousUrl,"
         "nextUrl: $nextUrl,"
         "title: $title,"
-        "content: $content"
+        "content: $content,"
+        "novelSlug: $novelSlug,"
+        "novel: $novel"
         "}";
   }
 }

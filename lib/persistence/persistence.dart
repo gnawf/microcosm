@@ -103,7 +103,7 @@ class Persistence {
           final path = join(documentsDirectory.path, "microcosm.db");
           _database = await openDatabase(
             path,
-            version: 2,
+            version: 3,
             onCreate: _onCreate,
             onUpgrade: _onUpgrade,
           );
@@ -120,7 +120,8 @@ class Persistence {
         "previousUrl TEXT,"
         "nextUrl TEXT,"
         "title TEXT,"
-        "content TEXT"
+        "content TEXT,"
+        "novelSlug TEXT"
         ")");
 
     await db.execute("CREATE TABLE IF NOT EXISTS ${Novel.type} ("
@@ -135,5 +136,10 @@ class Persistence {
   Future<Null> _onUpgrade(Database db, int oldVersion, int newVersion) async {
     // Recreate the database
     await _onCreate(db, newVersion);
+
+    if (oldVersion == 2) {
+      await db.execute("ALTER TABLE ${Novel.type} ADD novelSlug TEXT");
+      oldVersion++;
+    }
   }
 }
