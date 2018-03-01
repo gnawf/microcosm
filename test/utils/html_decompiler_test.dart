@@ -22,4 +22,8 @@ void main() {
     final html = """hello<ol><li>hello</li><li>there</li></ol>test""";
     expect(decompile(html), equals("hello\n\n1. hello2. there\n\ntest"));
   });
+  test("it decompiles unordered lists", () {
+    final html = """hello<ul><li>hello</li><li>there</li></ul>test""";
+    expect(decompile(html), equals("hello\n\n* hello* there\n\ntest"));
+  });
 }

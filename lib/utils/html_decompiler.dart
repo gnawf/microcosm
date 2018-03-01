@@ -66,6 +66,22 @@ String decompile(String content) {
     unwrap(list);
   });
 
+  fragment.querySelectorAll("ul").forEach((list) {
+    final items = list.querySelectorAll("> li");
+
+    // Add bullet points before list items then unwrap them
+    items.forEach((item) {
+      final index = new Text("* ");
+      item.nodes.insert(0, index);
+      unwrap(item);
+    });
+
+    // Surround with newlines & unwrap list
+    list.nodes.insert(0, new Text("\n\n"));
+    list.nodes.add(new Text("\n\n"));
+    unwrap(list);
+  });
+
   // 1. Split by lines
   // 2. Trim lines
   // 3. Remove empty lines
