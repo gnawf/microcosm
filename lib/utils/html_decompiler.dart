@@ -42,6 +42,13 @@ String decompile(String content) {
     unwrap(em);
   });
 
+  // Replace em with markdown equivalent
+  fragment.querySelectorAll("a").forEach((anchor) {
+    final text = anchor.text;
+    final href = anchor.attributes["href"];
+    anchor.replaceWith(new Text("[$text]($href)"));
+  });
+
   // 1. Split by lines
   // 2. Trim lines
   // 3. Remove empty lines

@@ -6,4 +6,8 @@ void main() {
     final html = """<p>Hello<p>Why</p><div>test</div>Why <p>xD</p></p>""";
     expect(decompile(html), equals("Hello\n\nWhy\n\ntest\n\nWhy\n\nxD"));
   });
+  test("it decompiles anchors", () {
+    final html = """<a href="xd">test</a>""";
+    expect(decompile(html), equals("[test](xd)"));
+  });
 }
