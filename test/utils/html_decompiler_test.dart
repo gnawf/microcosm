@@ -10,4 +10,12 @@ void main() {
     final html = """<a href="xd">test</a>""";
     expect(decompile(html), equals("[test](xd)"));
   });
+  test("it changes br to newlines", () {
+    final html = """hello<br/>test""";
+    expect(decompile(html), equals("hello\n\ntest"));
+  });
+  test("it changes em to italics", () {
+    final html = """hello<em>there</em>test""";
+    expect(decompile(html), equals("hello*there*test"));
+  });
 }
