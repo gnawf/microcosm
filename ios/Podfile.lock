@@ -12,6 +12,8 @@ PODS:
   - sqflite (0.0.1):
     - Flutter
     - FMDB
+  - url_launcher (0.0.1):
+    - Flutter
 
 DEPENDENCIES:
   - Flutter (from `/Users/gnawf/flutter/bin/cache/artifacts/engine/ios`)
@@ -19,6 +21,7 @@ DEPENDENCIES:
   - share (from `/Users/gnawf/.pub-cache/hosted/pub.dartlang.org/share-0.3.1/ios`)
   - shared_preferences (from `/Users/gnawf/.pub-cache/hosted/pub.dartlang.org/shared_preferences-0.3.2/ios`)
   - sqflite (from `/Users/gnawf/.pub-cache/hosted/pub.dartlang.org/sqflite-0.6.2+2/ios`)
+  - url_launcher (from `/Users/gnawf/.pub-cache/hosted/pub.dartlang.org/url_launcher-2.0.2/ios`)
 
 EXTERNAL SOURCES:
   Flutter:
@@ -31,6 +34,8 @@ EXTERNAL SOURCES:
     :path: /Users/gnawf/.pub-cache/hosted/pub.dartlang.org/shared_preferences-0.3.2/ios
   sqflite:
     :path: /Users/gnawf/.pub-cache/hosted/pub.dartlang.org/sqflite-0.6.2+2/ios
+  url_launcher:
+    :path: /Users/gnawf/.pub-cache/hosted/pub.dartlang.org/url_launcher-2.0.2/ios
 
 SPEC CHECKSUMS:
   Flutter: d674e78c937094a75ac71dd77e921e840bea3dbf
@@ -39,6 +44,7 @@ SPEC CHECKSUMS:
   share: ee3d34d3969ad17fc3043eab552e4f082aacfed1
   shared_preferences: 1feebfa37bb57264736e16865e7ffae7fc99b523
   sqflite: 8e2d9fe1e7cdc95d4d537fc7eb2d23c8dc428e3c
+  url_launcher: 0067ddb8f10d36786672aa0722a21717dba3a298
 
 PODFILE CHECKSUM: c6c865faff84807a5d35de69eb2cdbdc36b99e15
 

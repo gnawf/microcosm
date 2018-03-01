@@ -5,6 +5,7 @@ import "package:app/http/http.dart";
 import "package:app/models/chapter.dart";
 import "package:app/sources/chapter_source.dart";
 import "package:app/utils/html_decompiler.dart";
+import "package:html/dom.dart";
 import "package:html/parser.dart" as html show parse;
 import "package:meta/meta.dart";
 
@@ -67,6 +68,23 @@ class WuxiaWorldChapterParser {
           print(e);
         }
       }
+    });
+
+    document.querySelectorAll(".collapseomatic").forEach((collapsible) {
+      final id = collapsible.attributes["id"];
+      final target = document.querySelector("#target-$id");
+
+      if (collapsible == null) {
+        return;
+      }
+
+      target.remove();
+
+      final content = target.text.trim();
+      final href = "dialog?content=${Uri.encodeQueryComponent(content)}";
+      final text = collapsible.text?.trim();
+      final link = new Element.html('<a href="$href">$text</a>');
+      collapsible.replaceWith(link);
     });
 
     return new Chapter(

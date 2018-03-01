@@ -1,6 +1,7 @@
 import "package:app/models/chapter.dart";
 import "package:app/settings/settings.dart";
 import "package:app/ui/routes.dart" as routes;
+import "package:app/utils/url_launcher.dart";
 import "package:app/widgets/chapter_holder.dart";
 import "package:app/widgets/settings_icon_button.dart";
 import "package:flutter/material.dart";
@@ -100,6 +101,7 @@ class ChapterBody extends StatelessWidget {
       styleSheet: ss.copyWith(
         p: ss.p.copyWith(height: 1.4),
       ),
+      onTapLink: (link) => onTapLink(context, link),
     );
   }
 }
