@@ -86,20 +86,49 @@ class ReaderPageBody extends StatelessWidget {
   }
 }
 
-class ChapterBody extends StatelessWidget {
+class ChapterBody extends StatefulWidget {
   const ChapterBody(this.chapter);
 
   final Chapter chapter;
 
   @override
+  State<StatefulWidget> createState() => new _ChapterBodyState();
+}
+
+class _ChapterBodyState extends State<ChapterBody> {
+  VoidCallback _dispose;
+
+  void _invalidate() {
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    final settings = Settings.of(context);
+    settings.readerFontSizeChanges.addListener(_invalidate);
+    _dispose = () => settings.readerFontSizeChanges.removeListener(_invalidate);
+  }
+
+  @override
+  void dispose() {
+    _dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final chapter = widget.chapter;
+
+    final settings = Settings.of(context);
     final theme = Theme.of(context);
     final ss = new MarkdownStyleSheet.fromTheme(theme);
 
     return new MarkdownBody(
       data: chapter.content,
       styleSheet: ss.copyWith(
-        p: ss.p.copyWith(height: 1.4),
+        p: ss.p.copyWith(height: 1.4, fontSize: settings.readerFontSize),
       ),
       onTapLink: (link) => onTapLink(context, link),
     );

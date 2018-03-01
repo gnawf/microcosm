@@ -47,6 +47,11 @@ class SettingsState extends State<Settings> {
     key: "lastChapterUrl",
   );
 
+  final _readerFontSize = new Setting<double, double>(
+    key: "readerFontSize",
+    defaultValue: 15.0,
+  );
+
   ChangeNotifier get brightnessChanges => _brightness;
 
   Brightness get brightness => _brightness.value;
@@ -76,6 +81,14 @@ class SettingsState extends State<Settings> {
   String get lastChapterUrl => _lastChapterUrl.value;
 
   set lastChapterUrl(String value) => _lastChapterUrl.value = value;
+
+  ChangeNotifier get readerFontSizeChanges => _readerFontSize;
+
+  double get readerFontSize => _readerFontSize.value;
+
+  double get defaultReaderFontSize => _readerFontSize.defaultValue;
+
+  set readerFontSize(double value) => _readerFontSize.value = value;
 
   @override
   Widget build(BuildContext context) {

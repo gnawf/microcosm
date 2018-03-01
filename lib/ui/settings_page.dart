@@ -1,4 +1,5 @@
 import "package:app/dialogs/color_picker_dialog.dart";
+import "package:app/dialogs/font_size_picker_dialog.dart";
 import "package:app/settings/settings.dart";
 import "package:app/widgets/md_icons.dart";
 import "package:flutter/material.dart";
@@ -27,6 +28,7 @@ class SettingsPage extends StatelessWidget {
           new _AmoledSetting(),
           const _PrimaryColorSetting(),
           const _AccentColorSetting(),
+          const _ReaderFontSizeSetting(),
         ],
       ),
     );
@@ -134,6 +136,39 @@ class _TrailingColorIndicator extends StatelessWidget {
         height: 18.0,
         color: color,
       ),
+    );
+  }
+}
+
+class _ReaderFontSizeSetting extends StatefulWidget {
+  const _ReaderFontSizeSetting();
+
+  @override
+  State createState() => new _ReaderFontSizeSettingState();
+}
+
+class _ReaderFontSizeSettingState extends State<_ReaderFontSizeSetting> {
+  @override
+  Widget build(BuildContext context) {
+    final settings = Settings.of(context);
+
+    return new ListTile(
+      leading: const Icon(MDIcons.formatFont),
+      title: const Text("Reader Font Size"),
+      trailing: new Text("${settings.readerFontSize}px"),
+      onTap: () async {
+        final newValue = await showFontSizePickerDialog(
+          context: context,
+          title: const Text("Reader Font Size"),
+          min: 8.0,
+          max: 24.0,
+          value: settings.readerFontSize,
+          defaultValue: settings.defaultReaderFontSize,
+        );
+        if (newValue != null) {
+          setState(() => settings.readerFontSize = newValue);
+        }
+      },
     );
   }
 }
