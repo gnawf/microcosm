@@ -87,6 +87,19 @@ class WuxiaWorldChapterParser {
       collapsible.replaceWith(link);
     });
 
+    document.querySelectorAll(".footnote > a").forEach((footnote) {
+      final id = footnote.attributes["href"];
+      final target = document.querySelector(id);
+      target.querySelector(".footnotereverse").remove();
+
+      final text = footnote.text;
+      final content = decompile(target.innerHtml).trim();
+      final href = "dialog?content=${Uri.encodeQueryComponent(content)}";
+
+      final link = new Element.html('<a href="$href">$text</a>');
+      footnote.parent.replaceWith(link);
+    });
+
     return new Chapter(
       slug: slugify(uri: source),
       url: source,
