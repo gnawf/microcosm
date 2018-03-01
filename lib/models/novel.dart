@@ -1,7 +1,10 @@
+import "package:app/models/novel.json.dart" as mapper;
 import "package:meta/meta.dart";
 
 @immutable
 class Novel {
+  static const type = "novel";
+
   const Novel({
     this.slug,
     this.name,
@@ -9,6 +12,8 @@ class Novel {
     this.synopsis,
     this.posterImage,
   });
+
+  factory Novel.fromJson(Map<String, dynamic> json) => mapper.fromJson(json);
 
   final String slug;
   final String name;
@@ -31,6 +36,8 @@ class Novel {
       posterImage: this.posterImage ?? posterImage,
     );
   }
+
+  Map<String, dynamic> toJson() => mapper.toJson(this);
 
   @override
   bool operator ==(Object other) =>

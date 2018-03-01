@@ -1,6 +1,7 @@
 import "dart:async";
 
 import "package:app/models/chapter.dart";
+import "package:app/models/novel.dart";
 import "package:meta/meta.dart";
 import "package:path/path.dart";
 import "package:path_provider/path_provider.dart";
@@ -102,7 +103,7 @@ class Persistence {
           final path = join(documentsDirectory.path, "microcosm.db");
           _database = await openDatabase(
             path,
-            version: 1,
+            version: 2,
             onCreate: _onCreate,
             onUpgrade: _onUpgrade,
           );
@@ -120,6 +121,14 @@ class Persistence {
         "nextUrl TEXT,"
         "title TEXT,"
         "content TEXT"
+        ")");
+
+    await db.execute("CREATE TABLE IF NOT EXISTS ${Novel.type} ("
+        "slug TEXT PRIMARY KEY,"
+        "name TEXT NOT NULL,"
+        "source TEXT,"
+        "synopsis TEXT,"
+        "posterImage TEXT"
         ")");
   }
 
