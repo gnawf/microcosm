@@ -32,34 +32,70 @@ class _NovelSliverGridState extends State<NovelSliverGrid> {
   }
 }
 
-class NovelGridItem extends StatelessWidget {
+class NovelGridItem extends StatefulWidget {
   const NovelGridItem(this.novel);
 
   final Novel novel;
 
   @override
+  State<StatefulWidget> createState() => new _NovelGridItemState();
+}
+
+class _NovelGridItemState extends State<NovelGridItem>
+    with SingleTickerProviderStateMixin {
+  AnimationController _controller;
+
+  Animation<double> _scaleAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = new AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 200),
+    );
+
+    _scaleAnimation = new Tween(begin: 1.0, end: 0.9).animate(
+      new CurvedAnimation(parent: _controller, curve: Curves.easeOut),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return new Column(
-      children: <Widget>[
-        new AspectRatio(
-          aspectRatio: 102.0 / 145.0,
-          child: new ImageView(
-            image: novel.posterImage,
-            fit: BoxFit.cover,
-          ),
+    final novel = widget.novel;
+
+    return new GestureDetector(
+      // Start the scale transition on tap
+      onTapDown: (event) => _controller.forward(),
+      onTapUp: (event) => _controller.reverse(),
+      onTapCancel: () => _controller.reverse(),
+      // Scale the entire widget upon request
+      child: new ScaleTransition(
+        scale: _scaleAnimation,
+        child: new Column(
+          children: <Widget>[
+            new AspectRatio(
+              aspectRatio: 102.0 / 145.0,
+              child: new ImageView(
+                image: novel.posterImage,
+                fit: BoxFit.cover,
+              ),
+            ),
+            new Padding(
+              padding: const EdgeInsets.only(
+                top: 8.0,
+              ),
+              child: new Text(
+                novel.name,
+                maxLines: 3,
+                textAlign: TextAlign.center,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ],
         ),
-        new Padding(
-          padding: const EdgeInsets.only(
-            top: 8.0,
-          ),
-          child: new Text(
-            novel.name,
-            maxLines: 3,
-            textAlign: TextAlign.center,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
-      ],
+      ),
     );
   }
 }
