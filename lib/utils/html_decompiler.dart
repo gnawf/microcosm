@@ -13,6 +13,9 @@ String decompile(String content) {
       return;
     }
 
+    // Replace consecutive spaces with one space
+    block.innerHtml = block.innerHtml.replaceAll(new RegExp(r"\s{2,}"), " ");
+
     // Add padding
     block.nodes.insert(0, new Text("\n\n"));
     block.nodes.add(new Text("\n\n"));

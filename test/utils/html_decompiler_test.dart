@@ -26,4 +26,8 @@ void main() {
     final html = """hello<ul><li>hello</li><li>there</li></ul>test""";
     expect(decompile(html), equals("hello\n\n* hello* there\n\ntest"));
   });
+  test("it removes consecutive spaces", () {
+    final html = """<p>hello there     my name is</p>""";
+    expect(decompile(html), equals("hello there my name is"));
+  });
 }
