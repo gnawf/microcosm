@@ -65,7 +65,7 @@ class _GridState extends State<_Grid> {
         top: 24.0,
         left: 16.0,
         right: 16.0,
-        bottom: 8.0,
+        bottom: 16.0,
       ),
       sliver: new NovelSliverGrid(
         novels: _novels,

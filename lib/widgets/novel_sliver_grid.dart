@@ -1,6 +1,8 @@
 import "package:app/models/novel.dart";
+import "package:app/widgets/custom_sliver_grid.dart";
 import "package:app/widgets/image_view.dart";
 import "package:flutter/material.dart";
+import "package:flutter/rendering.dart";
 
 class NovelSliverGrid extends StatefulWidget {
   const NovelSliverGrid({this.novels: const <Novel>[]});
@@ -20,16 +22,12 @@ class _NovelSliverGridState extends State<NovelSliverGrid> {
   Widget build(BuildContext context) {
     final novels = widget.novels;
 
-    return new SliverGrid(
-      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-        maxCrossAxisExtent: 115.0,
-        crossAxisSpacing: 16.0,
-        childAspectRatio: 0.48,
-      ),
-      delegate: new SliverChildBuilderDelegate(
-        _builder,
-        childCount: novels.length,
-      ),
+    return new CustomSliverGrid(
+      builder: _builder,
+      cellWidth: 115.0,
+      cellCount: novels.length,
+      rowSpacing: 8.0,
+      columnSpacing: 16.0,
     );
   }
 }

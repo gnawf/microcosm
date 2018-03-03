@@ -21,9 +21,11 @@ class RecentsPage extends StatelessWidget {
       body: new CustomScrollView(
         slivers: const <Widget>[
           const SliverPadding(
-            padding: const EdgeInsets.symmetric(
-              vertical: 24.0,
-              horizontal: 16.0,
+            padding: const EdgeInsets.only(
+              top: 24.0,
+              left: 16.0,
+              right: 16.0,
+              bottom: 16.0,
             ),
             sliver: const NovelSliverGrid(
               novels: const <Novel>[
