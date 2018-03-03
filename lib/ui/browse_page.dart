@@ -1,4 +1,7 @@
+import "dart:async";
+
 import "package:app/models/novel.dart";
+import "package:app/providers/novel_provider.dart";
 import "package:app/widgets/novel_sliver_grid.dart";
 import "package:app/widgets/settings_icon_button.dart";
 import "package:flutter/material.dart";
@@ -20,48 +23,52 @@ class BrowsePage extends StatelessWidget {
       ),
       body: new CustomScrollView(
         slivers: const <Widget>[
-          const SliverPadding(
-            padding: const EdgeInsets.symmetric(
-              vertical: 24.0,
-              horizontal: 16.0,
-            ),
-            sliver: const NovelSliverGrid(
-              novels: const <Novel>[
-                const Novel(
-                  slug: "issth-index",
-                  name: "I Shall Seal the Heavens",
-                  posterImage:
-                      "https://cdn.novelupdates.com/images/2015/06/15_ISSTH.jpg",
-                ),
-                const Novel(
-                  slug: "desolate-era-index",
-                  name: "Desolate Era",
-                  posterImage:
-                      "https://cdn.novelupdates.com/images/2015/06/Cover-Mang-Huang-Ji.jpg",
-                ),
-                const Novel(
-                  slug: "awe-index",
-                  name: "A Will Eternal",
-                  posterImage:
-                      "https://cdn.novelupdates.com/images/2016/06/betacover.jpg",
-                ),
-                const Novel(
-                  slug: "renegade-index",
-                  name: "Renegade Immortal",
-                  posterImage:
-                      "https://cdn.novelupdates.com/images/2016/03/xianni-1.jpg",
-                ),
-                const Novel(
-                  slug: "cdindex-html",
-                  name: "Coiling Dragon",
-                  synopsis: "",
-                  posterImage:
-                      "https://cdn.novelupdates.com/images/2016/03/s4437529.jpg",
-                ),
-              ],
-            ),
-          ),
+          const _Grid(),
         ],
+      ),
+    );
+  }
+}
+
+class _Grid extends StatefulWidget {
+  const _Grid();
+
+  @override
+  State createState() => new _GridState();
+}
+
+class _GridState extends State<_Grid> {
+  final _novels = <Novel>[];
+
+  Future<Null> _load() async {
+    if (!mounted) {
+      return;
+    }
+
+    final novelProvider = NovelProvider.of(context);
+    final novelDao = novelProvider.dao();
+    final novels = await novelDao.list(limit: 100);
+    setState(() => _novels.addAll(novels));
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    _load();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return new SliverPadding(
+      padding: const EdgeInsets.only(
+        top: 24.0,
+        left: 16.0,
+        right: 16.0,
+        bottom: 8.0,
+      ),
+      sliver: new NovelSliverGrid(
+        novels: _novels,
       ),
     );
   }
