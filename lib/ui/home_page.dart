@@ -19,6 +19,12 @@ class _HomePageState extends State<HomePage> {
 
   List<BottomNavigationBarItem> _bottomBarItems;
 
+  HeroController _heroController;
+
+  RectTween _createRectTween(Rect begin, Rect end) {
+    return new MaterialRectArcTween(begin: begin, end: end);
+  }
+
   Route _router(RouteSettings settings) {
     // Just return the route for the current index
     return _route(_indices.last);
@@ -102,6 +108,8 @@ class _HomePageState extends State<HomePage> {
 
     // Set initial page
     _indices.add(0);
+
+    _heroController = new HeroController(createRectTween: _createRectTween);
   }
 
   @override
@@ -115,6 +123,7 @@ class _HomePageState extends State<HomePage> {
           key: _navigatorKey,
           initialRoute: "/",
           onGenerateRoute: _router,
+          observers: <NavigatorObserver>[_heroController],
         ),
         bottomNavigationBar: new BottomNavigationBar(
           onTap: _pushPage,
