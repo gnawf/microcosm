@@ -6,6 +6,7 @@ import "package:app/widgets/chapter_holder.dart";
 import "package:app/widgets/settings_icon_button.dart";
 import "package:flutter/material.dart";
 import "package:flutter_markdown/flutter_markdown.dart";
+import "package:meta/meta.dart";
 
 class ReaderPage extends StatelessWidget {
   const ReaderPage(this.chapterUrl);
@@ -140,24 +141,40 @@ class ChapterActions extends StatelessWidget {
 
   final Chapter chapter;
 
-  void _open(BuildContext context, Uri url) {
-    Navigator.of(context).pushReplacement(routes.reader(url: url));
-  }
-
   @override
   Widget build(BuildContext context) {
     return new Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        new FlatButton(
-          onPressed: () => _open(context, chapter.previousUrl),
+        new _ChapterButton(
+          url: chapter.previousUrl,
           child: const Text("Previous Chapter"),
         ),
-        new FlatButton(
-          onPressed: () => _open(context, chapter.nextUrl),
+        new _ChapterButton(
+          url: chapter.nextUrl,
           child: const Text("Next Chapter"),
         ),
       ],
+    );
+  }
+}
+
+class _ChapterButton extends StatelessWidget {
+  const _ChapterButton({@required this.child, this.url});
+
+  final Widget child;
+
+  final Uri url;
+
+  void _open(BuildContext context) {
+    Navigator.of(context).pushReplacement(routes.reader(url: url));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return new FlatButton(
+      onPressed: url != null ? () => _open(context) : null,
+      child: child,
     );
   }
 }
