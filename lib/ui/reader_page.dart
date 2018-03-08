@@ -38,15 +38,15 @@ class ReaderPage extends StatelessWidget {
               const SettingsIconButton(),
             ],
           ),
-          body: new ReaderPageBody(chapter),
+          body: new _ReaderPageBody(chapter),
         );
       },
     );
   }
 }
 
-class ReaderPageBody extends StatelessWidget {
-  const ReaderPageBody(this.chapter);
+class _ReaderPageBody extends StatelessWidget {
+  const _ReaderPageBody(this.chapter);
 
   final Chapter chapter;
 
@@ -67,28 +67,28 @@ class ReaderPageBody extends StatelessWidget {
           padding: const EdgeInsets.symmetric(
             horizontal: 3.0,
           ),
-          child: new ChapterActions(chapter),
+          child: new _ChapterActions(chapter),
         ),
         new Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: 18.0,
             vertical: 16.0,
           ),
-          child: new ChapterBody(chapter),
+          child: new _ChapterBody(chapter),
         ),
         new Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: 3.0,
           ),
-          child: new ChapterActions(chapter),
+          child: new _ChapterActions(chapter),
         ),
       ],
     );
   }
 }
 
-class ChapterBody extends StatefulWidget {
-  const ChapterBody(this.chapter);
+class _ChapterBody extends StatefulWidget {
+  const _ChapterBody(this.chapter);
 
   final Chapter chapter;
 
@@ -96,7 +96,7 @@ class ChapterBody extends StatefulWidget {
   State<StatefulWidget> createState() => new _ChapterBodyState();
 }
 
-class _ChapterBodyState extends State<ChapterBody> {
+class _ChapterBodyState extends State<_ChapterBody> {
   VoidCallback _dispose;
 
   void _invalidate() {
@@ -136,8 +136,8 @@ class _ChapterBodyState extends State<ChapterBody> {
   }
 }
 
-class ChapterActions extends StatelessWidget {
-  const ChapterActions(this.chapter);
+class _ChapterActions extends StatelessWidget {
+  const _ChapterActions(this.chapter);
 
   final Chapter chapter;
 
