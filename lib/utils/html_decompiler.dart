@@ -38,7 +38,7 @@ String decompile(String content) {
 
     em.nodes.forEach((node) {
       if (node is Text) {
-        node.replaceWith(new Text("*${node.text}*"));
+        node.replaceWith(new Text("_${node.text}_"));
       }
     });
 
@@ -92,7 +92,7 @@ String decompile(String content) {
   // Without the invisible character, the newlines are collapsed
   return fragment.text
       .split("\n")
-      .map((x) => x.trim())
+      .map(_trim)
       .where((x) => x.isNotEmpty)
       .join("\n\n");
 }
@@ -104,4 +104,22 @@ void unwrap(Node node) {
     parent.nodes.removeAt(index);
     parent.nodes.insertAll(index, node.nodes);
   }
+}
+
+String _trim(String text) {
+  // Remove any whitespace and keep random characters
+  return text.replaceAllMapped(new RegExp(r"^[^a-zA-Z0-9]+"), (match) {
+    // If there's no text in the line, remove it
+    if (match[0].length == text.length) {
+      return "";
+    }
+
+    // Preserve whitespace for lists
+    if (match[0].startsWith("* ")) {
+      return match[0].replaceAll(new RegExp(r"\s{2,}"), " ");
+    }
+    return match[0].replaceAll(new RegExp(r"\s+"), "");
+  }).replaceAllMapped(new RegExp(r"[^a-zA-Z0-9]+$"), (match) {
+    return match[0].replaceAll(new RegExp(r"\s+"), "");
+  });
 }

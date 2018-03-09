@@ -16,7 +16,7 @@ void main() {
   });
   test("it changes em to italics", () {
     final html = """hello<em>there</em>test""";
-    expect(decompile(html), equals("hello*there*test"));
+    expect(decompile(html), equals("hello_there_test"));
   });
   test("it decompiles ordered lists", () {
     final html = """hello<ol><li>hello</li><li>there</li></ol>test""";
@@ -29,5 +29,9 @@ void main() {
   test("it removes consecutive spaces", () {
     final html = """<p>hello there     my name is</p>""";
     expect(decompile(html), equals("hello there my name is"));
+  });
+  test("trim ignores formatting", () {
+    final html = """<p><em>  hello there</em>     my name is</p>""";
+    expect(decompile(html), equals("_hello there_ my name is"));
   });
 }
