@@ -9,14 +9,25 @@ void unwrap(Node node) {
   }
 }
 
-void traverse(Node ancestor, void step(Node node)) {
-  ancestor.nodes.forEach((child) {
-    step(child);
-    if (child.nodes.isNotEmpty) {
-      child.nodes.forEach((descendant) {
-        step(descendant);
-        traverse(descendant, step);
-      });
+bool traverse(Node ancestor, bool step(Node node)) {
+  for (final child in ancestor.nodes) {
+    if (step(child) == false) {
+      return false;
     }
-  });
+    // In case traversal step removes child
+    if (child.parent == null) {
+      continue;
+    }
+    for (final descendant in child.nodes) {
+      if (step(descendant) == false) {
+        return false;
+      }
+      // In case traversal step removes descendant
+      if (descendant.parent != null && traverse(descendant, step) == false) {
+        return false;
+      }
+    }
+  }
+
+  return true;
 }
