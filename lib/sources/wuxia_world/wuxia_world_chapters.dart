@@ -18,7 +18,7 @@ class WuxiaWorldChapters implements ChapterSource {
   @override
   Future<Chapter> get({String slug, Uri url}) async {
     if (slug != null) {
-      throw new UnsupportedError("Unable to query by id");
+      throw new UnsupportedError("Unable to query by slug");
     }
     final request = await httpClient.getUrl(url);
     final response = await request.close();
