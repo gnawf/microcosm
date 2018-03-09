@@ -3,6 +3,10 @@ import "package:html/parser.dart" as html show parseFragment;
 
 /// Decompiles HTML to markdown
 String decompile(String content) {
+  // Zero width joiner character; this is used to allow formatting mid word
+  // As per https://meta.stackexchange.com/q/140706
+  final zwj = new String.fromCharCode(8205);
+
   final fragment = html.parseFragment(content);
 
   // Unwrap the paragraphs
@@ -41,10 +45,10 @@ String decompile(String content) {
         switch (text.localName) {
           case "b":
           case "strong":
-            node.replaceWith(new Text("__${node.text}__"));
+            node.replaceWith(new Text("${zwj}__${node.text}__$zwj"));
             break;
           case "em":
-            node.replaceWith(new Text("_${node.text}_"));
+            node.replaceWith(new Text("${zwj}_${node.text}_$zwj"));
             break;
         }
       }

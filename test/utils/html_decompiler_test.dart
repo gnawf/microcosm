@@ -2,6 +2,9 @@ import "package:app/utils/html_decompiler.dart";
 import "package:test/test.dart";
 
 void main() {
+  // Zero width joiner character
+  final zwj = new String.fromCharCode(8205);
+
   test("it unwraps paragraphs", () {
     final html = """<p>Hello<p>Why</p><div>test</div>Why <p>xD</p></p>""";
     expect(decompile(html), equals("Hello\n\nWhy\n\ntest\n\nWhy\n\nxD"));
@@ -10,21 +13,21 @@ void main() {
     final html = """<a href="xd">test</a>""";
     expect(decompile(html), equals("[test](xd)"));
   });
-  test("it changes br to newlines", () {
+  test("it decompiles break line elements", () {
     final html = """hello<br/>test""";
     expect(decompile(html), equals("hello\n\ntest"));
   });
-  test("it changes em to italics", () {
+  test("it decompiles italic text", () {
     final html = """hello<em>there</em>test""";
-    expect(decompile(html), equals("hello_there_test"));
+    expect(decompile(html), equals("hello${zwj}_there_${zwj}test"));
   });
   test("it decompiles bold text", () {
     final html = """<strong>xd</strong>""";
-    expect(decompile(html), equals("__xd__"));
+    expect(decompile(html), equals("${zwj}__xd__$zwj"));
   });
   test("it decompiles nested formatting", () {
     final html = """<strong><span>xd 2</span></strong>""";
-    expect(decompile(html), equals("__xd 2__"));
+    expect(decompile(html), equals("${zwj}__xd 2__$zwj"));
   });
   test("it decompiles ordered lists", () {
     final html = """hello<ol><li>hello</li><li>there</li></ol>test""";
@@ -40,6 +43,6 @@ void main() {
   });
   test("trim ignores formatting", () {
     final html = """<p><em>  hello there</em>     my name is</p>""";
-    expect(decompile(html), equals("_hello there_ my name is"));
+    expect(decompile(html), equals("${zwj}_hello there_$zwj my name is"));
   });
 }
