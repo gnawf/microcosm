@@ -20,7 +20,7 @@ String decompile(String content) {
     block.nodes.insert(0, new Text("\n\n"));
     block.nodes.add(new Text("\n\n"));
 
-    unwrap(block);
+    _unwrap(block);
   });
 
   // Replace line breaks with newlines
@@ -50,7 +50,7 @@ String decompile(String content) {
       }
     });
 
-    unwrap(text);
+    _unwrap(text);
   });
 
   // Replace em with markdown equivalent
@@ -68,13 +68,13 @@ String decompile(String content) {
       final item = items[i];
       final index = new Text("${i + 1}. ");
       item.nodes.insert(0, index);
-      unwrap(item);
+      _unwrap(item);
     }
 
     // Surround with newlines & unwrap list
     list.nodes.insert(0, new Text("\n\n"));
     list.nodes.add(new Text("\n\n"));
-    unwrap(list);
+    _unwrap(list);
   });
 
   fragment.querySelectorAll("ul").forEach((list) {
@@ -84,13 +84,13 @@ String decompile(String content) {
     items.forEach((item) {
       final index = new Text("* ");
       item.nodes.insert(0, index);
-      unwrap(item);
+      _unwrap(item);
     });
 
     // Surround with newlines & unwrap list
     list.nodes.insert(0, new Text("\n\n"));
     list.nodes.add(new Text("\n\n"));
-    unwrap(list);
+    _unwrap(list);
   });
 
   // 1. Split by lines
@@ -105,7 +105,7 @@ String decompile(String content) {
       .join("\n\n");
 }
 
-void unwrap(Node node) {
+void _unwrap(Node node) {
   final parent = node.parent;
   if (parent != null) {
     final index = parent.nodes.indexOf(node);
