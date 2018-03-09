@@ -20,7 +20,7 @@ class ChapterHolder extends StatefulWidget {
 class ChapterHolderState extends State<ChapterHolder> {
   Future<Chapter> _chapter;
 
-  Future<Null> _preload(Chapter chapter) async {
+  Future<Null> _preload(Uri url) async {
     if (!mounted) {
       return;
     }
@@ -28,7 +28,6 @@ class ChapterHolderState extends State<ChapterHolder> {
     final chapterProvider = ChapterProvider.of(context);
     final dao = chapterProvider.dao();
     final source = chapterProvider.source(widget.url);
-    final url = chapter.nextUrl;
 
     if ((await dao.get(url: url)) == null) {
       dao.upsert(await source.get(url: url));
@@ -50,14 +49,19 @@ class ChapterHolderState extends State<ChapterHolder> {
     setState(() {
       _chapter = dao.get(slug: slug, url: url).then((chapter) {
         if (chapter == null) {
-          // If we can't find anything locally then load it remotely
+          // If we can't find anything locally then load it from the source
           return source.get(slug: slug, url: url).then((chapter) async {
-            _preload(chapter);
+            if (chapter == null) {
+              return null;
+            }
+            _preload(chapter.nextUrl);
             // Save the chapter
             dao.upsert(chapter);
             return chapter;
           });
         }
+
+        _preload(chapter.nextUrl);
         return chapter;
       });
     });
