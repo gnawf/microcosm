@@ -1,3 +1,4 @@
+import "package:app/utils/html_utils.dart" as utils;
 import "package:html/dom.dart";
 import "package:html/parser.dart" as html show parseFragment;
 
@@ -24,7 +25,7 @@ String decompile(String content) {
     block.nodes.insert(0, new Text("\n"));
     block.nodes.add(new Text("\n"));
 
-    _unwrap(block);
+    utils.unwrap(block);
   });
 
   // Replace line breaks with newlines
@@ -40,7 +41,7 @@ String decompile(String content) {
       return;
     }
 
-    _traverse(text, (node) {
+    utils.traverse(text, (node) {
       if (node is Text) {
         switch (text.localName) {
           case "b":
@@ -54,7 +55,7 @@ String decompile(String content) {
       }
     });
 
-    _unwrap(text);
+    utils.unwrap(text);
   });
 
   // Replace em with markdown equivalent
@@ -72,13 +73,13 @@ String decompile(String content) {
       final item = items[i];
       final index = new Text("${i + 1}. ");
       item.nodes.insert(0, index);
-      _unwrap(item);
+      utils.unwrap(item);
     }
 
     // Surround with newlines & unwrap list
     list.nodes.insert(0, new Text("\n"));
     list.nodes.add(new Text("\n"));
-    _unwrap(list);
+    utils.unwrap(list);
   });
 
   fragment.querySelectorAll("ul").forEach((list) {
@@ -86,13 +87,13 @@ String decompile(String content) {
     list.querySelectorAll("> li").forEach((item) {
       final index = new Text("* ");
       item.nodes.insert(0, index);
-      _unwrap(item);
+      utils.unwrap(item);
     });
 
     // Surround with newlines & unwrap list
     list.nodes.insert(0, new Text("\n"));
     list.nodes.add(new Text("\n"));
-    _unwrap(list);
+    utils.unwrap(list);
   });
 
   // 1. Split by lines
@@ -105,15 +106,6 @@ String decompile(String content) {
       .map(_trim)
       .where((x) => x.isNotEmpty)
       .join("\n\n");
-}
-
-void _unwrap(Node node) {
-  final parent = node.parent;
-  if (parent != null) {
-    final index = parent.nodes.indexOf(node);
-    parent.nodes.removeAt(index);
-    parent.nodes.insertAll(index, node.nodes);
-  }
 }
 
 String _trim(String text) {
@@ -131,17 +123,5 @@ String _trim(String text) {
     return match[0].replaceAll(new RegExp(r"\s+"), "");
   }).replaceAllMapped(new RegExp(r"[^a-zA-Z0-9]+$"), (match) {
     return match[0].replaceAll(new RegExp(r"\s+"), "");
-  });
-}
-
-void _traverse(Node ancestor, void step(Node node)) {
-  ancestor.nodes.forEach((child) {
-    step(child);
-    if (child.nodes.isNotEmpty) {
-      child.nodes.forEach((descendant) {
-        step(descendant);
-        _traverse(descendant, step);
-      });
-    }
   });
 }
