@@ -4,7 +4,8 @@ import "dart:convert";
 import "package:app/http/http.dart";
 import "package:app/models/chapter.dart";
 import "package:app/sources/chapter_source.dart";
-import "package:app/utils/html_decompiler.dart";
+import "package:app/utils/html_decompiler.dart" as markdown;
+import "package:app/utils/html_utils.dart" as utils;
 import "package:html/dom.dart";
 import "package:html/parser.dart" as html show parse;
 import "package:meta/meta.dart";
@@ -38,79 +39,144 @@ class WuxiaWorldChapters implements ChapterSource {
 class WuxiaWorldChapterParser {
   const WuxiaWorldChapterParser();
 
+  Uri parseUrl(Element anchor, [Uri source]) {
+    if (anchor == null) {
+      return null;
+    }
+    final href = anchor.attributes["href"];
+    try {
+      final url = Uri.parse(href);
+      return source != null ? source.resolveUri(url) : url;
+    } on FormatException {
+      return null;
+    }
+  }
+
+  String title(Document document, {bool simple: true}) {
+    final content = document.querySelector(".content");
+    final image = content.querySelector("img[src*=title-icon]");
+    final heading = image.parent.querySelector("h4");
+    final title = heading.text.trim();
+
+    if (simple == false) {
+      return title;
+    }
+
+    // Any text that matches these regexes are kept, order preserved
+    final regexes = [
+      new RegExp(r"book ?\d+", caseSensitive: false),
+      new RegExp(r"vol(?:ume)? ?\d+", caseSensitive: false),
+      new RegExp(r"chapter ?\d+", caseSensitive: false),
+    ];
+
+    return regexes
+        .map((regex) => regex.stringMatch(title))
+        .where((e) => e != null)
+        .join(" - ");
+  }
+
+  Uri nextUrl(Document document, Uri source) {
+    final anchors = document.querySelectorAll(".next a[href*=novel]");
+    return anchors.isNotEmpty ? parseUrl(anchors.first, source) : null;
+  }
+
+  Uri prevUrl(Document document, Uri source) {
+    final anchors = document.querySelectorAll(".prev a[href*=novel]");
+    return anchors.isNotEmpty ? parseUrl(anchors.first, source) : null;
+  }
+
+  String novelSlug(Uri url) {
+    final path = url.pathSegments;
+    final index = path.indexOf("novel");
+    // The novel slug is directly after the novel segment
+    return index >= 0 && index < path.length ? path[index + 1] : null;
+  }
+
+  void cleanup(Document document, Element article) {
+    article.querySelectorAll("p").forEach((p) {
+      p.nodes.forEach((child) {
+        if (child.nodeType == Node.TEXT_NODE) {
+          final text = child.text.trim().toLowerCase();
+          // This removes garbage from the chapter leftover from the old site
+          if (text == "previous chapter" || text == "[/expand]") {
+            // Clear the text to simulate removal
+            // Avoid remove method due to concurrent access issues
+            child.text = "";
+          }
+        }
+      });
+    });
+  }
+
+  void makeTitle(Document document, Element article) {
+    final title = this.title(document, simple: false);
+
+    Element hidden() {
+      final href = new Uri(path: "dialog", queryParameters: {"content": title});
+      final anchor = new Element.tag("a");
+      anchor.text = "Tap here to reveal spoiler title";
+      anchor.attributes["href"] = href.toString();
+
+      final strong = new Element.tag("strong");
+      strong.children.add(anchor);
+
+      final paragraph = new Element.tag("p");
+      paragraph.children.add(strong);
+      return paragraph;
+    }
+
+    Element normal() {
+      final strong = new Element.tag("strong");
+      strong.text = title;
+
+      final paragraph = new Element.tag("p");
+      paragraph.children.add(strong);
+      return paragraph;
+    }
+
+    // Remove any existing chapter titles
+    utils.traverse(article, (node) {
+      if (node.nodeType == Node.TEXT_NODE) {
+        // Todo - strip the title itself instead of clearing it; this is a
+        // precaution in case other text gets jumbled with the title text node
+        if (containsIgnoreNoise(node.text, title)) {
+          node.text = "";
+        }
+      }
+    });
+
+    // Add the chapter title to the start of the article
+    final spoiler = document.querySelectorAll(".text-spoiler").isNotEmpty;
+    article.nodes.insert(0, spoiler ? hidden() : normal());
+
+    // Add the normal title to the end of the chapter
+    if (spoiler) {
+      article.nodes.add(normal());
+    }
+  }
+
+  bool containsIgnoreNoise(String string, String substring) {
+    final noise = new RegExp(r"[^a-z0-9]", caseSensitive: false);
+    string = string.toLowerCase().replaceAll(noise, "");
+    substring = substring.toLowerCase().replaceAll(noise, "");
+    return string.contains(substring);
+  }
+
   Chapter fromHtml(Uri source, String body) {
     final document = html.parse(body);
-    final article = document.querySelector("[itemprop=articleBody]");
 
-    Uri previousUrl;
-    Uri nextUrl;
-    document.querySelectorAll("a[href*=chapter]").forEach((anchor) {
-      final href = anchor.attributes["href"];
-      final text = anchor.text.toLowerCase();
-
-      if (text.contains("next")) {
-        try {
-          nextUrl = source.resolveUri(
-            Uri.parse(href),
-          );
-          anchor.remove();
-        } on FormatException catch (e) {
-          print(e);
-        }
-      }
-      if (text.contains("previous")) {
-        try {
-          previousUrl = source.resolveUri(
-            Uri.parse(href),
-          );
-          anchor.remove();
-        } on FormatException catch (e) {
-          print(e);
-        }
-      }
-    });
-
-    document.querySelectorAll(".collapseomatic").forEach((collapsible) {
-      final id = collapsible.attributes["id"];
-      final target = document.querySelector("#target-$id");
-
-      if (collapsible == null) {
-        return;
-      }
-
-      target.remove();
-
-      final content = target.text.trim();
-      final href = "dialog?content=${Uri.encodeQueryComponent(content)}";
-      final text = collapsible.text?.trim();
-      final link = new Element.html('<a href="$href">$text</a>');
-      collapsible.replaceWith(link);
-    });
-
-    document.querySelectorAll(".footnote > a").forEach((footnote) {
-      final id = footnote.attributes["href"];
-      final target = document.querySelector(id);
-      target.querySelector(".footnotereverse").remove();
-
-      final text = footnote.text;
-      final content = decompile(target.innerHtml).trim();
-      final href = "dialog?content=${Uri.encodeQueryComponent(content)}";
-
-      final link = new Element.html('<a href="$href">$text</a>');
-      footnote.parent.replaceWith(link);
-    });
+    final article = document.querySelector(".content .fr-view");
+    cleanup(document, article);
+    makeTitle(document, article);
 
     return new Chapter(
       slug: slugify(uri: source),
       url: source,
-      previousUrl: previousUrl,
-      nextUrl: nextUrl,
-      title: document
-          .querySelector("title")
-          .text
-          .replaceAll("– Wuxiaworld", "")
-          .trim(),
-      content: decompile(article.innerHtml),
+      previousUrl: prevUrl(document, source),
+      nextUrl: nextUrl(document, source),
+      title: title(document),
+      content: markdown.decompile(article.innerHtml),
+      novelSlug: novelSlug(source),
     );
   }
 }
