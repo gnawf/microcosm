@@ -71,6 +71,15 @@ class ChapterHolderState extends State<ChapterHolder> {
   }
 
   @override
+  void didUpdateWidget(ChapterHolder oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.slug != widget.slug || oldWidget.url != widget.url) {
+      _setup();
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return new FutureBuilder<Chapter>(
       builder: widget.builder,
