@@ -82,10 +82,8 @@ String decompile(String content) {
   });
 
   fragment.querySelectorAll("ul").forEach((list) {
-    final items = list.querySelectorAll("> li");
-
     // Add bullet points before list items then unwrap them
-    items.forEach((item) {
+    list.querySelectorAll("> li").forEach((item) {
       final index = new Text("* ");
       item.nodes.insert(0, index);
       _unwrap(item);
