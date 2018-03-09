@@ -18,6 +18,14 @@ void main() {
     final html = """hello<em>there</em>test""";
     expect(decompile(html), equals("hello_there_test"));
   });
+  test("it decompiles bold text", () {
+    final html = """<strong>xd</strong>""";
+    expect(decompile(html), equals("__xd__"));
+  });
+  test("it decompiles nested formatting", () {
+    final html = """<strong><span>xd 2</span></strong>""";
+    expect(decompile(html), equals("__xd 2__"));
+  });
   test("it decompiles ordered lists", () {
     final html = """hello<ol><li>hello</li><li>there</li></ol>test""";
     expect(decompile(html), equals("hello\n\n1. hello2. there\n\ntest"));

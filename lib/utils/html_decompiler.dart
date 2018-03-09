@@ -28,21 +28,29 @@ String decompile(String content) {
     br.replaceWith(new Text("\n"));
   });
 
-  // Replace em with markdown equivalent
-  fragment.querySelectorAll("em").forEach((em) {
+  // Replace text formatting with markdown equivalent
+  fragment.querySelectorAll("em,b,strong").forEach((text) {
     // If there are no children, simply unwrap by removing the node
-    if (em.nodes.isEmpty) {
-      em.remove();
+    if (text.nodes.isEmpty) {
+      text.remove();
       return;
     }
 
-    em.nodes.forEach((node) {
+    _traverse(text, (node) {
       if (node is Text) {
-        node.replaceWith(new Text("_${node.text}_"));
+        switch (text.localName) {
+          case "b":
+          case "strong":
+            node.replaceWith(new Text("__${node.text}__"));
+            break;
+          case "em":
+            node.replaceWith(new Text("_${node.text}_"));
+            break;
+        }
       }
     });
 
-    unwrap(em);
+    unwrap(text);
   });
 
   // Replace em with markdown equivalent
@@ -121,5 +129,17 @@ String _trim(String text) {
     return match[0].replaceAll(new RegExp(r"\s+"), "");
   }).replaceAllMapped(new RegExp(r"[^a-zA-Z0-9]+$"), (match) {
     return match[0].replaceAll(new RegExp(r"\s+"), "");
+  });
+}
+
+void _traverse(Node ancestor, void step(Node node)) {
+  ancestor.nodes.forEach((child) {
+    step(child);
+    if (child.nodes.isNotEmpty) {
+      child.nodes.forEach((descendant) {
+        step(descendant);
+        _traverse(descendant, step);
+      });
+    }
   });
 }
