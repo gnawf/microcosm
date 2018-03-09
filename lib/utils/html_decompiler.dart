@@ -21,8 +21,8 @@ String decompile(String content) {
     block.innerHtml = block.innerHtml.replaceAll(new RegExp(r"\s{2,}"), " ");
 
     // Add padding
-    block.nodes.insert(0, new Text("\n\n"));
-    block.nodes.add(new Text("\n\n"));
+    block.nodes.insert(0, new Text("\n"));
+    block.nodes.add(new Text("\n"));
 
     _unwrap(block);
   });
@@ -76,8 +76,8 @@ String decompile(String content) {
     }
 
     // Surround with newlines & unwrap list
-    list.nodes.insert(0, new Text("\n\n"));
-    list.nodes.add(new Text("\n\n"));
+    list.nodes.insert(0, new Text("\n"));
+    list.nodes.add(new Text("\n"));
     _unwrap(list);
   });
 
@@ -92,8 +92,8 @@ String decompile(String content) {
     });
 
     // Surround with newlines & unwrap list
-    list.nodes.insert(0, new Text("\n\n"));
-    list.nodes.add(new Text("\n\n"));
+    list.nodes.insert(0, new Text("\n"));
+    list.nodes.add(new Text("\n"));
     _unwrap(list);
   });
 
