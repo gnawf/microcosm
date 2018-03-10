@@ -51,6 +51,9 @@ class ChapterDao implements ChapterSource {
     );
 
     if (count == 1) {
+      // Don't overwrite createdAt attribute during update
+      attributes.remove("createdAt");
+
       await _persistence.update(
         table: Chapter.type,
         where: {"slug": chapter.slug},

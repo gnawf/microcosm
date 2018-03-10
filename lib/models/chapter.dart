@@ -50,6 +50,8 @@ class Chapter {
     this.nextUrl,
     this.title,
     this.content,
+    this.createdAt,
+    this.readAt,
     this.novelSlug,
     this.novel,
   });
@@ -62,6 +64,8 @@ class Chapter {
   final Uri nextUrl;
   final String title;
   final String content;
+  final DateTime createdAt;
+  final DateTime readAt;
 
   final String novelSlug;
   final Novel novel;
@@ -73,6 +77,8 @@ class Chapter {
     Uri nextUrl,
     String title,
     String content,
+    DateTime createdAt,
+    DateTime readAt,
     String novelSlug,
     Novel novel,
   }) {
@@ -83,6 +89,8 @@ class Chapter {
       nextUrl: nextUrl ?? this.nextUrl,
       title: title ?? this.title,
       content: content ?? this.content,
+      createdAt: createdAt ?? this.createdAt,
+      readAt: readAt ?? this.readAt,
       novelSlug: novelSlug ?? this.novelSlug,
       novel: novel ?? this.novel,
     );
@@ -101,6 +109,8 @@ class Chapter {
           nextUrl == other.nextUrl &&
           title == other.title &&
           content == other.content &&
+          createdAt == other.createdAt &&
+          readAt == other.readAt &&
           novelSlug == other.novelSlug &&
           novel == other.novel;
 
@@ -112,6 +122,8 @@ class Chapter {
       nextUrl.hashCode ^
       title.hashCode ^
       content.hashCode ^
+      createdAt.hashCode ^
+      readAt.hashCode ^
       novelSlug.hashCode ^
       novel.hashCode;
 
@@ -124,6 +136,8 @@ class Chapter {
         "nextUrl: $nextUrl,"
         "title: $title,"
         "content: $content,"
+        "createdAt: $createdAt,"
+        "readAt: $readAt,"
         "novelSlug: $novelSlug,"
         "novel: $novel"
         "}";

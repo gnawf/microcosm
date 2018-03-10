@@ -176,6 +176,7 @@ class WuxiaWorldChapterParser {
       nextUrl: nextUrl(document, source),
       title: title(document),
       content: markdown.decompile(article.innerHtml),
+      createdAt: new DateTime.now(),
       novelSlug: novelSlug(source),
     );
   }
