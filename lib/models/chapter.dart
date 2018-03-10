@@ -66,6 +66,28 @@ class Chapter {
   final String novelSlug;
   final Novel novel;
 
+  Chapter copyWith({
+    String slug,
+    Uri url,
+    Uri previousUrl,
+    Uri nextUrl,
+    String title,
+    String content,
+    String novelSlug,
+    Novel novel,
+  }) {
+    return new Chapter(
+      slug: slug ?? this.slug,
+      url: url ?? this.url,
+      previousUrl: previousUrl ?? this.previousUrl,
+      nextUrl: nextUrl ?? this.nextUrl,
+      title: title ?? this.title,
+      content: content ?? this.content,
+      novelSlug: novelSlug ?? this.novelSlug,
+      novel: novel ?? this.novel,
+    );
+  }
+
   Map<String, dynamic> toJson() => mapper.toJson(this);
 
   @override

@@ -34,6 +34,10 @@ class NovelDao implements NovelSource {
   }
 
   Future<Null> upsert(Novel novel) async {
+    if (novel == null) {
+      return;
+    }
+
     // This creates a Map<String, dynamic> of the attributes
     final attributes = novel.toJson();
 

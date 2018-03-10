@@ -1,3 +1,4 @@
+import "package:app/providers/novel_provider.dart";
 import "package:app/providers/persistence_provider.dart";
 import "package:app/sources/chapter_source.dart";
 import "package:app/sources/database/chapter_dao.dart";
@@ -43,7 +44,11 @@ class ChapterProviderState extends State<ChapterProvider> {
     super.initState();
 
     final persistenceProvider = PersistenceProvider.of(context);
-    _chapterDao = new ChapterDao(persistenceProvider.persistence);
+    final novelProvider = NovelProvider.of(context);
+    _chapterDao = new ChapterDao(
+      persistenceProvider.persistence,
+      novelProvider.dao,
+    );
   }
 
   @override
