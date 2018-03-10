@@ -15,7 +15,7 @@ class OpenerPage extends StatefulWidget {
 class _OpenerPageState extends State<OpenerPage> {
   final TextEditingController _url = new TextEditingController();
 
-  VoidCallback _dispose;
+  SettingsState _settings;
 
   void _open() {
     if (_url.text.isNotEmpty) {
@@ -41,17 +41,27 @@ class _OpenerPageState extends State<OpenerPage> {
   void initState() {
     super.initState();
 
-    final settings = Settings.of(context);
-    _url.text = settings.lastChapterUrl;
-    // Change the URL automatically
-    settings.lastChapterUrlChanges.addListener(_updateUrl);
-    _dispose = () => settings.lastChapterUrlChanges.removeListener(_updateUrl);
+    _settings = Settings.of(context);
+    _url.text = _settings.lastChapterUrl;
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    _settings = Settings.of(context);
+    _settings.lastChapterUrlChanges.addListener(_updateUrl);
+  }
+
+  @override
+  void deactivate() {
+    _settings.lastChapterUrlChanges.removeListener(_updateUrl);
+    super.deactivate();
   }
 
   @override
   void dispose() {
     _url.dispose();
-    _dispose();
     super.dispose();
   }
 

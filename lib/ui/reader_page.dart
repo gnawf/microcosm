@@ -97,39 +97,38 @@ class _ChapterBody extends StatefulWidget {
 }
 
 class _ChapterBodyState extends State<_ChapterBody> {
-  VoidCallback _dispose;
+  SettingsState _settings;
 
   void _invalidate() {
     setState(() {});
   }
 
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
 
-    final settings = Settings.of(context);
-    settings.readerFontSizeChanges.addListener(_invalidate);
-    _dispose = () => settings.readerFontSizeChanges.removeListener(_invalidate);
+    _settings = Settings.of(context);
+    _settings.readerFontSizeChanges.addListener(_invalidate);
   }
 
   @override
-  void dispose() {
-    _dispose();
-    super.dispose();
+  void deactivate() {
+    _settings.readerFontSizeChanges.removeListener(_invalidate);
+    _settings = null;
+    super.deactivate();
   }
 
   @override
   Widget build(BuildContext context) {
     final chapter = widget.chapter;
 
-    final settings = Settings.of(context);
     final theme = Theme.of(context);
     final ss = new MarkdownStyleSheet.fromTheme(theme);
 
     return new MarkdownBody(
       data: chapter.content,
       styleSheet: ss.copyWith(
-        p: ss.p.copyWith(height: 1.4, fontSize: settings.readerFontSize),
+        p: ss.p.copyWith(height: 1.4, fontSize: _settings.readerFontSize),
       ),
       onTapLink: (link) => onTapLink(context, link),
     );

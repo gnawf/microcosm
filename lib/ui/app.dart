@@ -11,7 +11,7 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  VoidCallback _dispose;
+  SettingsState _settings;
 
   void _invalidate() {
     setState(() {});
@@ -22,48 +22,38 @@ class _AppState extends State<App> {
   }
 
   @override
-  void initState() {
-    super.initState();
-
-    final settings = Settings.of(context);
-    settings.primarySwatchChanges.addListener(_invalidate);
-    settings.accentColorChanges.addListener(_invalidate);
-    settings.brightnessChanges.addListener(_invalidate);
-    settings.amoledChanges.addListener(_invalidate);
-    // Setup destroy
-    _dispose = () {
-      settings.primarySwatchChanges.removeListener(_invalidate);
-      settings.accentColorChanges.removeListener(_invalidate);
-      settings.brightnessChanges.removeListener(_invalidate);
-      settings.amoledChanges.removeListener(_invalidate);
-    };
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _settings = Settings.of(context);
+    _settings.primarySwatchChanges.addListener(_invalidate);
+    _settings.accentColorChanges.addListener(_invalidate);
+    _settings.brightnessChanges.addListener(_invalidate);
+    _settings.amoledChanges.addListener(_invalidate);
   }
 
   @override
-  void dispose() {
-    _dispose();
-    super.dispose();
+  void deactivate() {
+    _settings.primarySwatchChanges.removeListener(_invalidate);
+    _settings.accentColorChanges.removeListener(_invalidate);
+    _settings.brightnessChanges.removeListener(_invalidate);
+    _settings.amoledChanges.removeListener(_invalidate);
+    _settings = null;
+    super.deactivate();
   }
 
   @override
   Widget build(BuildContext context) {
-    final settings = Settings.of(context);
-
     final platform = defaultTargetPlatform;
     final iOS = TargetPlatform.iOS;
-
-    final canvasColor =
-        settings.brightness == Brightness.dark && settings.amoled
-            ? Colors.black
-            : null;
+    final amoled = _settings.brightness == Brightness.dark && _settings.amoled;
 
     return new MaterialApp(
       title: "Microcosm",
       theme: new ThemeData(
-        primarySwatch: settings.primarySwatch,
-        accentColor: settings.accentColor,
-        brightness: settings.brightness,
-        canvasColor: canvasColor,
+        primarySwatch: _settings.primarySwatch,
+        accentColor: _settings.accentColor,
+        brightness: _settings.brightness,
+        canvasColor: amoled ? Colors.black : null,
         fontFamily: platform != iOS ? "Open Sans" : null,
       ),
       onGenerateRoute: _router,
