@@ -46,7 +46,7 @@ class _GridState extends State<_Grid> {
     }
 
     final novelProvider = NovelProvider.of(context);
-    final novelDao = novelProvider.dao();
+    final novelDao = novelProvider.dao;
     final novels = await novelDao.list(limit: 100);
     setState(() => _novels.addAll(novels));
   }

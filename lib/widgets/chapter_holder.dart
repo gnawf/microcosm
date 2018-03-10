@@ -26,7 +26,7 @@ class ChapterHolderState extends State<ChapterHolder> {
     }
 
     final chapterProvider = ChapterProvider.of(context);
-    final dao = chapterProvider.dao();
+    final dao = chapterProvider.dao;
     final source = chapterProvider.source(widget.url);
 
     if ((await dao.get(url: url)) == null) {
@@ -43,7 +43,7 @@ class ChapterHolderState extends State<ChapterHolder> {
     final url = widget.url;
 
     final chapterProvider = ChapterProvider.of(context);
-    final dao = chapterProvider.dao();
+    final dao = chapterProvider.dao;
     final source = chapterProvider.source(url);
 
     setState(() {

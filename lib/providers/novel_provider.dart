@@ -26,9 +26,7 @@ class NovelProviderState extends State<NovelProvider> {
 
   NovelDao _novelDao;
 
-  NovelDao dao() {
-    return _novelDao;
-  }
+  NovelDao get dao => _novelDao;
 
   Future<Null> _populate() async {
     // Do a simple check to see if the db has already been populated

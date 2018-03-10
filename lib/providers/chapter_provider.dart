@@ -26,6 +26,8 @@ class ChapterProviderState extends State<ChapterProvider> {
 
   ChapterDao _chapterDao;
 
+  ChapterDao get dao => _chapterDao;
+
   ChapterSource source(Uri url) {
     switch (url.host) {
       case "wuxiaworld.com":
@@ -34,10 +36,6 @@ class ChapterProviderState extends State<ChapterProvider> {
         return _wuxiaWorldChapters;
     }
     return null;
-  }
-
-  ChapterDao dao() {
-    return _chapterDao;
   }
 
   @override
