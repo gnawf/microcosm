@@ -1,9 +1,9 @@
 import "dart:async";
 
-import "package:app/settings/settings.dart";
 import "package:app/ui/routes.dart" as routes;
 import "package:app/widgets/settings_icon_button.dart";
 import "package:flutter/material.dart";
+import "package:flutter/services.dart";
 
 class OpenerPage extends StatefulWidget {
   const OpenerPage();
@@ -15,7 +15,10 @@ class OpenerPage extends StatefulWidget {
 class _OpenerPageState extends State<OpenerPage> {
   final TextEditingController _url = new TextEditingController();
 
-  SettingsState _settings;
+  Future<Null> _paste() async {
+    final paste = await Clipboard.getData("text/plain");
+    _url.text = paste.text;
+  }
 
   void _open() {
     if (_url.text.isNotEmpty) {
@@ -26,37 +29,6 @@ class _OpenerPageState extends State<OpenerPage> {
         print(e);
       }
     }
-  }
-
-  Future<Null> _updateUrl() async {
-    if (!mounted) {
-      return;
-    }
-
-    final settings = Settings.of(context);
-    _url.text = settings.lastChapterUrl;
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    _settings = Settings.of(context);
-    _url.text = _settings.lastChapterUrl;
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    _settings = Settings.of(context);
-    _settings.lastChapterUrlChanges.addListener(_updateUrl);
-  }
-
-  @override
-  void deactivate() {
-    _settings.lastChapterUrlChanges.removeListener(_updateUrl);
-    super.deactivate();
   }
 
   @override
@@ -89,14 +61,33 @@ class _OpenerPageState extends State<OpenerPage> {
               autofocus: true,
               autocorrect: false,
               keyboardType: TextInputType.url,
+              decoration: const InputDecoration(
+                hintText: "Enter your chapter link",
+                border: const OutlineInputBorder(),
+              ),
             ),
             new Padding(
               padding: const EdgeInsets.only(
                 top: 32.0,
+                left: 2.0,
+                right: 2.0,
               ),
-              child: new RaisedButton(
-                onPressed: _open,
-                child: const Text("Open"),
+              child: new Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  new RaisedButton(
+                    onPressed: _url.clear,
+                    child: const Text("Clear"),
+                  ),
+                  new RaisedButton(
+                    onPressed: _paste,
+                    child: const Text("Paste"),
+                  ),
+                  new RaisedButton(
+                    onPressed: _open,
+                    child: const Text("Open"),
+                  ),
+                ],
               ),
             ),
           ],
