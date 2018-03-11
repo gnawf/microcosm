@@ -1,5 +1,5 @@
+import "package:app/providers/database_provider.dart";
 import "package:app/providers/novel_provider.dart";
-import "package:app/providers/persistence_provider.dart";
 import "package:app/sources/chapter_source.dart";
 import "package:app/sources/database/chapter_dao.dart";
 import "package:app/sources/wuxia_world/wuxia_world_chapters.dart";
@@ -43,12 +43,9 @@ class ChapterProviderState extends State<ChapterProvider> {
   void initState() {
     super.initState();
 
-    final persistenceProvider = PersistenceProvider.of(context);
-    final novelProvider = NovelProvider.of(context);
-    _chapterDao = new ChapterDao(
-      persistenceProvider.persistence,
-      novelProvider.dao,
-    );
+    final databases = DatabaseProvider.of(context);
+    final novels = NovelProvider.of(context);
+    _chapterDao = new ChapterDao(databases.database, novels.dao);
   }
 
   @override

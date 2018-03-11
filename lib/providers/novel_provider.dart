@@ -2,7 +2,7 @@ import "dart:async";
 import "dart:convert";
 
 import "package:app/models/novel.dart";
-import "package:app/providers/persistence_provider.dart";
+import "package:app/providers/database_provider.dart";
 import "package:app/sources/database/novel_dao.dart";
 import "package:flutter/material.dart";
 import "package:meta/meta.dart";
@@ -53,8 +53,8 @@ class NovelProviderState extends State<NovelProvider> {
   void initState() {
     super.initState();
 
-    final persistenceProvider = PersistenceProvider.of(context);
-    _novelDao = new NovelDao(persistenceProvider.persistence);
+    final databases = DatabaseProvider.of(context);
+    _novelDao = new NovelDao(databases.database);
 
     _populate();
   }

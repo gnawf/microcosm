@@ -1,16 +1,16 @@
 import "dart:async";
 
+import "package:app/database/database_wrapper.dart";
 import "package:app/models/chapter.dart";
-import "package:app/persistence/persistence.dart";
 import "package:app/sources/chapter_source.dart";
 import "package:app/sources/database/novel_dao.dart";
 import "package:meta/meta.dart";
 
 @immutable
 class ChapterDao implements ChapterSource {
-  const ChapterDao(this._persistence, this._novelDao);
+  const ChapterDao(this._database, this._novelDao);
 
-  final Persistence _persistence;
+  final DatabaseWrapper _database;
 
   final NovelDao _novelDao;
 
@@ -18,7 +18,7 @@ class ChapterDao implements ChapterSource {
   Future<Chapter> get({String slug, Uri url}) async {
     slug ??= slugify(uri: url);
 
-    final chapters = await _persistence.select(
+    final chapters = await _database.query(
       table: Chapter.type,
       where: {"slug": slug},
       limit: 1,
@@ -33,6 +33,17 @@ class ChapterDao implements ChapterSource {
     return chapter.copyWith(novel: novel);
   }
 
+  Future<bool> exists({String slug, Uri url}) async {
+    slug ??= slugify(uri: url);
+
+    final count = await _database.count(
+      table: Chapter.type,
+      where: {"slug": slug},
+      limit: 1,
+    );
+    return count > 0;
+  }
+
   Future<Null> upsert(Chapter chapter) async {
     if (chapter == null) {
       return null;
@@ -44,25 +55,19 @@ class ChapterDao implements ChapterSource {
     // Save relation
     _novelDao.upsert(chapter.novel);
 
-    final count = await _persistence.count(
-      table: Chapter.type,
-      where: {"slug": chapter.slug},
-      limit: 1,
-    );
-
-    if (count == 1) {
+    if (await exists(slug: chapter.slug)) {
       // Don't overwrite createdAt attribute during update
       attributes.remove("createdAt");
 
-      await _persistence.update(
+      await _database.update(
         table: Chapter.type,
+        values: attributes,
         where: {"slug": chapter.slug},
-        attributes: attributes,
       );
     } else {
-      await _persistence.insert(
+      await _database.insert(
         table: Chapter.type,
-        attributes: attributes,
+        values: attributes,
       );
     }
   }

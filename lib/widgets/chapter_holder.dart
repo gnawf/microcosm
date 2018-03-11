@@ -25,9 +25,9 @@ class ChapterHolderState extends State<ChapterHolder> {
       return;
     }
 
-    final chapterProvider = ChapterProvider.of(context);
-    final dao = chapterProvider.dao;
-    final source = chapterProvider.source(widget.url);
+    final chapters = ChapterProvider.of(context);
+    final dao = chapters.dao;
+    final source = chapters.source(widget.url);
 
     if ((await dao.get(url: url)) == null) {
       dao.upsert(await source.get(url: url));
@@ -42,9 +42,9 @@ class ChapterHolderState extends State<ChapterHolder> {
     final slug = widget.slug;
     final url = widget.url;
 
-    final chapterProvider = ChapterProvider.of(context);
-    final dao = chapterProvider.dao;
-    final source = chapterProvider.source(url);
+    final chapters = ChapterProvider.of(context);
+    final dao = chapters.dao;
+    final source = chapters.source(url);
 
     setState(() {
       _chapter = dao.get(slug: slug, url: url).then((chapter) {

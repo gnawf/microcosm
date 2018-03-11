@@ -45,10 +45,10 @@ class _GridState extends State<_Grid> {
       return;
     }
 
-    final novelProvider = NovelProvider.of(context);
-    final novelDao = novelProvider.dao;
-    final novels = await novelDao.list(limit: 100);
-    setState(() => _novels.addAll(novels));
+    final novels = NovelProvider.of(context);
+    final dao = novels.dao;
+    final results = await dao.list(limit: 100);
+    setState(() => _novels.addAll(results));
   }
 
   @override
