@@ -5,11 +5,13 @@ import "package:app/providers/chapter_provider.dart";
 import "package:flutter/material.dart";
 
 class ChapterHolder extends StatefulWidget {
-  const ChapterHolder({this.slug, this.url, this.builder});
+  const ChapterHolder({this.slug, this.url, this.preload: true, this.builder});
 
   final String slug;
 
   final Uri url;
+
+  final bool preload;
 
   final AsyncWidgetBuilder<Chapter> builder;
 
@@ -21,15 +23,15 @@ class ChapterHolderState extends State<ChapterHolder> {
   Future<Chapter> _chapter;
 
   Future<Null> _preload(Uri url) async {
-    if (!mounted || url == null) {
+    if (!mounted || widget.preload == false || url == null) {
       return;
     }
 
     final chapters = ChapterProvider.of(context);
     final dao = chapters.dao;
-    final source = chapters.source(widget.url);
 
     if (!await dao.exists(url: url)) {
+      final source = chapters.source(url);
       dao.upsert(await source.get(url: url));
     }
   }
