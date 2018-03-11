@@ -2,6 +2,7 @@ import "dart:async";
 
 import "package:app/database/database_wrapper.dart";
 import "package:app/models/chapter.dart";
+import "package:app/models/novel.dart";
 import "package:app/sources/chapter_source.dart";
 import "package:app/sources/database/novel_dao.dart";
 import "package:meta/meta.dart";
@@ -18,19 +19,14 @@ class ChapterDao implements ChapterSource {
   Future<Chapter> get({String slug, Uri url}) async {
     slug ??= slugify(uri: url);
 
-    final chapters = await _database.query(
-      table: Chapter.type,
-      where: {"slug": slug},
-      limit: 1,
+    final chapters = await _database.rawQuery(
+      """SELECT * FROM ${Chapter.type}
+LEFT JOIN ${Novel.type} ON ${Novel.type}.slug=${Chapter.type}.novelSlug
+WHERE ${Chapter.type}.slug = ?""",
+      [slug],
     );
 
-    if (chapters.isEmpty) {
-      return null;
-    }
-
-    final chapter = new Chapter.fromJson(chapters.single);
-    final novel = await _novelDao.get(slug: chapter.novelSlug);
-    return chapter.copyWith(novel: novel);
+    return chapters.isNotEmpty ? _fromJoin(chapters.single) : null;
   }
 
   Future<bool> exists({String slug, Uri url}) async {
@@ -70,5 +66,28 @@ class ChapterDao implements ChapterSource {
         values: attributes,
       );
     }
+  }
+
+  Chapter _fromJoin(Map<String, dynamic> attributes) {
+    final notAlphanumeric = new RegExp(r"[^\w]");
+    final chapter = <String, dynamic>{};
+    final novel = <String, dynamic>{};
+    attributes.forEach((key, value) {
+      // Ignore functions
+      if (notAlphanumeric.hasMatch(key)) {
+        return;
+      }
+      // Start populating the novel attributes once we hit the novel's slug
+      // Assumption: the first column from chapter table is its slug
+      if (novel.isNotEmpty || (chapter.isNotEmpty && key == "slug")) {
+        novel[key] = value;
+      } else {
+        chapter[key] = value;
+      }
+    });
+    return new Chapter.fromJson(chapter).copyWith(
+      // Attach the novel object if present
+      novel: novel["slug"] != null ? new Novel.fromJson(novel) : null,
+    );
   }
 }
