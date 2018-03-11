@@ -17,25 +17,25 @@ PODS:
 
 DEPENDENCIES:
   - Flutter (from `/Users/gnawf/flutter/bin/cache/artifacts/engine/ios`)
-  - path_provider (from `/Users/gnawf/.pub-cache/hosted/pub.dartlang.org/path_provider-0.3.1/ios`)
-  - share (from `/Users/gnawf/.pub-cache/hosted/pub.dartlang.org/share-0.3.1/ios`)
-  - shared_preferences (from `/Users/gnawf/.pub-cache/hosted/pub.dartlang.org/shared_preferences-0.3.2/ios`)
-  - sqflite (from `/Users/gnawf/.pub-cache/hosted/pub.dartlang.org/sqflite-0.6.2+2/ios`)
-  - url_launcher (from `/Users/gnawf/.pub-cache/hosted/pub.dartlang.org/url_launcher-2.0.2/ios`)
+  - path_provider (from `/Users/gnawf/.pub-cache/hosted/pub.dartlang.org/path_provider-0.4.0/ios`)
+  - share (from `/Users/gnawf/.pub-cache/hosted/pub.dartlang.org/share-0.4.0/ios`)
+  - shared_preferences (from `/Users/gnawf/.pub-cache/hosted/pub.dartlang.org/shared_preferences-0.4.0/ios`)
+  - sqflite (from `/Users/gnawf/.pub-cache/hosted/pub.dartlang.org/sqflite-0.8.2/ios`)
+  - url_launcher (from `/Users/gnawf/.pub-cache/hosted/pub.dartlang.org/url_launcher-3.0.0/ios`)
 
 EXTERNAL SOURCES:
   Flutter:
     :path: /Users/gnawf/flutter/bin/cache/artifacts/engine/ios
   path_provider:
-    :path: /Users/gnawf/.pub-cache/hosted/pub.dartlang.org/path_provider-0.3.1/ios
+    :path: /Users/gnawf/.pub-cache/hosted/pub.dartlang.org/path_provider-0.4.0/ios
   share:
-    :path: /Users/gnawf/.pub-cache/hosted/pub.dartlang.org/share-0.3.1/ios
+    :path: /Users/gnawf/.pub-cache/hosted/pub.dartlang.org/share-0.4.0/ios
   shared_preferences:
-    :path: /Users/gnawf/.pub-cache/hosted/pub.dartlang.org/shared_preferences-0.3.2/ios
+    :path: /Users/gnawf/.pub-cache/hosted/pub.dartlang.org/shared_preferences-0.4.0/ios
   sqflite:
-    :path: /Users/gnawf/.pub-cache/hosted/pub.dartlang.org/sqflite-0.6.2+2/ios
+    :path: /Users/gnawf/.pub-cache/hosted/pub.dartlang.org/sqflite-0.8.2/ios
   url_launcher:
-    :path: /Users/gnawf/.pub-cache/hosted/pub.dartlang.org/url_launcher-2.0.2/ios
+    :path: /Users/gnawf/.pub-cache/hosted/pub.dartlang.org/url_launcher-3.0.0/ios
 
 SPEC CHECKSUMS:
   Flutter: 58dd7d1b27887414a370fcccb9e645c08ffd7a6a
