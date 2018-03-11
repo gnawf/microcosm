@@ -14,41 +14,48 @@ class Persistence {
 
   Future<int> count({
     @required String table,
-    @required Map where,
+    Map where,
+    String groupBy,
+    String having,
+    String orderBy,
     int limit,
+    int offset,
   }) async {
-    String sql = "SELECT COUNT(*) FROM $table "
-        "WHERE "
-        "${where.keys.map((key) => "$key = ?").join(",")}";
-    if (limit != null) {
-      sql += " LIMIT $limit";
-    }
-    final values = where.values.toList(growable: false);
     final db = await _open();
-    final result = await db.rawQuery(sql, values);
+    final result = await db.query(
+      table,
+      columns: const <String>["COUNT(*)"],
+      where: where?.keys?.map((key) => "$key = ?")?.join(","),
+      whereArgs: where?.values?.toList(growable: false),
+      groupBy: groupBy,
+      having: having,
+      orderBy: orderBy,
+      limit: limit,
+      offset: offset,
+    );
     return Sqflite.firstIntValue(result);
   }
 
   Future<List<Map<String, dynamic>>> select({
     @required String table,
     Map where,
+    String groupBy,
+    String having,
+    String orderBy,
     int limit,
     int offset,
   }) async {
-    String sql = "SELECT * FROM $table ";
-    if (where != null) {
-      sql += " WHERE ${where.keys.map((key) => "$key = ?").join(",")}";
-    }
-    if (limit != null) {
-      sql += " LIMIT $limit";
-    }
-    if (offset != null) {
-      sql += " OFFSET $offset";
-    }
-
-    final args = where != null ? where.values.toList(growable: false) : null;
     final db = await _open();
-    return db.rawQuery(sql, args);
+    return db.query(
+      table,
+      where: where?.keys?.map((key) => "$key = ?")?.join(","),
+      whereArgs: where?.values?.toList(growable: false),
+      groupBy: groupBy,
+      having: having,
+      orderBy: orderBy,
+      limit: limit,
+      offset: offset,
+    );
   }
 
   /// Returns the last inserted record id
@@ -56,30 +63,23 @@ class Persistence {
     @required String table,
     @required Map attributes,
   }) async {
-    final sql = "INSERT INTO $table("
-        "${attributes.keys.join(",")}"
-        ") VALUES ("
-        "${attributes.values.map((value) => "?").join(",")}"
-        ")";
-    final values = attributes.values.toList(growable: false);
     final db = await _open();
-    return db.rawInsert(sql, values);
+    return db.insert(table, attributes);
   }
 
   /// Returns the number of changes made
   Future<int> update({
     @required String table,
-    @required Map where,
     @required Map attributes,
+    @required Map where,
   }) async {
-    final sql = "UPDATE $table SET "
-        "${attributes.keys.map((key) => "$key = ?").join(",")}"
-        " WHERE "
-        "${where.keys.map((key) => "$key = ?").join(",")}";
-    final values = attributes.values.toList();
-    values.addAll(where.values);
     final db = await _open();
-    return db.rawUpdate(sql, values);
+    return db.update(
+      table,
+      attributes,
+      where: where.keys.map((key) => "$key = ?").join(","),
+      whereArgs: attributes.values.toList(growable: false),
+    );
   }
 
   /// Returns the number of changes made
@@ -87,11 +87,12 @@ class Persistence {
     @required String table,
     @required Map where,
   }) async {
-    final sql = "DELETE FROM $table WHERE "
-        "${where.keys.map((key) => "$key = ?").join(",")}";
-    final values = where.values.toList(growable: false);
     final db = await _open();
-    return db.rawUpdate(sql, values);
+    return db.delete(
+      table,
+      where: where.keys.map((key) => "$key = ?").join(","),
+      whereArgs: where.values.toList(growable: false),
+    );
   }
 
   Future<Database> _open() async {
