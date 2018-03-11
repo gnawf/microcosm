@@ -52,16 +52,44 @@ class WuxiaWorldChapterParser {
     }
   }
 
-  String title(Document document, {bool simple: true}) {
+  Element heading(Document document, List<RegExp> matchers) {
     final content = document.querySelector(".content");
-    final image = content.querySelector("img[src*=title-icon]");
-    final heading = image.parent.querySelector("h4");
-    final title = heading.text.trim();
+    final headings = content.querySelectorAll("h1,h2,h3,h4,h5");
 
-    if (simple == false) {
-      return title;
+    if (headings.isEmpty) {
+      return null;
+    } else if (headings.length == 1) {
+      return headings.single;
     }
 
+    // Score each heading & determine which one is most likely the header
+    var winner = 0;
+    var hiscore = 0;
+    for (var i = 0; i < headings.length; i++) {
+      final heading = headings[i];
+      final text = heading.text;
+
+      var score = 0;
+
+      // Award points per regex is matches
+      for (final regex in matchers) {
+        score += regex.hasMatch(text) ? 1 : 0;
+      }
+
+      // Award more points if it has the title icon next as a sibling
+      final icon = heading.parent.querySelectorAll("img[src*=title-icon]");
+      score += icon.isNotEmpty ? 2 : 0;
+
+      if (score > hiscore) {
+        winner = i;
+        hiscore = score;
+      }
+    }
+
+    return headings[winner];
+  }
+
+  String title(Document document, {bool simple: true}) {
     // Any text that matches these regexes are kept, order preserved
     final regexes = [
       new RegExp(r"book ?\d+", caseSensitive: false),
@@ -69,10 +97,19 @@ class WuxiaWorldChapterParser {
       new RegExp(r"chapter ?\d+", caseSensitive: false),
     ];
 
-    return regexes
+    final title = heading(document, regexes)?.text?.trim();
+
+    if (simple == false || title == null) {
+      return title;
+    }
+
+    final result = regexes
         .map((regex) => regex.stringMatch(title))
         .where((e) => e != null)
         .join(" - ");
+
+    // If we could not extract any information, just return the original title
+    return result.isEmpty ? title : result;
   }
 
   Uri nextUrl(Document document, Uri source) {
