@@ -22,20 +22,31 @@ android {
   }
 
   defaultConfig {
-    // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-    applicationId "com.gnawf.microcosm.app"
+    applicationId "com.gnawf.microcosm"
     minSdkVersion 16
     targetSdkVersion 27
-    versionCode 1
-    versionName "1.0"
+    versionCode 9
+    versionName "2.0.0"
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+  }
+
+  def keyStorePropertiesFile = new File("/Volumes/Signatures/microcosm.properties")
+  def keyStoreProperties = new Properties()
+  def keyStoreInStream = new FileInputStream(keyStorePropertiesFile)
+  keyStoreProperties.load(keyStoreInStream)
+
+  signingConfigs {
+    release {
+      keyAlias keyStoreProperties["keyAlias"]
+      keyPassword keyStoreProperties["keyPassword"]
+      storeFile file(keyStoreProperties["storeFile"])
+      storePassword keyStoreProperties["storePassword"]
+    }
   }
 
   buildTypes {
     release {
-      // TODO: Add your own signing config for the release build.
-      // Signing with the debug keys for now, so `flutter run --release` works.
-      signingConfig signingConfigs.debug
+      signingConfig signingConfigs.release
     }
   }
 }
