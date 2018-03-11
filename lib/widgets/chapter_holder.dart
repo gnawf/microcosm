@@ -21,7 +21,7 @@ class ChapterHolderState extends State<ChapterHolder> {
   Future<Chapter> _chapter;
 
   Future<Null> _preload(Uri url) async {
-    if (!mounted) {
+    if (!mounted || url == null) {
       return;
     }
 
@@ -29,7 +29,7 @@ class ChapterHolderState extends State<ChapterHolder> {
     final dao = chapters.dao;
     final source = chapters.source(widget.url);
 
-    if ((await dao.get(url: url)) == null) {
+    if (!await dao.exists(url: url)) {
       dao.upsert(await source.get(url: url));
     }
   }
