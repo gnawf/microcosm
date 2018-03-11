@@ -3,6 +3,7 @@ import "package:app/settings/settings.dart";
 import "package:app/ui/routes.dart" as routes;
 import "package:app/utils/url_launcher.dart";
 import "package:app/widgets/chapter_holder.dart";
+import "package:app/widgets/mark_chapter_read.dart";
 import "package:app/widgets/settings_icon_button.dart";
 import "package:flutter/material.dart";
 import "package:flutter_markdown/flutter_markdown.dart";
@@ -74,7 +75,10 @@ class _ReaderPageBody extends StatelessWidget {
             horizontal: 18.0,
             vertical: 16.0,
           ),
-          child: new _ChapterBody(chapter),
+          child: new MarkChapterRead(
+            chapter: chapter,
+            child: new _ChapterBody(chapter),
+          ),
         ),
         new Padding(
           padding: const EdgeInsets.symmetric(

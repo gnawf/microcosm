@@ -29,6 +29,18 @@ WHERE ${Chapter.type}.slug = ?""",
     return chapters.isNotEmpty ? _fromJoin(chapters.single) : null;
   }
 
+  Future<List<Chapter>> recents({int limit = 20, int offset = 0}) async {
+    final recents = await _database.rawQuery("""SELECT *, MAX(readAt)
+FROM ${Chapter.type}
+LEFT JOIN ${Novel.type} ON ${Novel.type}.slug=${Chapter.type}.novelSlug
+WHERE readAt IS NOT NULL
+GROUP BY novelSlug
+LIMIT $limit
+OFFSET $offset""");
+
+    return recents.map(_fromJoin).toList();
+  }
+
   Future<bool> exists({String slug, Uri url}) async {
     slug ??= slugify(uri: url);
 
