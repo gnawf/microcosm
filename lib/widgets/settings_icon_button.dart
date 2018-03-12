@@ -15,6 +15,7 @@ class SettingsIconButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return new IconButton(
       icon: const Icon(MDIcons.settings),
+      tooltip: "Settings",
       onPressed: () => _openSettings(context),
     );
   }
