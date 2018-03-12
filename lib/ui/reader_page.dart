@@ -21,12 +21,6 @@ class ReaderPage extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot<Chapter> snapshot) {
         final chapter = snapshot.data;
 
-        // Store the latest chapter URL
-        if (chapter?.url != null) {
-          final settings = Settings.of(context);
-          settings.lastChapterUrl = chapter.url.toString();
-        }
-
         return new Scaffold(
           appBar: new AppBar(
             automaticallyImplyLeading: false,

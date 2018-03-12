@@ -43,10 +43,6 @@ class SettingsState extends State<Settings> {
     deserializer: (index) => index == null ? null : _accentColors[index],
   );
 
-  final _lastChapterUrl = new Setting<String, String>(
-    key: "lastChapterUrl",
-  );
-
   final _readerFontSize = new Setting<double, double>(
     key: "readerFontSize",
     defaultValue: 15.0,
@@ -75,12 +71,6 @@ class SettingsState extends State<Settings> {
   MaterialAccentColor get accentColor => _accentColor.value;
 
   set accentColor(MaterialAccentColor value) => _accentColor.value = value;
-
-  ChangeNotifier get lastChapterUrlChanges => _lastChapterUrl;
-
-  String get lastChapterUrl => _lastChapterUrl.value;
-
-  set lastChapterUrl(String value) => _lastChapterUrl.value = value;
 
   ChangeNotifier get readerFontSizeChanges => _readerFontSize;
 
