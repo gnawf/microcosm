@@ -4,10 +4,14 @@ import "package:app/widgets/image_view.dart";
 import "package:flutter/material.dart";
 import "package:flutter/rendering.dart";
 
+typedef void OnTapNovel(Novel novel);
+
 class NovelSliverGrid extends StatefulWidget {
-  const NovelSliverGrid({this.novels: const <Novel>[]});
+  const NovelSliverGrid({this.novels: const <Novel>[], this.onTap});
 
   final List<Novel> novels;
+
+  final OnTapNovel onTap;
 
   @override
   State createState() => new _NovelSliverGridState();
@@ -15,7 +19,7 @@ class NovelSliverGrid extends StatefulWidget {
 
 class _NovelSliverGridState extends State<NovelSliverGrid> {
   Widget _builder(BuildContext context, int index) {
-    return new NovelGridItem(widget.novels[index]);
+    return new NovelGridItem(widget.novels[index], widget.onTap);
   }
 
   @override
@@ -33,9 +37,11 @@ class _NovelSliverGridState extends State<NovelSliverGrid> {
 }
 
 class NovelGridItem extends StatefulWidget {
-  const NovelGridItem(this.novel);
+  const NovelGridItem(this.novel, this.onTap);
 
   final Novel novel;
+
+  final OnTapNovel onTap;
 
   @override
   State<StatefulWidget> createState() => new _NovelGridItemState();
@@ -64,8 +70,10 @@ class _NovelGridItemState extends State<NovelGridItem>
   @override
   Widget build(BuildContext context) {
     final novel = widget.novel;
+    final onTap = widget.onTap;
 
     return new GestureDetector(
+      onTap: onTap != null ? () => onTap(novel) : null,
       // Start the scale transition on tap
       onTapDown: (event) => _controller.forward(),
       onTapUp: (event) => _controller.reverse(),
