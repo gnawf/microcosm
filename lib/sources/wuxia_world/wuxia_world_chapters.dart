@@ -143,6 +143,8 @@ class WuxiaWorldChapterParser {
         }
       });
     });
+    // Remove chapter navigation, sometimes they're tagged with this class
+    article.querySelectorAll(".chapter-nav").forEach((e) => e.remove());
   }
 
   void makeTitle(Document document, Element article) {
