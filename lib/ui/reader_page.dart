@@ -1,9 +1,12 @@
+import "dart:async";
+
 import "package:app/models/chapter.dart";
 import "package:app/settings/settings.dart";
 import "package:app/ui/routes.dart" as routes;
 import "package:app/utils/url_launcher.dart";
 import "package:app/widgets/chapter_holder.dart";
 import "package:app/widgets/mark_chapter_read.dart";
+import "package:app/widgets/refresh_notification.dart";
 import "package:app/widgets/settings_icon_button.dart";
 import "package:flutter/material.dart";
 import "package:flutter_markdown/flutter_markdown.dart";
@@ -33,9 +36,34 @@ class ReaderPage extends StatelessWidget {
               const SettingsIconButton(),
             ],
           ),
-          body: new _ReaderPageBody(chapter),
+          body: new _RefreshChapter(
+            child: new _ReaderPageBody(chapter),
+          ),
         );
       },
+    );
+  }
+}
+
+class _RefreshChapter extends StatelessWidget {
+  const _RefreshChapter({this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return new RefreshIndicator(
+      onRefresh: () {
+        final completer = new Completer();
+
+        new RefreshNotification(
+          what: ChapterHolder,
+          complete: completer.complete,
+        ).dispatch(context);
+
+        return completer.future;
+      },
+      child: child,
     );
   }
 }

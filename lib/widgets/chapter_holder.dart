@@ -2,6 +2,7 @@ import "dart:async";
 
 import "package:app/models/chapter.dart";
 import "package:app/providers/chapter_provider.dart";
+import "package:app/widgets/refresh_notification.dart";
 import "package:flutter/material.dart";
 
 class ChapterHolder extends StatefulWidget {
@@ -22,6 +23,17 @@ class ChapterHolder extends StatefulWidget {
 class ChapterHolderState extends State<ChapterHolder> {
   Future<Chapter> _chapter;
 
+  bool _onRefresh(RefreshNotification notification) {
+    // If the notification isn't for us, continue bubbling
+    if (notification.what != ChapterHolder) {
+      return false;
+    }
+
+    // Reload
+    _setup(fromCache: false, complete: notification.complete);
+    return true;
+  }
+
   Future<Null> _preload(Uri url) async {
     if (!mounted || widget.preload == false || url == null) {
       return;
@@ -36,7 +48,45 @@ class ChapterHolderState extends State<ChapterHolder> {
     }
   }
 
-  Future<Null> _setup() async {
+  Future<Chapter> _dao(String slug, Uri url) {
+    if (!mounted) {
+      return null;
+    }
+
+    final chapters = ChapterProvider.of(context);
+    final dao = chapters.dao;
+
+    return dao.get(slug: slug, url: url).then((chapter) {
+      if (chapter == null) {
+        return null;
+      }
+
+      _preload(chapter.nextUrl);
+      return chapter;
+    });
+  }
+
+  Future<Chapter> _source(String slug, Uri url) {
+    if (!mounted) {
+      return null;
+    }
+
+    final chapters = ChapterProvider.of(context);
+    final dao = chapters.dao;
+    final source = chapters.source(url);
+
+    return source.get(slug: slug, url: url).then((chapter) async {
+      if (chapter == null) {
+        return null;
+      }
+
+      _preload(chapter.nextUrl);
+      dao.upsert(chapter);
+      return chapter;
+    });
+  }
+
+  Future<Null> _setup({bool fromCache: true, VoidCallback complete}) async {
     if (!mounted) {
       return;
     }
@@ -44,29 +94,23 @@ class ChapterHolderState extends State<ChapterHolder> {
     final slug = widget.slug;
     final url = widget.url;
 
-    final chapters = ChapterProvider.of(context);
-    final dao = chapters.dao;
-    final source = chapters.source(url);
-
     setState(() {
-      _chapter = dao.get(slug: slug, url: url).then((chapter) {
-        if (chapter == null) {
-          // If we can't find anything locally then load it from the source
-          return source.get(slug: slug, url: url).then((chapter) async {
-            if (chapter == null) {
-              return null;
-            }
-            _preload(chapter.nextUrl);
-            // Save the chapter
-            dao.upsert(chapter);
-            return chapter;
-          });
-        }
-
-        _preload(chapter.nextUrl);
-        return chapter;
-      });
+      if (fromCache == false) {
+        _chapter = _source(slug, url).then((chapter) {
+          // Fallback to dao
+          return chapter == null ? _dao(slug, url) : chapter;
+        });
+      } else {
+        _chapter = _dao(slug, url).then((chapter) {
+          // Fallback to source
+          return chapter == null ? _source(slug, url) : chapter;
+        });
+      }
     });
+
+    if (complete != null) {
+      _chapter.whenComplete(complete);
+    }
   }
 
   @override
@@ -87,9 +131,12 @@ class ChapterHolderState extends State<ChapterHolder> {
 
   @override
   Widget build(BuildContext context) {
-    return new FutureBuilder<Chapter>(
-      builder: widget.builder,
-      future: _chapter,
+    return new NotificationListener<RefreshNotification>(
+      onNotification: _onRefresh,
+      child: new FutureBuilder<Chapter>(
+        builder: widget.builder,
+        future: _chapter,
+      ),
     );
   }
 }
