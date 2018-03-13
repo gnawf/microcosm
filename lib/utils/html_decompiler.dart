@@ -3,7 +3,7 @@ import "package:html/dom.dart";
 import "package:html/parser.dart" as html show parseFragment;
 
 /// Decompiles HTML to markdown
-String decompile(String content) {
+String decompile(String content, [Uri source]) {
   // Zero width joiner character; this is used to allow formatting mid word
   // As per https://meta.stackexchange.com/q/140706
   final zwj = new String.fromCharCode(8205);
@@ -59,10 +59,11 @@ String decompile(String content) {
   });
 
   // Replace em with markdown equivalent
-  fragment.querySelectorAll("a").forEach((anchor) {
-    final text = anchor.text;
+  fragment.querySelectorAll("a[href]").forEach((anchor) {
+    final text = anchor.text.trim();
     final href = anchor.attributes["href"];
-    anchor.replaceWith(new Text("[$text]($href)"));
+    final link = source?.resolve(href)?.toString() ?? href;
+    anchor.replaceWith(new Text("[$text]($link)"));
   });
 
   fragment.querySelectorAll("ol").forEach((list) {

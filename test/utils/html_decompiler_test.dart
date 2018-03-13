@@ -45,4 +45,20 @@ void main() {
     final html = """<p><em>  hello there</em>     my name is</p>""";
     expect(decompile(html), equals("${zwj}_hello there_$zwj my name is"));
   });
+  test("decompiles anchors with multiline text", () {
+    final html = """<a href="/test">
+Previous Chapter
+</a>""";
+    expect(decompile(html), equals("[Previous Chapter](/test)"));
+  });
+  test("resolves relative urls", () {
+    final html = """<a href="/test">
+Previous Chapter
+</a>""";
+    final url = new Uri(scheme: "https", host: "test.com");
+    expect(
+      decompile(html, url),
+      equals("[Previous Chapter](https://test.com/test)"),
+    );
+  });
 }
