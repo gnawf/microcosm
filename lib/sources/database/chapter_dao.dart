@@ -29,6 +29,30 @@ WHERE ${Chapter.type}.slug = ?""",
     return chapters.isNotEmpty ? _fromJoin(chapters.single) : null;
   }
 
+  Future<List<Chapter>> list({
+    @required String novelSlug,
+    String orderBy,
+    int limit,
+    int offset,
+  }) async {
+    final chapters = await _database.query(
+      table: Chapter.type,
+      where: {"novelSlug": novelSlug},
+      orderBy: orderBy,
+      limit: limit,
+      offset: offset,
+    );
+
+    return chapters.map(_fromJoin).toList();
+  }
+
+  Future<int> count({String novelSlug}) async {
+    return await _database.count(
+      table: Chapter.type,
+      where: novelSlug != null ? {"novelSlug": novelSlug} : null,
+    );
+  }
+
   Future<List<Chapter>> recents({int limit = 20, int offset = 0}) async {
     final recents = await _database.rawQuery("""SELECT *, MAX(readAt)
 FROM ${Chapter.type}

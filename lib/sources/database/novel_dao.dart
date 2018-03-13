@@ -1,6 +1,7 @@
 import "dart:async";
 
 import "package:app/database/database_wrapper.dart";
+import "package:app/models/chapter.dart";
 import "package:app/models/novel.dart";
 import "package:app/sources/novel_source.dart";
 import "package:meta/meta.dart";
@@ -29,6 +30,21 @@ class NovelDao implements NovelSource {
       limit: limit,
       offset: offset,
     );
+
+    return results.map((result) => new Novel.fromJson(result)).toList();
+  }
+
+  Future<List<Novel>> withDownloads({int limit = 20, int offset = 0}) async {
+    final results = await _database.rawQuery("""SELECT DISTINCT
+${Novel.type}.slug,
+${Novel.type}.name,
+${Novel.type}.source,
+${Novel.type}.synopsis,
+${Novel.type}.posterImage
+FROM ${Novel.type}
+INNER JOIN ${Chapter.type} ON ${Chapter.type}.novelSlug=${Novel.type}.slug
+LIMIT $limit
+OFFSET $offset""");
 
     return results.map((result) => new Novel.fromJson(result)).toList();
   }
