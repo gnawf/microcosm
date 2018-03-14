@@ -84,8 +84,7 @@ class CupertinoPageRoute<T> extends PageRoute<T> {
     this.maintainState: true,
     bool fullscreenDialog: false,
     this.hostRoute,
-  })
-      : assert(builder != null),
+  })  : assert(builder != null),
         assert(settings != null),
         assert(maintainState != null),
         assert(fullscreenDialog != null),
@@ -291,8 +290,7 @@ class CupertinoPageTransition extends StatelessWidget {
     @required Animation<double> secondaryRouteAnimation,
     @required this.child,
     @required bool linearTransition,
-  })
-      : assert(linearTransition != null),
+  })  : assert(linearTransition != null),
         _primaryPositionAnimation = linearTransition
             ? _kRightMiddleTween.animate(primaryRouteAnimation)
             : _kRightMiddleTween.animate(new CurvedAnimation(
@@ -354,8 +352,7 @@ class CupertinoFullscreenDialogTransition extends StatelessWidget {
     Key key,
     @required Animation<double> animation,
     @required this.child,
-  })
-      : _positionAnimation = _kBottomUpTween.animate(new CurvedAnimation(
+  })  : _positionAnimation = _kBottomUpTween.animate(new CurvedAnimation(
           parent: animation,
           curve: Curves.easeInOut,
         )),
@@ -389,8 +386,7 @@ class _CupertinoBackGestureDetector extends StatefulWidget {
     @required this.enabledCallback,
     @required this.onStartPopGesture,
     @required this.child,
-  })
-      : assert(enabledCallback != null),
+  })  : assert(enabledCallback != null),
         assert(onStartPopGesture != null),
         assert(child != null),
         super(key: key);
@@ -536,8 +532,7 @@ class _CupertinoBackGestureController {
     @required this.navigator,
     @required this.controller,
     @required this.onEnded,
-  })
-      : assert(navigator != null),
+  })  : assert(navigator != null),
         assert(controller != null),
         assert(onEnded != null) {
     navigator.didStartUserGesture();
@@ -691,8 +686,7 @@ class _CupertinoEdgeShadowPainter extends BoxPainter {
   _CupertinoEdgeShadowPainter(
     this._decoration,
     VoidCallback onChange,
-  )
-      : assert(_decoration != null),
+  )   : assert(_decoration != null),
         super(onChange);
 
   final _CupertinoEdgeShadowDecoration _decoration;

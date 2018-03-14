@@ -28,8 +28,7 @@ class _Content extends MarkdownWidget {
     MarkdownStyleSheet styleSheet,
     SyntaxHighlighter syntaxHighlighter,
     Directory imageDirectory,
-  })
-      : super(
+  }) : super(
           key: key,
           data: data,
           styleSheet: styleSheet ?? defaultStyleSheet(context),

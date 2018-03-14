@@ -6,7 +6,12 @@ import "package:app/widgets/refresh_notification.dart";
 import "package:flutter/material.dart";
 
 class ChapterHolder extends StatefulWidget {
-  const ChapterHolder({this.slug, this.url, this.preload: true, this.builder});
+  const ChapterHolder({
+    this.slug,
+    this.url,
+    this.preload: true,
+    this.builder,
+  });
 
   final String slug;
 

@@ -130,8 +130,7 @@ class _RenderLayoutBuilder extends RenderSliver
     with RenderObjectWithChildMixin<RenderSliver> {
   _RenderLayoutBuilder({
     LayoutCallback<SliverConstraints> callback,
-  })
-      : _callback = callback;
+  }) : _callback = callback;
 
   LayoutCallback<SliverConstraints> get callback => _callback;
   LayoutCallback<SliverConstraints> _callback;
