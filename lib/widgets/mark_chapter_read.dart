@@ -8,7 +8,7 @@ import "package:meta/meta.dart";
 class MarkChapterRead extends StatefulWidget {
   const MarkChapterRead({
     @required this.chapter,
-    this.delay: const Duration(seconds: 40),
+    this.delay = const Duration(seconds: 40),
     this.child,
   });
 

@@ -89,7 +89,7 @@ class WuxiaWorldChapterParser {
     return headings[winner];
   }
 
-  String title(Document document, {bool simple: true}) {
+  String title(Document document, {bool simple = true}) {
     // Any text that matches these regexes are kept, order preserved
     final regexes = [
       new RegExp(r"book ?\d+", caseSensitive: false),

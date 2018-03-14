@@ -9,7 +9,7 @@ class ChapterHolder extends StatefulWidget {
   const ChapterHolder({
     this.slug,
     this.url,
-    this.preload: true,
+    this.preload = true,
     this.builder,
   });
 

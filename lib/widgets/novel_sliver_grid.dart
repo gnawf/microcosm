@@ -7,7 +7,7 @@ import "package:flutter/rendering.dart";
 typedef void OnTapNovel(Novel novel);
 
 class NovelSliverGrid extends StatefulWidget {
-  const NovelSliverGrid({this.novels: const <Novel>[], this.onTap});
+  const NovelSliverGrid({this.novels = const <Novel>[], this.onTap});
 
   final List<Novel> novels;
 

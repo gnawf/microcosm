@@ -9,7 +9,7 @@ Future<Null> showMessageDialog({
   BuildContext context,
   String title,
   String content,
-  bool markdown: true,
+  bool markdown = true,
 }) async {
   await showDialog(
     context: context,

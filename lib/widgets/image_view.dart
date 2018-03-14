@@ -12,10 +12,10 @@ class ImageView extends StatelessWidget {
   const ImageView({
     @required this.image,
     this.imageScale = 1.0,
-    this.fadeOutDuration: const Duration(milliseconds: 300),
+    this.fadeOutDuration = const Duration(milliseconds: 300),
     this.fadeOutCurve: Curves.easeOut,
-    this.fadeInDuration: const Duration(milliseconds: 300),
-    this.fadeInCurve: Curves.easeIn,
+    this.fadeInDuration = const Duration(milliseconds: 300),
+    this.fadeInCurve = Curves.easeIn,
     this.fit,
     this.width,
     this.height,
