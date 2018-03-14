@@ -36,8 +36,11 @@ class ReaderPage extends StatelessWidget {
               const SettingsIconButton(),
             ],
           ),
-          body: new _RefreshChapter(
-            child: new _ReaderPageBody(chapter),
+          body: new MarkChapterRead(
+            chapter: chapter,
+            child: new _RefreshChapter(
+              child: new _ReaderPageBody(chapter),
+            ),
           ),
         );
       },
@@ -83,46 +86,31 @@ class _ReaderPageBody extends StatelessWidget {
 
     return new ListView(
       padding: const EdgeInsets.symmetric(
+        horizontal: 3.0,
         vertical: 24.0,
       ),
       children: <Widget>[
+        new _ChapterActions(chapter),
         new Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 3.0,
-          ),
-          child: new _ChapterActions(chapter),
+          padding: const EdgeInsets.all(16.0),
+          child: new _ChapterText(chapter),
         ),
-        new Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 18.0,
-            vertical: 16.0,
-          ),
-          child: new MarkChapterRead(
-            chapter: chapter,
-            child: new _ChapterBody(chapter),
-          ),
-        ),
-        new Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 3.0,
-          ),
-          child: new _ChapterActions(chapter),
-        ),
+        new _ChapterActions(chapter),
       ],
     );
   }
 }
 
-class _ChapterBody extends StatefulWidget {
-  const _ChapterBody(this.chapter);
+class _ChapterText extends StatefulWidget {
+  const _ChapterText(this.chapter);
 
   final Chapter chapter;
 
   @override
-  State<StatefulWidget> createState() => new _ChapterBodyState();
+  State<StatefulWidget> createState() => new _ChapterTextState();
 }
 
-class _ChapterBodyState extends State<_ChapterBody> {
+class _ChapterTextState extends State<_ChapterText> {
   SettingsState _settings;
 
   void _invalidate() {
