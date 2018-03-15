@@ -61,4 +61,8 @@ Previous Chapter
       equals("[Previous Chapter](https://test.com/test)"),
     );
   });
+  test("ensure link text is not empty", () {
+    final html = """<a href="/test"></a>""";
+    expect(decompile(html), isEmpty);
+  });
 }

@@ -61,6 +61,10 @@ String decompile(String content, [Uri source]) {
   // Replace em with markdown equivalent
   fragment.querySelectorAll("a[href]").forEach((anchor) {
     final text = anchor.text.trim();
+    // Ignore if there is no text i.e. link is invalid
+    if (text.isEmpty) {
+      return;
+    }
     final href = anchor.attributes["href"];
     final link = source?.resolve(href)?.toString() ?? href;
     anchor.replaceWith(new Text("[$text]($link)"));
