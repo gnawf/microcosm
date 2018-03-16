@@ -59,6 +59,7 @@ FROM ${Chapter.type}
 LEFT JOIN ${Novel.type} ON ${Novel.type}.slug=${Chapter.type}.novelSlug
 WHERE readAt IS NOT NULL
 GROUP BY novelSlug
+ORDER BY readAt DESC
 LIMIT $limit
 OFFSET $offset""");
 
