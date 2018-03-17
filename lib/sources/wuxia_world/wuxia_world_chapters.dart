@@ -195,10 +195,13 @@ class WuxiaWorldChapterParser {
   }
 
   bool containsIgnoreNoise(String string, String substring) {
-    final noise = new RegExp(r"[^a-z0-9]", caseSensitive: false);
+    final noise = new RegExp(r"[^a-z0-9\s]", caseSensitive: false);
     string = string.toLowerCase().replaceAll(noise, "");
     substring = substring.toLowerCase().replaceAll(noise, "");
-    return string.contains(substring);
+    // Allow extra words in the title
+    substring = substring.replaceAll(new RegExp(r"\s+"), r".+?");
+    // Do contains check using the regular expression
+    return new RegExp(substring).hasMatch(string);
   }
 
   Chapter fromHtml(Uri source, String body) {
