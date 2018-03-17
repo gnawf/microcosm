@@ -54,21 +54,22 @@ class _HomePageState extends State<HomePage> {
       return;
     }
 
-    if (_indices.last == index) {
-      _navigatorKey.currentState?.popUntil((r) => r.isFirst);
-      return;
-    }
-
     final route = _route(index);
 
     if (route == null) {
       return;
     }
 
-    // If there's no back button just replace the view
-    if (defaultTargetPlatform != TargetPlatform.android) {
-      setState(() => _indices[0] = index);
-      _navigatorKey.currentState?.pushAndRemoveUntil(route, (r) => false);
+    // Handle case where there's no back button
+    if (defaultTargetPlatform == TargetPlatform.iOS) {
+      if (_indices.last == index) {
+        // Go back instead of replacing if the requested view is in the stack
+        _navigatorKey.currentState?.popUntil((r) => r.isFirst);
+      } else {
+        // Clear the navigation stack & push the requested view
+        setState(() => _indices[0] = index);
+        _navigatorKey.currentState?.pushAndRemoveUntil(route, (r) => false);
+      }
       return;
     }
 
