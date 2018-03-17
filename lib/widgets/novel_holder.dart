@@ -6,17 +6,19 @@ import "package:flutter/material.dart";
 import "package:meta/meta.dart";
 
 class NovelHolder extends StatefulWidget {
-  const NovelHolder({@required this.slug, this.builder});
+  const NovelHolder({this.slug, this.novel, @required this.builder});
 
   final String slug;
+
+  final Novel novel;
 
   final AsyncWidgetBuilder<Novel> builder;
 
   @override
-  State createState() => new NovelHolderState();
+  State createState() => new _NovelHolderState();
 }
 
-class NovelHolderState extends State<NovelHolder> {
+class _NovelHolderState extends State<NovelHolder> {
   Future<Novel> _novel;
 
   Future<Null> _setup() async {
@@ -55,6 +57,7 @@ class NovelHolderState extends State<NovelHolder> {
     return new FutureBuilder<Novel>(
       builder: widget.builder,
       future: _novel,
+      initialData: widget.novel,
     );
   }
 }

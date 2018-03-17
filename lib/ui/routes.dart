@@ -1,9 +1,11 @@
 import "package:app/models/chapter.dart";
+import "package:app/models/novel.dart";
 import "package:app/navigation/fade_transition_route.dart";
 import "package:app/navigation/transitions.dart";
 import "package:app/ui/browse_page.dart";
 import "package:app/ui/downloads_page.dart";
 import "package:app/ui/home_page.dart";
+import "package:app/ui/novel_page.dart";
 import "package:app/ui/opener_page.dart";
 import "package:app/ui/reader_page.dart";
 import "package:app/ui/recents_page.dart";
@@ -55,6 +57,16 @@ Route reader({RouteType type, Uri url}) {
   return _route(
     settings: new RouteSettings(name: "reader/$slug"),
     builder: (BuildContext context) => new ReaderPage(url),
+    type: type,
+  );
+}
+
+Route novel({RouteType type, Novel novel, String slug}) {
+  slug ??= novel.slug;
+
+  return _route(
+    settings: new RouteSettings(name: "novel/$slug"),
+    builder: (BuildContext context) => new NovelPage(slug, novel),
     type: type,
   );
 }

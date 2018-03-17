@@ -2,6 +2,7 @@ import "dart:async";
 
 import "package:app/models/novel.dart";
 import "package:app/providers/novel_provider.dart";
+import "package:app/ui/routes.dart" as routes;
 import "package:app/widgets/novel_sliver_grid.dart";
 import "package:app/widgets/settings_icon_button.dart";
 import "package:flutter/material.dart";
@@ -40,6 +41,10 @@ class _Grid extends StatefulWidget {
 class _GridState extends State<_Grid> {
   final _novels = <Novel>[];
 
+  void _open(Novel novel) {
+    Navigator.of(context).push(routes.novel(novel: novel));
+  }
+
   Future<Null> _load() async {
     if (!mounted) {
       return;
@@ -69,6 +74,7 @@ class _GridState extends State<_Grid> {
       ),
       sliver: new NovelSliverGrid(
         novels: _novels,
+        onTap: _open,
       ),
     );
   }

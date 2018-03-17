@@ -85,9 +85,12 @@ class _NovelGridItemState extends State<NovelGridItem>
           children: <Widget>[
             new AspectRatio(
               aspectRatio: 102.0 / 145.0,
-              child: new ImageView(
-                image: novel.posterImage,
-                fit: BoxFit.cover,
+              child: new Hero(
+                tag: novel.slug,
+                child: new ImageView(
+                  image: novel.posterImage,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
             new Padding(
