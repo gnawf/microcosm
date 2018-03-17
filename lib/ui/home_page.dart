@@ -68,7 +68,7 @@ class _HomePageState extends State<HomePage> {
     // If there's no back button just replace the view
     if (defaultTargetPlatform != TargetPlatform.android) {
       setState(() => _indices[0] = index);
-      _navigatorKey.currentState?.pushReplacement(route);
+      _navigatorKey.currentState?.pushAndRemoveUntil(route, (r) => false);
       return;
     }
 
