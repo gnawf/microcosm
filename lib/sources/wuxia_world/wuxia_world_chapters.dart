@@ -31,15 +31,7 @@ class WuxiaWorldChapters implements ChapterSource {
     final redirects = response.redirects;
     final source = redirects.isNotEmpty ? redirects.last.location : url;
 
-    try {
-      return _chapterParser.fromHtml(source, body);
-    } catch (error) {
-      print(error);
-      if (error is Error) {
-        print(error.stackTrace);
-      }
-      rethrow;
-    }
+    return _chapterParser.fromHtml(source, body);
   }
 
   @override
