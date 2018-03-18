@@ -29,6 +29,7 @@ WHERE ${Chapter.type}.slug = ?""",
     return chapters.isNotEmpty ? _fromJoin(chapters.single) : null;
   }
 
+  @override
   Future<List<Chapter>> list({
     @required String novelSlug,
     String orderBy,

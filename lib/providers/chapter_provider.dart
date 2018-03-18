@@ -22,7 +22,8 @@ class ChapterProvider extends StatefulWidget {
 
 class ChapterProviderState extends State<ChapterProvider> {
   final _wuxiaWorldChapters = const WuxiaWorldChapters(
-    const WuxiaWorldChapterParser(),
+    const WuxiaWorldChapterParser(const WuxiaWorldUtils()),
+    const WuxiaWorldIndexParser(const WuxiaWorldUtils()),
   );
 
   ChapterDao _chapterDao;
