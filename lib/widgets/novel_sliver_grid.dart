@@ -28,7 +28,7 @@ class _NovelSliverGridState extends State<NovelSliverGrid> {
 
     return new CustomSliverGrid(
       builder: _builder,
-      cellWidth: 115.0,
+      cellWidth: 90.0,
       cellCount: novels.length,
       rowSpacing: 8.0,
       columnSpacing: 16.0,
