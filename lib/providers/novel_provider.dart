@@ -30,7 +30,7 @@ class NovelProviderState extends State<NovelProvider> {
 
   Future<Null> _populate() async {
     // Do a simple check to see if the db has already been populated
-    if (await _novelDao.get(slug: "issth-index") != null) {
+    if (await _novelDao.get(slug: "a-will-eternal") != null) {
       setState(() => _ready = true);
       return;
     }
