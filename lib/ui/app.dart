@@ -44,7 +44,7 @@ class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     final platform = defaultTargetPlatform;
-    final iOS = TargetPlatform.iOS;
+    const iOS = TargetPlatform.iOS;
     final amoled = _settings.brightness == Brightness.dark && _settings.amoled;
 
     return new MaterialApp(

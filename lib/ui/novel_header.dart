@@ -10,7 +10,7 @@ class NovelHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final posterImageAspectRatio = 102.0 / 145.0;
+    const posterImageAspectRatio = 102.0 / 145.0;
 
     return new Material(
       color: theme.cardColor,

@@ -1,11 +1,8 @@
-import "dart:async";
-
 import 'package:app/models/chapter.dart';
 import "package:app/models/novel.dart";
-import "package:app/providers/chapter_provider.dart";
 import "package:app/ui/novel_header.dart";
-import "package:app/widgets/list_chapters.dart";
 import "package:app/ui/routes.dart" as routes;
+import "package:app/widgets/list_chapters.dart";
 import "package:app/widgets/novel_holder.dart";
 import "package:flutter/material.dart";
 

@@ -42,13 +42,13 @@ class Setting<Stored, Concrete> extends ChangeNotifier {
     final store = await SharedPreferences.getInstance();
     Stored stored;
     if (Stored == int) {
-      stored = store.getInt(key); // ignore: invalid_assignment
+      stored = store.getInt(key) as Stored; // ignore: avoid_as
     } else if (Stored == bool) {
-      stored = store.getBool(key); // ignore: invalid_assignment
+      stored = store.getBool(key) as Stored; // ignore: avoid_as
     } else if (Stored == double) {
-      stored = store.getDouble(key); // ignore: invalid_assignment
+      stored = store.getDouble(key) as Stored; // ignore: avoid_as
     } else if (Stored == String) {
-      stored = store.getString(key); // ignore: invalid_assignment
+      stored = store.getString(key) as Stored; // ignore: avoid_as
     }
     final value = deserializer == null ? stored : deserializer(stored);
     _value = value ?? defaultValue;

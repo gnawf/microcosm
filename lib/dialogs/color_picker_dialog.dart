@@ -71,35 +71,38 @@ Future<T> openColorPicker<T extends Color>(
 }) async {
   return await showDialog(
     context: context,
-    child: new AlertDialog(
-      title: title ?? const Text("Color Picker"),
-      contentPadding: const EdgeInsets.symmetric(
-        horizontal: 8.0,
-      ),
-      content: new SingleChildScrollView(
-        child: new ListBody(
-          children: colors.keys.map<Widget>((name) {
-            final color = colors[name];
-            return new ListTile(
-              onTap: () => Navigator.of(context).pop(color),
-              title: new Text(
-                name,
-                style: new TextStyle(
-                  fontWeight:
-                      color == selected ? FontWeight.bold : FontWeight.normal,
+    builder: (BuildContext context) {
+      return new AlertDialog(
+        title: title ?? const Text("Color Picker"),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 8.0,
+        ),
+        content: new SingleChildScrollView(
+          child: new ListBody(
+            children: colors.keys.map<Widget>((name) {
+              final color = colors[name];
+              return new ListTile(
+                onTap: () => Navigator.of(context).pop(color),
+                title: new Text(
+                  name,
+                  style: new TextStyle(
+                    fontWeight:
+                        color == selected ? FontWeight.bold : FontWeight.normal,
+                  ),
                 ),
-              ),
-              trailing: new Container(width: 30.0, height: 30.0, color: color),
-            );
-          }).toList(),
+                trailing:
+                    new Container(width: 30.0, height: 30.0, color: color),
+              );
+            }).toList(),
+          ),
         ),
-      ),
-      actions: <Widget>[
-        new FlatButton(
-          onPressed: () => Navigator.of(context).pop(),
-          child: const Text("Cancel"),
-        ),
-      ],
-    ),
+        actions: <Widget>[
+          new FlatButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text("Cancel"),
+          ),
+        ],
+      );
+    },
   );
 }

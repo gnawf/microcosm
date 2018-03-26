@@ -255,7 +255,7 @@ class _ChapterList extends StatelessWidget {
 }
 
 class _ChapterItem extends StatelessWidget {
-  _ChapterItem(this.chapter);
+  const _ChapterItem(this.chapter);
 
   final Chapter chapter;
 

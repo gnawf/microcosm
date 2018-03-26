@@ -37,8 +37,8 @@ class NovelProviderState extends State<NovelProvider> {
 
     // Populate the database with local novel data
     final assetBundle = DefaultAssetBundle.of(context);
-    final json = await assetBundle.loadString("assets/novels.json");
-    final List<Map<String, dynamic>> objects = JSON.decode(json);
+    final asset = await assetBundle.loadString("assets/novels.json");
+    final List objects = json.decode(asset);
     final novels = objects.map((x) => new Novel.fromJson(x));
 
     // Synchronously upsert all the novels

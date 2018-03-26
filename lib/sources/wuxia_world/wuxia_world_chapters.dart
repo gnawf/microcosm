@@ -44,7 +44,7 @@ class WuxiaWorldChapters implements ChapterSource {
 
     final request = await httpClient.getUrl(url);
     final response = await request.close();
-    final body = await response.transform(UTF8.decoder).join();
+    final body = await response.transform(utf8.decoder).join();
 
     // If present, follow the redirects to get the final URL
     final redirects = response.redirects;

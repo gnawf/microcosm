@@ -13,10 +13,12 @@ Future<Null> showMessageDialog({
 }) async {
   await showDialog(
     context: context,
-    child: new AlertDialog(
-      title: title != null ? new Text(title) : null,
-      content: content != null ? new _Content(context, content) : null,
-    ),
+    builder: (BuildContext context) {
+      return new AlertDialog(
+        title: title != null ? new Text(title) : null,
+        content: content != null ? new _Content(context, content) : null,
+      );
+    },
   );
 }
 

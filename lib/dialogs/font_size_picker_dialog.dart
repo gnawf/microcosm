@@ -12,7 +12,9 @@ Future<double> showFontSizePickerDialog({
 }) async {
   return await showDialog(
     context: context,
-    child: new _Dialog(title, min, max, value, defaultValue),
+    builder: (BuildContext context) {
+      return new _Dialog(title, min, max, value, defaultValue);
+    },
   );
 }
 
