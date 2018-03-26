@@ -52,7 +52,8 @@ class _GridState extends State<_Grid> {
 
     final novels = NovelProvider.of(context);
     final dao = novels.dao;
-    final results = await dao.list(limit: 100);
+    final results = await dao.list();
+    results.sort((a, b) => a.name.compareTo(b.name));
     setState(() => _novels.addAll(results));
   }
 
