@@ -1,4 +1,4 @@
-import 'package:app/models/chapter.dart';
+import "package:app/models/chapter.dart";
 import "package:app/models/novel.dart";
 import "package:app/ui/novel_header.dart";
 import "package:app/ui/routes.dart" as routes;
