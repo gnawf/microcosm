@@ -2,7 +2,7 @@ import "package:app/models/chapter.dart";
 import "package:app/models/novel.dart";
 import "package:app/ui/routes.dart" as routes;
 import "package:app/widgets/downloaded_chapters.dart";
-import 'package:app/widgets/image_view.dart';
+import "package:app/widgets/image_view.dart";
 import "package:app/widgets/novel_holder.dart";
 import "package:app/widgets/novels_with_downloads.dart";
 import "package:app/widgets/settings_icon_button.dart";
@@ -126,14 +126,22 @@ class _NovelItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return new Container(
       // Increase the height of the tile to add padding
-      constraints: new BoxConstraints(
+      constraints: const BoxConstraints(
         minHeight: 72.0,
       ),
       child: new ListTile(
         onTap: () {
           Navigator.of(context).push(routes.downloads(novelSlug: novel.slug));
         },
-        leading: new ImageView(image: novel.posterImage),
+        leading: new Container(
+          constraints: const BoxConstraints(
+            maxWidth: 40.0,
+            maxHeight: 60.0,
+          ),
+          child: new ImageView(
+            image: novel.posterImage,
+          ),
+        ),
         title: new Text(novel.name),
       ),
     );

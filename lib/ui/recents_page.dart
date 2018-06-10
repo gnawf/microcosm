@@ -109,9 +109,15 @@ class _RecentsListEntry extends StatelessWidget {
 
     return new ListTile(
       onTap: () => _open(context),
-      leading: new ImageView(
-        image: novel?.posterImage,
-        fit: BoxFit.cover,
+      leading: new Container(
+        constraints: const BoxConstraints(
+          maxWidth: 40.0,
+          maxHeight: 60.0,
+        ),
+        child: new ImageView(
+          image: novel?.posterImage,
+          fit: BoxFit.cover,
+        ),
       ),
       title: new Text(novel?.name ?? "Unknown"),
       subtitle: new Padding(
