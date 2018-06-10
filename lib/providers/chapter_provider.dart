@@ -2,6 +2,7 @@ import "package:app/providers/database_provider.dart";
 import "package:app/providers/novel_provider.dart";
 import "package:app/sources/chapter_source.dart";
 import "package:app/sources/database/chapter_dao.dart";
+import "package:app/sources/volare_novels/volare_chapters.dart";
 import "package:app/sources/wuxia_world/wuxia_world_chapters.dart";
 import "package:flutter/material.dart";
 import "package:meta/meta.dart";
@@ -26,6 +27,10 @@ class ChapterProviderState extends State<ChapterProvider> {
     const WuxiaWorldIndexParser(const WuxiaWorldUtils()),
   );
 
+  final _volareChapters = const VolareChapters(
+    const VolareChapterParser(),
+  );
+
   ChapterDao _chapterDao;
 
   ChapterDao get dao => _chapterDao;
@@ -36,6 +41,9 @@ class ChapterProviderState extends State<ChapterProvider> {
       case "m.wuxiaworld.com":
       case "www.wuxiaworld.com":
         return _wuxiaWorldChapters;
+      case "volarenovels.com":
+      case "www.volarenovels.com":
+        return _volareChapters;
     }
     return null;
   }
