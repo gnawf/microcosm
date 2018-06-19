@@ -57,7 +57,7 @@ class _RefreshChapter extends StatelessWidget {
   Widget build(BuildContext context) {
     return new RefreshIndicator(
       onRefresh: () {
-        final completer = new Completer();
+        final completer = new Completer<Null>();
 
         new RefreshNotification(
           what: ChapterHolder,
