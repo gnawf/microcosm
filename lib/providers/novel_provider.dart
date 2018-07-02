@@ -29,12 +29,6 @@ class NovelProviderState extends State<NovelProvider> {
   NovelDao get dao => _novelDao;
 
   Future<Null> _populate() async {
-    // Do a simple check to see if the db has already been populated
-    if (await _novelDao.get(slug: "a-will-eternal") != null) {
-      setState(() => _ready = true);
-      return;
-    }
-
     // Populate the database with local novel data
     final assetBundle = DefaultAssetBundle.of(context);
     final asset = await assetBundle.loadString("assets/novels.json");
