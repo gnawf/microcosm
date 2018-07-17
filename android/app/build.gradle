@@ -25,8 +25,8 @@ android {
     applicationId "com.gnawf.microcosm"
     minSdkVersion 16
     targetSdkVersion 27
-    versionCode 14
-    versionName "2.1.0"
+    versionCode 15
+    versionName "2.1.1"
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
   }
 
