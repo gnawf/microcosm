@@ -125,6 +125,36 @@ class WuxiaWorldChapterParser {
     return headings[winner];
   }
 
+  Element article(Document document) {
+    final views = document.querySelectorAll(".content .fr-view");
+
+    if (views.isEmpty) {
+      return null;
+    } else if (views.length == 1) {
+      return views.single;
+    }
+
+    // Score each heading & determine which one is most likely the header
+    var winner = 0;
+    var hiscore = 0;
+    for (var i = 0; i < views.length; i++) {
+      final view = views[i];
+
+      var score = 0;
+
+      // Award more points if it has the title icon next as a sibling
+      final icon = view.parent.querySelectorAll("img[src*=title-icon]");
+      score += icon.isNotEmpty ? 2 : 0;
+
+      if (score > hiscore) {
+        winner = i;
+        hiscore = score;
+      }
+    }
+
+    return views[winner];
+  }
+
   String title(Document document, {bool simple = true}) {
     // Any text that matches these regexes are kept, order preserved
     final regexes = [
@@ -236,7 +266,7 @@ class WuxiaWorldChapterParser {
   Chapter fromHtml(Uri source, String body) {
     final document = html.parse(body);
 
-    final article = document.querySelector(".content .fr-view");
+    final article = this.article(document);
     cleanup(document, article);
     makeTitle(document, article);
 
