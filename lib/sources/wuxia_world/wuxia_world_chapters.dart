@@ -241,6 +241,8 @@ class WuxiaWorldChapterParser {
           node.text = "";
         }
       }
+
+      return true;
     });
 
     // Add the chapter title to the start of the article

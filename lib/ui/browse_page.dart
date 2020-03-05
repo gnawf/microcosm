@@ -22,7 +22,7 @@ class BrowsePage extends StatelessWidget {
           const SettingsIconButton(),
         ],
       ),
-      body: new CustomScrollView(
+      body: const CustomScrollView(
         slivers: const <Widget>[
           const _Grid(),
         ],

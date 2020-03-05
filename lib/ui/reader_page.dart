@@ -11,6 +11,7 @@ import "package:app/widgets/settings_icon_button.dart";
 import "package:flutter/material.dart";
 import "package:flutter_markdown/flutter_markdown.dart";
 import "package:meta/meta.dart";
+import "package:markdown/markdown.dart" as md;
 
 class ReaderPage extends StatelessWidget {
   const ReaderPage(this.chapterUrl);
@@ -140,10 +141,11 @@ class _ChapterTextState extends State<_ChapterText> {
     final ss = new MarkdownStyleSheet.fromTheme(theme);
 
     return new MarkdownBody(
-      data: chapter.content,
+      data: "${chapter.content}",
       styleSheet: ss.copyWith(
         p: ss.p.copyWith(height: 1.4, fontSize: _settings.readerFontSize),
       ),
+      extensionSet: md.ExtensionSet.none,
       onTapLink: (link) => onTapLink(context, link),
     );
   }

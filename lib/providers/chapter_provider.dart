@@ -2,6 +2,7 @@ import "package:app/providers/database_provider.dart";
 import "package:app/providers/novel_provider.dart";
 import "package:app/sources/chapter_source.dart";
 import "package:app/sources/database/chapter_dao.dart";
+import "package:app/sources/read_novel_full/read_novel_full_chapters.dart";
 import "package:app/sources/volare_novels/volare_chapters.dart";
 import "package:app/sources/wuxia_world/wuxia_world_chapters.dart";
 import "package:flutter/material.dart";
@@ -31,6 +32,10 @@ class ChapterProviderState extends State<ChapterProvider> {
     const VolareChapterParser(),
   );
 
+  final _readNovelFullChapters = const ReadNovelFullChapters(
+    const ReadNovelFullChapterParser(),
+  );
+
   ChapterDao _chapterDao;
 
   ChapterDao get dao => _chapterDao;
@@ -44,6 +49,9 @@ class ChapterProviderState extends State<ChapterProvider> {
       case "volarenovels.com":
       case "www.volarenovels.com":
         return _volareChapters;
+      case "readnovelfull.com":
+      case "www.readnovelfull.com":
+        return _readNovelFullChapters;
     }
     return null;
   }
