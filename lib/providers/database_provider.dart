@@ -33,7 +33,7 @@ class DatabaseProviderState extends State<DatabaseProvider> {
     final path = join(documents.path, "microcosm.db");
     final database = await openDatabase(
       path,
-      version: 4,
+      version: 5,
       onCreate: _onCreate,
       onUpgrade: _onUpgrade,
     );
@@ -42,25 +42,26 @@ class DatabaseProviderState extends State<DatabaseProvider> {
   }
 
   Future<Null> _onCreate(Database db, int version) async {
-    await db.execute("CREATE TABLE IF NOT EXISTS ${Chapter.type} ("
-        "slug TEXT PRIMARY KEY,"
-        "url TEXT NOT NULL,"
-        "previousUrl TEXT,"
-        "nextUrl TEXT,"
-        "title TEXT,"
-        "content TEXT,"
-        "createdAt TEXT,"
-        "readAt TEXT,"
-        "novelSlug TEXT"
-        ")");
+    await db.execute("""CREATE TABLE IF NOT EXISTS ${Chapter.type} (
+        slug TEXT PRIMARY KEY,
+        url TEXT NOT NULL,
+        previousUrl TEXT,
+        nextUrl TEXT,
+        title TEXT,
+        content TEXT,
+        createdAt TEXT,
+        readAt TEXT,
+        novelSlug TEXT
+      )""");
 
-    await db.execute("CREATE TABLE IF NOT EXISTS ${Novel.type} ("
-        "slug TEXT PRIMARY KEY,"
-        "name TEXT NOT NULL,"
-        "source TEXT,"
-        "synopsis TEXT,"
-        "posterImage TEXT"
-        ")");
+    await db.execute("""CREATE TABLE IF NOT EXISTS ${Novel.type} (
+          slug TEXT,
+          name TEXT NOT NULL,
+          source TEXT,
+          synopsis TEXT,
+          posterImage TEXT,
+          PRIMARY KEY (source, slug)
+        )""");
   }
 
   Future<Null> _onUpgrade(Database db, int oldVersion, int newVersion) async {
@@ -74,6 +75,18 @@ class DatabaseProviderState extends State<DatabaseProvider> {
     if (oldVersion == 3) {
       await db.execute("ALTER TABLE ${Chapter.type} ADD createdAt TEXT");
       await db.execute("ALTER TABLE ${Chapter.type} ADD readAt TEXT");
+      oldVersion++;
+    }
+    if (oldVersion == 4) {
+      await db.execute("DROP TABLE ${Novel.type}");
+      await db.execute("""CREATE TABLE ${Novel.type} (
+        slug TEXT,
+        name TEXT NOT NULL,
+        source TEXT,
+        synopsis TEXT,
+        posterImage TEXT,
+        PRIMARY KEY (source, slug)
+        )""");
       oldVersion++;
     }
   }

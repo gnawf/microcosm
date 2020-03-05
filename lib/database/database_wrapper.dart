@@ -133,7 +133,7 @@ class DatabaseWrapper {
   /// See [Database.delete]
   Future<int> delete({
     @required String table,
-    @required Map<String, dynamic> where,
+    Map<String, dynamic> where,
   }) async {
     return _database.delete(
       table,

@@ -35,10 +35,9 @@ class NovelProviderState extends State<NovelProvider> {
     final List<dynamic> objects = convert.json.decode(json);
     final novels = objects.map((x) => new Novel.fromJson(x));
 
-    // Synchronously upsert all the novels
-    for (final novel in novels) {
-      await _novelDao.upsert(novel);
-    }
+    await _novelDao.purge();
+    final inserts = novels.map(_novelDao.upsert);
+    await Future.wait(inserts);
 
     setState(() => _ready = true);
   }

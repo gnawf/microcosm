@@ -79,4 +79,8 @@ OFFSET $offset""");
       );
     }
   }
+
+  Future<Null> purge() async {
+    await _database.delete(table: Novel.type);
+  }
 }
