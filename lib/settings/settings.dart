@@ -8,8 +8,7 @@ class Settings extends StatefulWidget {
   final Widget child;
 
   static SettingsState of(BuildContext context) {
-    const matcher = const TypeMatcher<SettingsState>();
-    return context.ancestorStateOfType(matcher);
+    return context.findAncestorStateOfType<SettingsState>();
   }
 
   @override

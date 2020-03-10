@@ -15,8 +15,7 @@ class DatabaseProvider extends StatefulWidget {
   final Widget child;
 
   static DatabaseProviderState of(BuildContext context) {
-    const matcher = const TypeMatcher<DatabaseProviderState>();
-    return context.ancestorStateOfType(matcher);
+    return context.findAncestorStateOfType<DatabaseProviderState>();
   }
 
   @override

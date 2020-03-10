@@ -13,8 +13,7 @@ class NovelProvider extends StatefulWidget {
   final Widget child;
 
   static NovelProviderState of(BuildContext context) {
-    const matcher = const TypeMatcher<NovelProviderState>();
-    return context.ancestorStateOfType(matcher);
+    return context.findAncestorStateOfType<NovelProviderState>();
   }
 
   @override

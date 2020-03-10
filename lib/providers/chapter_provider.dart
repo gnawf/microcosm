@@ -14,8 +14,7 @@ class ChapterProvider extends StatefulWidget {
   final Widget child;
 
   static ChapterProviderState of(BuildContext context) {
-    const matcher = const TypeMatcher<ChapterProviderState>();
-    return context.ancestorStateOfType(matcher);
+    return context.findAncestorStateOfType<ChapterProviderState>();
   }
 
   @override
