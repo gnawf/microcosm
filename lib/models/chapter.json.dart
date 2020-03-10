@@ -12,6 +12,7 @@ Map<String, dynamic> toJson(Chapter chapter) {
     "createdAt": chapter.createdAt?.toUtc()?.toIso8601String(),
     "readAt": chapter.readAt?.toUtc()?.toIso8601String(),
     "novelSlug": chapter.novelSlug,
+    "novelSource": chapter.novelSource,
     "novel": chapter.novel?.toJson(),
   };
 }
@@ -26,6 +27,7 @@ Chapter fromJson(Map<String, dynamic> json) {
   final createdAt = json["createdAt"];
   final readAt = json["readAt"];
   final novelSlug = json["novelSlug"];
+  final novelSource = json["novelSource"];
   final novel = json["novel"];
 
   return new Chapter(
@@ -38,6 +40,7 @@ Chapter fromJson(Map<String, dynamic> json) {
     createdAt: createdAt == null ? null : DateTime.parse(createdAt),
     readAt: readAt == null ? null : DateTime.parse(readAt),
     novelSlug: novelSlug,
+    novelSource: novelSource,
     novel: novel == null ? null : new Novel.fromJson(novel),
   );
 }

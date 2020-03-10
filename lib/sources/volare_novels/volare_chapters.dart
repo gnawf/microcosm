@@ -29,7 +29,7 @@ class VolareChapters implements ChapterSource {
   }
 
   @override
-  Future<List<Chapter>> list({String novelSlug}) async {
+  Future<List<Chapter>> list({String novelSource, String novelSlug}) async {
     return <Chapter>[];
   }
 }
@@ -94,6 +94,7 @@ class VolareChapterParser {
       content: markdown.decompile(content.innerHtml, source),
       createdAt: new DateTime.now(),
       novelSlug: source.pathSegments.first,
+      novelSource: "volare-novels",
     );
   }
 }

@@ -35,7 +35,7 @@ class WuxiaWorldChapters implements ChapterSource {
   }
 
   @override
-  Future<List<Chapter>> list({String novelSlug}) async {
+  Future<List<Chapter>> list({String novelSource, String novelSlug}) async {
     final url = new Uri(
       scheme: "https",
       host: "wuxiaworld.com",
@@ -281,6 +281,7 @@ class WuxiaWorldChapterParser {
       content: markdown.decompile(article.innerHtml),
       createdAt: new DateTime.now(),
       novelSlug: _utils.novelSlug(source),
+      novelSource: "wuxiaworld",
     );
   }
 }
@@ -311,6 +312,7 @@ class WuxiaWorldIndexParser {
         url: url,
         title: item.text.trim(),
         novelSlug: novelSlug,
+        novelSource: "wuxiaworld",
       );
     });
 

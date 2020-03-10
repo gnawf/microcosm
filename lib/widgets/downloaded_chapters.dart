@@ -8,9 +8,12 @@ import "package:meta/meta.dart";
 class DownloadedChapters extends StatefulWidget {
   const DownloadedChapters({
     Key key,
+    this.novelSource,
     this.novelSlug,
     @required this.builder,
   }) : super(key: key);
+
+  final String novelSource;
 
   final String novelSlug;
 
@@ -30,13 +33,15 @@ class DownloadedChaptersState extends State<DownloadedChapters> {
       return;
     }
 
-    final slug = widget.novelSlug;
-
     final chapters = ChapterProvider.of(context);
 
     setState(() {
       // Todo - paginate this
-      _chapters = chapters.dao.list(novelSlug: slug, orderBy: "slug");
+      _chapters = chapters.dao.list(
+        novelSource: widget.novelSource,
+        novelSlug: widget.novelSlug,
+        orderBy: "slug",
+      );
     });
   }
 

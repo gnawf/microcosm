@@ -7,7 +7,13 @@ import "package:app/widgets/novel_holder.dart";
 import "package:flutter/material.dart";
 
 class NovelPage extends StatelessWidget {
-  const NovelPage(this.slug, [this.novel]);
+  const NovelPage({
+    this.source,
+    this.slug,
+    this.novel,
+  }) : assert((slug != null && source != null) || novel != null);
+
+  final String source;
 
   final String slug;
 
@@ -16,6 +22,7 @@ class NovelPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new NovelHolder(
+      source: source,
       slug: slug,
       novel: novel,
       builder: (BuildContext context, AsyncSnapshot<Novel> snapshot) {
@@ -56,7 +63,7 @@ class _NovelPageBodyState extends State<_NovelPageBody> {
         ),
         new SliverPadding(
           padding: const EdgeInsets.only(top: 16.0, bottom: 8.0),
-          sliver: new _ChapterList(novel.slug),
+          sliver: new _ChapterList(novel.source, novel.slug),
         ),
       ],
     );
@@ -64,7 +71,9 @@ class _NovelPageBodyState extends State<_NovelPageBody> {
 }
 
 class _ChapterList extends StatelessWidget {
-  const _ChapterList(this.novelSlug);
+  const _ChapterList(this.novelSource, this.novelSlug);
+
+  final String novelSource;
 
   final String novelSlug;
 
@@ -87,6 +96,7 @@ class _ChapterList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new ListChapters(
+      novelSource: novelSource,
       novelSlug: novelSlug,
       builder: (BuildContext context, AsyncSnapshot<List<Chapter>> snapshot) {
         final chapters = snapshot.data;

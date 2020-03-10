@@ -40,18 +40,33 @@ class ChapterProviderState extends State<ChapterProvider> {
 
   ChapterDao get dao => _chapterDao;
 
-  ChapterSource source(Uri url) {
-    switch (url.host) {
-      case "wuxiaworld.com":
-      case "m.wuxiaworld.com":
-      case "www.wuxiaworld.com":
-        return _wuxiaWorldChapters;
-      case "volarenovels.com":
-      case "www.volarenovels.com":
-        return _volareChapters;
-      case "readnovelfull.com":
-      case "www.readnovelfull.com":
-        return _readNovelFullChapters;
+  ChapterSource source({String id, Uri url}) {
+    assert(id != null || url != null);
+
+    if (id != null) {
+      switch (id) {
+        case "wuxiaworld":
+          return _wuxiaWorldChapters;
+        case "volare-novels":
+          return _volareChapters;
+        case "read-novel-full":
+          return _readNovelFullChapters;
+      }
+    }
+
+    if (url != null) {
+      switch (url.host) {
+        case "wuxiaworld.com":
+        case "m.wuxiaworld.com":
+        case "www.wuxiaworld.com":
+          return _wuxiaWorldChapters;
+        case "volarenovels.com":
+        case "www.volarenovels.com":
+          return _volareChapters;
+        case "readnovelfull.com":
+        case "www.readnovelfull.com":
+          return _readNovelFullChapters;
+      }
     }
     return null;
   }

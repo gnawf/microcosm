@@ -36,7 +36,7 @@ class ReadNovelFullChapters implements ChapterSource {
   }
 
   @override
-  Future<List<Chapter>> list({String novelSlug}) async {
+  Future<List<Chapter>> list({String novelSource, String novelSlug}) async {
     return <Chapter>[];
   }
 }
@@ -79,6 +79,7 @@ class ReadNovelFullChapterParser {
       content: markdown.decompile(article.innerHtml),
       createdAt: new DateTime.now(),
       novelSlug: source.pathSegments[0],
+      novelSource: "read-full-novel",
     );
   }
 }

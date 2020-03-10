@@ -33,7 +33,7 @@ class DatabaseProviderState extends State<DatabaseProvider> {
     final path = join(documents.path, "microcosm.db");
     final database = await openDatabase(
       path,
-      version: 5,
+      version: 6,
       onCreate: _onCreate,
       onUpgrade: _onUpgrade,
     );
@@ -51,7 +51,8 @@ class DatabaseProviderState extends State<DatabaseProvider> {
         content TEXT,
         createdAt TEXT,
         readAt TEXT,
-        novelSlug TEXT
+        novelSlug TEXT,
+        novelSource TEXT
       )""");
 
     await db.execute("""CREATE TABLE IF NOT EXISTS ${Novel.type} (
@@ -87,6 +88,35 @@ class DatabaseProviderState extends State<DatabaseProvider> {
         posterImage TEXT,
         PRIMARY KEY (source, slug)
         )""");
+      oldVersion++;
+    }
+    if (oldVersion == 5) {
+      await db.execute("ALTER TABLE ${Chapter.type} ADD novelSource TEXT");
+      final chapters = await db.query(Chapter.type, columns: ["slug", "url"]);
+
+      // Backfill source data based on the URL
+      await db.transaction((txn) async {
+        for (final chapter in chapters) {
+          final slug = chapter["slug"];
+          final url = chapter["url"];
+          if (url is String) {
+            String source;
+            if (url.contains("wuxiaworld.com")) {
+              source = "wuxiaworld";
+            } else if (url.contains("volarenovels.com")) {
+              source = "volare-novels";
+            } else {
+              continue;
+            }
+            await txn.update(Chapter.type, {"novelSource": source},
+                where: "slug = ?", whereArgs: [slug]);
+          }
+        }
+      });
+
+      final newChapters = await db.query(Chapter.type);
+      print(newChapters);
+
       oldVersion++;
     }
   }

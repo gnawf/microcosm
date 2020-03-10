@@ -10,13 +10,20 @@ import "package:flutter/material.dart";
 import "package:meta/meta.dart";
 
 class DownloadsPage extends StatelessWidget {
-  const DownloadsPage(this.novel);
+  const DownloadsPage({
+    this.novelSource,
+    this.novelSlug,
+  });
 
-  final String novel;
+  final String novelSource;
+
+  final String novelSlug;
 
   @override
   Widget build(BuildContext context) {
-    return novel != null ? new _ChaptersPage(slug: novel) : new _NovelsPage();
+    return novelSlug != null
+        ? new _ChaptersPage(slug: novelSlug, source: novelSource)
+        : new _NovelsPage();
   }
 }
 
@@ -122,8 +129,15 @@ class _NovelItem extends StatelessWidget {
 
   final Novel novel;
 
+  String _source(String source) {
+    source = source.replaceAll("-", " ");
+    return source[0].toUpperCase() + source.substring(1);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final source = _source(novel.source);
+
     return new Container(
       // Increase the height of the tile to add padding
       constraints: const BoxConstraints(
@@ -131,7 +145,8 @@ class _NovelItem extends StatelessWidget {
       ),
       child: new ListTile(
         onTap: () {
-          Navigator.of(context).push(routes.downloads(novelSlug: novel.slug));
+          Navigator.of(context).push(routes.downloads(
+              novelSource: novel.source, novelSlug: novel.slug));
         },
         leading: new Container(
           constraints: const BoxConstraints(
@@ -143,13 +158,20 @@ class _NovelItem extends StatelessWidget {
           ),
         ),
         title: new Text(novel.name),
+        subtitle: new Text(source),
       ),
     );
   }
 }
 
 class _ChaptersPage extends StatelessWidget {
-  const _ChaptersPage({@required this.slug});
+  const _ChaptersPage({
+    @required this.source,
+    @required this.slug,
+  })  : assert(slug != null),
+        assert(source != null);
+
+  final String source;
 
   final String slug;
 
@@ -157,6 +179,7 @@ class _ChaptersPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return new NovelHolder(
       slug: slug,
+      source: source,
       builder: (BuildContext context, AsyncSnapshot<Novel> snapshot) {
         final novel = snapshot.data;
 
@@ -170,7 +193,7 @@ class _ChaptersPage extends StatelessWidget {
               const SettingsIconButton(),
             ],
           ),
-          body: new _ChaptersPageBody(slug: slug),
+          body: new _ChaptersPageBody(source: source, slug: slug),
         );
       },
     );
@@ -214,13 +237,19 @@ class _DownloadedChaptersState extends State<_DownloadedChapters> {
 }
 
 class _ChaptersPageBody extends StatelessWidget {
-  const _ChaptersPageBody({@required this.slug});
+  const _ChaptersPageBody({
+    @required this.source,
+    @required this.slug,
+  });
+
+  final String source;
 
   final String slug;
 
   @override
   Widget build(BuildContext context) {
     return new DownloadedChapters(
+      novelSource: source,
       novelSlug: slug,
       builder: (BuildContext context, AsyncSnapshot<List<Chapter>> snapshot) {
         final chapters = snapshot.data;

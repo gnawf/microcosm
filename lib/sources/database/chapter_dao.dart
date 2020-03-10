@@ -32,13 +32,19 @@ WHERE ${Chapter.type}.slug = ?""",
   @override
   Future<List<Chapter>> list({
     @required String novelSlug,
+    @required String novelSource,
     String orderBy,
     int limit,
     int offset,
   }) async {
+    final where = <String, dynamic>{
+      "novelSlug": novelSlug,
+      "novelSource": novelSource,
+    };
+
     final chapters = await _database.query(
       table: Chapter.type,
-      where: {"novelSlug": novelSlug},
+      where: where,
       orderBy: orderBy,
       limit: limit,
       offset: offset,

@@ -53,6 +53,7 @@ class Chapter {
     this.createdAt,
     this.readAt,
     this.novelSlug,
+    this.novelSource,
     this.novel,
   });
 
@@ -68,6 +69,7 @@ class Chapter {
   final DateTime readAt;
 
   final String novelSlug;
+  final String novelSource;
   final Novel novel;
 
   Chapter copyWith({
@@ -80,6 +82,7 @@ class Chapter {
     DateTime createdAt,
     DateTime readAt,
     String novelSlug,
+    String novelSource,
     Novel novel,
   }) {
     return new Chapter(
@@ -92,6 +95,7 @@ class Chapter {
       createdAt: createdAt ?? this.createdAt,
       readAt: readAt ?? this.readAt,
       novelSlug: novelSlug ?? this.novelSlug,
+      novelSource: novelSource ?? this.novelSource,
       novel: novel ?? this.novel,
     );
   }
@@ -112,6 +116,7 @@ class Chapter {
           createdAt == other.createdAt &&
           readAt == other.readAt &&
           novelSlug == other.novelSlug &&
+          novelSource == other.novelSource &&
           novel == other.novel;
 
   @override
@@ -125,6 +130,7 @@ class Chapter {
       createdAt.hashCode ^
       readAt.hashCode ^
       novelSlug.hashCode ^
+      novelSource.hashCode ^
       novel.hashCode;
 
   @override
@@ -139,6 +145,7 @@ class Chapter {
         "createdAt: $createdAt,"
         "readAt: $readAt,"
         "novelSlug: $novelSlug,"
+        "novelSource: $novelSource,"
         "novel: $novel"
         "}";
   }

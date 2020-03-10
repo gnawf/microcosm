@@ -13,10 +13,10 @@ class NovelDao implements NovelSource {
   final DatabaseWrapper _database;
 
   @override
-  Future<Novel> get({String slug}) async {
+  Future<Novel> get({String slug, String source}) async {
     final results = await _database.query(
       table: Novel.type,
-      where: {"slug": slug},
+      where: {"slug": slug, "source": source},
       limit: 1,
     );
 
@@ -35,14 +35,11 @@ class NovelDao implements NovelSource {
   }
 
   Future<List<Novel>> withDownloads({int limit = 20, int offset = 0}) async {
-    final results = await _database.rawQuery("""SELECT DISTINCT
-${Novel.type}.slug,
-${Novel.type}.name,
-${Novel.type}.source,
-${Novel.type}.synopsis,
-${Novel.type}.posterImage
+    final results = await _database.rawQuery("""SELECT DISTINCT ${Novel.type}.*
 FROM ${Novel.type}
-INNER JOIN ${Chapter.type} ON ${Chapter.type}.novelSlug=${Novel.type}.slug
+INNER JOIN ${Chapter.type} ON
+  ${Chapter.type}.novelSource=${Novel.type}.source
+  AND ${Chapter.type}.novelSlug=${Novel.type}.slug
 LIMIT $limit
 OFFSET $offset""");
 

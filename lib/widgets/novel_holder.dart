@@ -6,9 +6,16 @@ import "package:flutter/material.dart";
 import "package:meta/meta.dart";
 
 class NovelHolder extends StatefulWidget {
-  const NovelHolder({this.slug, this.novel, @required this.builder});
+  const NovelHolder({
+    this.slug,
+    this.source,
+    this.novel,
+    @required this.builder,
+  }) : assert((slug != null && source != null) || novel != null);
 
   final String slug;
+
+  final String source;
 
   final Novel novel;
 
@@ -27,12 +34,13 @@ class _NovelHolderState extends State<NovelHolder> {
     }
 
     final slug = widget.slug;
+    final source = widget.source;
 
     final novels = NovelProvider.of(context);
     final dao = novels.dao;
 
     setState(() {
-      _novel = dao.get(slug: slug);
+      _novel = dao.get(slug: slug, source: source);
     });
   }
 

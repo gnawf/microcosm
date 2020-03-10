@@ -8,10 +8,13 @@ import "package:meta/meta.dart";
 class ListChapters extends StatefulWidget {
   const ListChapters({
     Key key,
-    this.novelSlug,
+    @required this.novelSource,
+    @required this.novelSlug,
     @required this.builder,
   })  : assert(builder != null),
         super(key: key);
+
+  final String novelSource;
 
   final String novelSlug;
 
@@ -30,14 +33,14 @@ class _ListChaptersState extends State<ListChapters> {
     }
 
     final chapters = ChapterProvider.of(context);
-    final novelSlug = widget.novelSlug;
 
-    // Todo - avoid hardcoding host here
-    final host = new Uri(scheme: "https", host: "wuxiaworld.com");
-    final source = chapters.source(host);
+    final source = chapters.source(id: widget.novelSource);
 
     setState(() {
-      _chapters = source.list(novelSlug: novelSlug);
+      _chapters = source.list(
+        novelSource: widget.novelSource,
+        novelSlug: widget.novelSlug,
+      );
     });
   }
 

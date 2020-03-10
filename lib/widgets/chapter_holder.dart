@@ -48,7 +48,7 @@ class ChapterHolderState extends State<ChapterHolder> {
     final dao = chapters.dao;
 
     if (!await dao.exists(url: url)) {
-      final source = chapters.source(url);
+      final source = chapters.source(url: url);
       dao.upsert(await source.get(url: url));
     }
   }
@@ -78,7 +78,7 @@ class ChapterHolderState extends State<ChapterHolder> {
 
     final chapters = ChapterProvider.of(context);
     final dao = chapters.dao;
-    final source = chapters.source(url);
+    final source = chapters.source(url: url);
 
     return source.get(slug: slug, url: url).then((chapter) async {
       if (chapter == null) {

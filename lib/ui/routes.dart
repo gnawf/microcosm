@@ -61,12 +61,14 @@ Route reader({RouteType type, Uri url}) {
   );
 }
 
-Route novel({RouteType type, Novel novel, String slug}) {
+Route novel({RouteType type, Novel novel, String source, String slug}) {
+  source ??= novel.source;
   slug ??= novel.slug;
 
   return _route(
-    settings: new RouteSettings(name: "novel/$slug"),
-    builder: (BuildContext context) => new NovelPage(slug, novel),
+    settings: new RouteSettings(name: "novel/$source/$slug"),
+    builder: (BuildContext context) =>
+        new NovelPage(source: source, slug: slug, novel: novel),
     type: type,
   );
 }
@@ -79,10 +81,11 @@ Route browse({RouteType type, Uri url}) {
   );
 }
 
-Route downloads({RouteType type, String novelSlug}) {
+Route downloads({RouteType type, String novelSource, String novelSlug}) {
   return _route(
-    settings: new RouteSettings(name: "downloads/$novelSlug"),
-    builder: (BuildContext context) => new DownloadsPage(novelSlug),
+    settings: new RouteSettings(name: "downloads/$novelSource/$novelSlug"),
+    builder: (BuildContext context) =>
+        new DownloadsPage(novelSource: novelSource, novelSlug: novelSlug),
     type: type,
   );
 }
