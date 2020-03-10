@@ -45,17 +45,20 @@ class ReadNovelFullChapterParser {
   const ReadNovelFullChapterParser();
 
   Uri prevUrl(Document document, Uri source) {
-    final href = document.querySelector("a#prev_chap").attributes["href"];
+    final button = document.querySelector("a#prev_chap");
+    final href = button != null ? button.attributes["href"] : null;
     return href != null ? source.resolve(href) : null;
   }
 
   Uri nextUrl(Document document, Uri source) {
-    final href = document.querySelector("a#next_chap").attributes["href"];
+    final button = document.querySelector("a#next_chap");
+    final href = button != null ? button.attributes["href"] : null;
     return href != null ? source.resolve(href) : null;
   }
 
   String title(Document document) {
-    return document.querySelector(".chr-title").text;
+    final title = document.querySelector(".chr-title");
+    return title != null ? title.text : null;
   }
 
   Chapter fromHtml(Uri source, String body) {
@@ -63,6 +66,9 @@ class ReadNovelFullChapterParser {
     final article = document.querySelector("#chr-content");
 
     utils.traverse(article, (node) {
+      if (node.text.length > 20) {
+        return true;
+      }
       final text = node.text.toLowerCase();
       if (text == "previous chapter" || text == "next chapter") {
         node.text = "";
