@@ -107,6 +107,10 @@ class _RecentsListEntry extends StatelessWidget {
   Widget build(BuildContext context) {
     final novel = chapter.novel;
 
+    final title = (novel?.name ?? chapter.novelSlug ?? "Unknown") +
+        " from " +
+        (novel?.source ?? chapter.novelSource ?? "unknown");
+
     return new ListTile(
       onTap: () => _open(context),
       leading: new Container(
@@ -119,7 +123,7 @@ class _RecentsListEntry extends StatelessWidget {
           fit: BoxFit.cover,
         ),
       ),
-      title: new Text(novel?.name ?? "Unknown"),
+      title: new Text(title),
       subtitle: new Padding(
         padding: const EdgeInsets.only(
           top: 4.0,
