@@ -74,6 +74,8 @@ class DatabaseWrapper {
   /// See [Database.query]
   Future<List<Map<String, dynamic>>> query({
     @required String table,
+    bool distinct,
+    List<String> columns,
     Map<String, dynamic> where,
     String groupBy,
     String having,
@@ -85,6 +87,8 @@ class DatabaseWrapper {
       table,
       where: this.where(where),
       whereArgs: whereArgs(where),
+      distinct: distinct,
+      columns: columns,
       groupBy: groupBy,
       having: having,
       orderBy: orderBy,
