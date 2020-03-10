@@ -42,6 +42,7 @@ String slugify({@required Uri uri}) {
 @immutable
 class Chapter {
   static const type = "chapter";
+  static const columns = mapper.columns;
 
   const Chapter({
     this.slug,

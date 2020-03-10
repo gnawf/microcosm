@@ -20,8 +20,12 @@ class ChapterDao implements ChapterSource {
     slug ??= slugify(uri: url);
 
     final chapters = await _database.rawQuery(
-      """SELECT * FROM ${Chapter.type}
+      """SELECT
+${_chapterColumnSelection()},
+${_novelColumnSelection()}
+FROM ${Chapter.type}
 LEFT JOIN ${Novel.type} ON ${Novel.type}.slug=${Chapter.type}.novelSlug
+  AND ${Novel.type}.source=${Chapter.type}.novelSource
 WHERE ${Chapter.type}.slug = ?""",
       [slug],
     );
@@ -61,9 +65,13 @@ WHERE ${Chapter.type}.slug = ?""",
   }
 
   Future<List<Chapter>> recents({int limit = 20, int offset = 0}) async {
-    final recents = await _database.rawQuery("""SELECT *, MAX(readAt)
+    final recents = await _database.rawQuery("""SELECT
+${_chapterColumnSelection()},
+${_novelColumnSelection()},
+MAX(readAt)
 FROM ${Chapter.type}
 LEFT JOIN ${Novel.type} ON ${Novel.type}.slug=${Chapter.type}.novelSlug
+  AND ${Novel.type}.source=${Chapter.type}.novelSource
 WHERE readAt IS NOT NULL
 GROUP BY novelSlug
 ORDER BY readAt DESC
@@ -113,25 +121,35 @@ OFFSET $offset""");
   }
 
   Chapter _fromJoin(Map<String, dynamic> attributes) {
-    final notAlphanumeric = new RegExp(r"[^\w]");
     final chapter = <String, dynamic>{};
     final novel = <String, dynamic>{};
+
     attributes.forEach((key, value) {
-      // Ignore functions
-      if (notAlphanumeric.hasMatch(key)) {
-        return;
-      }
-      // Start populating the novel attributes once we hit the novel's slug
-      // Assumption: the first column from chapter table is its slug
-      if (novel.isNotEmpty || (chapter.isNotEmpty && key == "slug")) {
-        novel[key] = value;
-      } else {
-        chapter[key] = value;
+      if (key.startsWith(_chapterColumnPrefix)) {
+        chapter[key.substring(_chapterColumnPrefix.length)] = value;
+      } else if (key.startsWith(_novelColumnPrefix)) {
+        novel[key.substring(_novelColumnPrefix.length)] = value;
       }
     });
+
     return new Chapter.fromJson(chapter).copyWith(
       // Attach the novel object if present
       novel: novel["slug"] != null ? new Novel.fromJson(novel) : null,
     );
+  }
+
+  static const _chapterColumnPrefix = "${Chapter.type}_";
+  static const _novelColumnPrefix = "${Novel.type}_";
+
+  String _chapterColumnSelection() {
+    return Chapter.columns
+        .map((col) => "${Chapter.type}.$col AS $_chapterColumnPrefix$col")
+        .join(", ");
+  }
+
+  String _novelColumnSelection() {
+    return Novel.columns
+        .map((col) => "${Novel.type}.$col AS $_novelColumnPrefix$col")
+        .join(", ");
   }
 }

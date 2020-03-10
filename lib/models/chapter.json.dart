@@ -1,6 +1,19 @@
 import "package:app/models/chapter.dart";
 import "package:app/models/novel.dart";
 
+const columns = [
+  "slug",
+  "url",
+  "previousUrl",
+  "nextUrl",
+  "title",
+  "content",
+  "createdAt",
+  "readAt",
+  "novelSlug",
+  "novelSource",
+];
+
 Map<String, dynamic> toJson(Chapter chapter) {
   return {
     "slug": chapter.slug,

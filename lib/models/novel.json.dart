@@ -1,5 +1,13 @@
 import "package:app/models/novel.dart";
 
+const columns = [
+  "slug",
+  "name",
+  "source",
+  "synopsis",
+  "posterImage",
+];
+
 Map<String, dynamic> toJson(Novel novel) {
   return {
     "slug": novel.slug,

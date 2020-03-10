@@ -4,6 +4,7 @@ import "package:meta/meta.dart";
 @immutable
 class Novel {
   static const type = "novel";
+  static const columns = mapper.columns;
 
   const Novel({
     this.slug,
