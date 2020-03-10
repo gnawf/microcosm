@@ -34,7 +34,7 @@ class DatabaseWrapper {
       } else {
         return "$key = ?";
       }
-    }).join(",");
+    }).join(" AND ");
   }
 
   List whereArgs(Map<String, dynamic> where) {
