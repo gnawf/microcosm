@@ -15,7 +15,7 @@ apply plugin: "com.android.application"
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
-  compileSdkVersion 27
+  compileSdkVersion 28
 
   lintOptions {
     disable "InvalidPackage"
@@ -24,7 +24,7 @@ android {
   defaultConfig {
     applicationId "com.gnawf.microcosm"
     minSdkVersion 16
-    targetSdkVersion 27
+    targetSdkVersion 28
     versionCode 16
     versionName "2.1.2"
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -49,6 +49,10 @@ android {
     release {
       signingConfig signingConfigs.release
     }
+  }
+
+  packagingOptions {
+    exclude 'META-INF/proguard/androidx-annotations.pro'
   }
 }
 

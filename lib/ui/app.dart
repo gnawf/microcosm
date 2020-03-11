@@ -43,8 +43,6 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    final platform = defaultTargetPlatform;
-    const iOS = TargetPlatform.iOS;
     final amoled = _settings.brightness == Brightness.dark && _settings.amoled;
 
     return new MaterialApp(
@@ -54,7 +52,6 @@ class _AppState extends State<App> {
         accentColor: _settings.accentColor,
         brightness: _settings.brightness,
         canvasColor: amoled ? Colors.black : null,
-        fontFamily: platform != iOS ? "Open Sans" : null,
       ),
       onGenerateRoute: _router,
       debugShowCheckedModeBanner: false,

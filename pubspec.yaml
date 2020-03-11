@@ -10,12 +10,12 @@ dependencies:
     sdk: flutter
   flutter_markdown: ^0.3.4
   html: ^0.14.0
-  path_provider: ^0.4.0
+  path_provider: ^1.6.5
   share: ^0.6.3
   shared_preferences: ^0.5.6
   sqflite: ^1.2.0
   synchronized: ^2.2.0
-  url_launcher: ^3.0.0
+  url_launcher: ^5.4.2
 
 dev_dependencies:
   flutter_test:
@@ -31,14 +31,3 @@ flutter:
     - family: Material Design Icons
       fonts:
         - asset: assets/fonts/material-design-icons.ttf
-    - family: Open Sans
-      fonts:
-        - asset: assets/fonts/open-sans-regular.ttf
-        - asset: assets/fonts/open-sans-light.ttf
-          weight: 300
-        - asset: assets/fonts/open-sans-semi-bold.ttf
-          weight: 600
-        - asset: assets/fonts/open-sans-bold.ttf
-          weight: 700
-        - asset: assets/fonts/open-sans-extra-bold.ttf
-          weight: 800
