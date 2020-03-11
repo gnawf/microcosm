@@ -4,41 +4,38 @@ import "package:app/ui/routes.dart" as routes;
 import "package:app/widgets/settings_icon_button.dart";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
 
-class OpenerPage extends StatefulWidget {
+class OpenerPage extends HookWidget {
   const OpenerPage();
 
   @override
-  State createState() => new _OpenerPageState();
-}
+  Widget build(BuildContext context) {
+    final url = useTextEditingController();
 
-class _OpenerPageState extends State<OpenerPage> {
-  final TextEditingController _url = new TextEditingController();
+    useEffect(() {
+      return () => url.dispose();
+    }, []);
 
-  Future<Null> _paste() async {
-    final paste = await Clipboard.getData("text/plain");
-    _url.text = paste.text;
-  }
+    Future<void> paste() async {
+      final paste = await Clipboard.getData("text/plain");
+      url.text = paste.text;
+    }
 
-  void _open() {
-    if (_url.text.isNotEmpty) {
+    void open() {
+      if (url.text.isEmpty) {
+        return;
+      }
       try {
-        final url = Uri.parse(_url.text);
-        Navigator.of(context).push(routes.reader(url: url));
-      } on FormatException catch (e) {
-        print(e);
+        final reader = routes.reader(
+          url: Uri.parse(url.value.text),
+        );
+        Navigator.of(context).push(reader);
+      } on FormatException {
+        print("Unable to parse ${url.value.text}");
       }
     }
-  }
 
-  @override
-  void dispose() {
-    _url.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
         automaticallyImplyLeading: false,
@@ -57,7 +54,7 @@ class _OpenerPageState extends State<OpenerPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             new TextField(
-              controller: _url,
+              controller: url,
               autofocus: true,
               autocorrect: false,
               keyboardType: TextInputType.url,
@@ -76,15 +73,15 @@ class _OpenerPageState extends State<OpenerPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   new RaisedButton(
-                    onPressed: _url.clear,
+                    onPressed: url.clear,
                     child: const Text("Clear"),
                   ),
                   new RaisedButton(
-                    onPressed: _paste,
+                    onPressed: paste,
                     child: const Text("Paste"),
                   ),
                   new RaisedButton(
-                    onPressed: _open,
+                    onPressed: open,
                     child: const Text("Open"),
                   ),
                 ],
