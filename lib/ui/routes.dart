@@ -2,7 +2,6 @@ import "package:app/models/chapter.dart";
 import "package:app/models/novel.dart";
 import "package:app/navigation/fade_transition_route.dart";
 import "package:app/navigation/transitions.dart";
-import "package:app/ui/browse_page.dart";
 import "package:app/ui/downloads_page.dart";
 import "package:app/ui/home_page.dart";
 import "package:app/ui/novel_page.dart";
@@ -10,6 +9,7 @@ import "package:app/ui/opener_page.dart";
 import "package:app/ui/reader_page.dart";
 import "package:app/ui/recents_page.dart";
 import "package:app/ui/settings_page.dart";
+import "package:app/ui/sources_page.dart";
 import "package:flutter/material.dart";
 import "package:meta/meta.dart";
 
@@ -76,7 +76,7 @@ Route novel({RouteType type, Novel novel, String source, String slug}) {
 Route browse({RouteType type, Uri url}) {
   return _route(
     settings: const RouteSettings(name: "browse"),
-    builder: (BuildContext context) => const BrowsePage(),
+    builder: (BuildContext context) => const SourcesPage(),
     type: type,
   );
 }

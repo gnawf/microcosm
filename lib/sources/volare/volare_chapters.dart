@@ -7,14 +7,8 @@ import "package:app/sources/chapter_source.dart";
 import "package:app/utils/html_decompiler.dart" as markdown;
 import "package:html/dom.dart";
 import "package:html/parser.dart" as html show parse;
-import "package:meta/meta.dart";
 
-@immutable
 class VolareChapters implements ChapterSource {
-  const VolareChapters(this._chapterParser);
-
-  final VolareChapterParser _chapterParser;
-
   @override
   Future<Chapter> get({String slug, Uri url}) async {
     final request = await httpClient.getUrl(url);
@@ -25,7 +19,7 @@ class VolareChapters implements ChapterSource {
     final redirects = response.redirects;
     final source = redirects.isNotEmpty ? redirects.last.location : url;
 
-    return _chapterParser.fromHtml(source, body);
+    return _ChapterParser.fromHtml(source, body);
   }
 
   @override
@@ -34,11 +28,8 @@ class VolareChapters implements ChapterSource {
   }
 }
 
-@immutable
-class VolareChapterParser {
-  const VolareChapterParser();
-
-  String title(Document document) {
+class _ChapterParser {
+  static String title(Document document) {
     final regexes = [
       new RegExp(r"book ?\d+", caseSensitive: false),
       new RegExp(r"vol(?:ume)? ?\d+", caseSensitive: false),
@@ -59,7 +50,7 @@ class VolareChapterParser {
     return result.isEmpty ? title : result;
   }
 
-  Chapter fromHtml(Uri source, String body) {
+  static Chapter fromHtml(Uri source, String body) {
     final document = html.parse(body);
 
     final content = document.querySelector(".entry-content");

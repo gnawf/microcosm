@@ -3,7 +3,7 @@ import "package:app/providers/novel_provider.dart";
 import "package:app/sources/chapter_source.dart";
 import "package:app/sources/database/chapter_dao.dart";
 import "package:app/sources/read_novel_full/read_novel_full_chapters.dart";
-import "package:app/sources/volare_novels/volare_chapters.dart";
+import "package:app/sources/volare/volare_chapters.dart";
 import "package:app/sources/wuxia_world/wuxia_world_chapters.dart";
 import "package:flutter/material.dart";
 import "package:meta/meta.dart";
@@ -22,18 +22,11 @@ class ChapterProvider extends StatefulWidget {
 }
 
 class ChapterProviderState extends State<ChapterProvider> {
-  final _wuxiaWorldChapters = const WuxiaWorldChapters(
-    const WuxiaWorldChapterParser(const WuxiaWorldUtils()),
-    const WuxiaWorldIndexParser(const WuxiaWorldUtils()),
-  );
+  final _wuxiaWorldChapters = WuxiaWorldChapters();
 
-  final _volareChapters = const VolareChapters(
-    const VolareChapterParser(),
-  );
+  final _volareChapters = VolareChapters();
 
-  final _readNovelFullChapters = const ReadNovelFullChapters(
-    const ReadNovelFullChapterParser(),
-  );
+  final _readNovelFullChapters = ReadNovelFullChapters();
 
   ChapterDao _chapterDao;
 

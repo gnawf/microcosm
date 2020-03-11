@@ -12,10 +12,6 @@ import "package:meta/meta.dart";
 
 @immutable
 class ReadNovelFullChapters implements ChapterSource {
-  const ReadNovelFullChapters(this.parser);
-
-  final ReadNovelFullChapterParser parser;
-
   @override
   Future<Chapter> get({String slug, Uri url}) async {
     if (slug != null) {
@@ -25,7 +21,7 @@ class ReadNovelFullChapters implements ChapterSource {
     final response = await request.close();
     final body = await response.transform(convert.utf8.decoder).join();
     try {
-      return parser.fromHtml(url, body);
+      return _ChapterParser.fromHtml(url, body);
     } catch (error) {
       print(error);
       if (error is Error) {
@@ -41,27 +37,25 @@ class ReadNovelFullChapters implements ChapterSource {
   }
 }
 
-class ReadNovelFullChapterParser {
-  const ReadNovelFullChapterParser();
-
-  Uri prevUrl(Document document, Uri source) {
+class _ChapterParser {
+  static Uri prevUrl(Document document, Uri source) {
     final button = document.querySelector("a#prev_chap");
     final href = button != null ? button.attributes["href"] : null;
     return href != null ? source.resolve(href) : null;
   }
 
-  Uri nextUrl(Document document, Uri source) {
+  static Uri nextUrl(Document document, Uri source) {
     final button = document.querySelector("a#next_chap");
     final href = button != null ? button.attributes["href"] : null;
     return href != null ? source.resolve(href) : null;
   }
 
-  String title(Document document) {
+  static String title(Document document) {
     final title = document.querySelector(".chr-title");
     return title != null ? title.text : null;
   }
 
-  Chapter fromHtml(Uri source, String body) {
+  static Chapter fromHtml(Uri source, String body) {
     final document = html.parse(body);
     final article = document.querySelector("#chr-content");
 

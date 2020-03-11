@@ -12,12 +12,6 @@ import "package:meta/meta.dart";
 
 @immutable
 class WuxiaWorldChapters implements ChapterSource {
-  const WuxiaWorldChapters(this._chapterParser, this._indexParser);
-
-  final WuxiaWorldChapterParser _chapterParser;
-
-  final WuxiaWorldIndexParser _indexParser;
-
   @override
   Future<Chapter> get({String slug, Uri url}) async {
     if (slug != null) {
@@ -31,7 +25,7 @@ class WuxiaWorldChapters implements ChapterSource {
     final redirects = response.redirects;
     final source = redirects.isNotEmpty ? redirects.last.location : url;
 
-    return _chapterParser.fromHtml(source, body);
+    return _ChapterParser.fromHtml(source, body);
   }
 
   @override
@@ -50,45 +44,12 @@ class WuxiaWorldChapters implements ChapterSource {
     final redirects = response.redirects;
     final source = redirects.isNotEmpty ? redirects.last.location : url;
 
-    return _indexParser.fromHtml(body, source);
+    return _IndexParser.fromHtml(body, source);
   }
 }
 
-@immutable
-class WuxiaWorldUtils {
-  const WuxiaWorldUtils();
-
-  Uri parseUrl(Element anchor, [Uri source]) {
-    if (anchor == null) {
-      return null;
-    }
-    final href = anchor.attributes["href"];
-    if (href == null) {
-      return null;
-    }
-    try {
-      final url = Uri.parse(href);
-      return source != null ? source.resolveUri(url) : url;
-    } on FormatException {
-      return null;
-    }
-  }
-
-  String novelSlug(Uri url) {
-    final path = url.pathSegments;
-    final index = path.indexOf("novel");
-    // The novel slug is directly after the novel segment
-    return index >= 0 && index < path.length ? path[index + 1] : null;
-  }
-}
-
-@immutable
-class WuxiaWorldChapterParser {
-  const WuxiaWorldChapterParser(this._utils);
-
-  final WuxiaWorldUtils _utils;
-
-  Element heading(Document document, List<RegExp> matchers) {
+class _ChapterParser {
+  static Element heading(Document document, List<RegExp> matchers) {
     final content = document.querySelector(".content");
     final headings = content.querySelectorAll("h1,h2,h3,h4,h5");
 
@@ -125,7 +86,7 @@ class WuxiaWorldChapterParser {
     return headings[winner];
   }
 
-  Element article(Document document) {
+  static Element article(Document document) {
     final views = document.querySelectorAll(".content .fr-view");
 
     if (views.isEmpty) {
@@ -155,7 +116,7 @@ class WuxiaWorldChapterParser {
     return views[winner];
   }
 
-  String title(Document document, {bool simple = true}) {
+  static String title(Document document, {bool simple = true}) {
     // Any text that matches these regexes are kept, order preserved
     final regexes = [
       new RegExp(r"book ?\d+", caseSensitive: false),
@@ -178,17 +139,17 @@ class WuxiaWorldChapterParser {
     return result.isEmpty ? title : result;
   }
 
-  Uri nextUrl(Document document, Uri source) {
+  static Uri nextUrl(Document document, Uri source) {
     final anchors = document.querySelectorAll(".next a[href*=novel]");
-    return anchors.isNotEmpty ? _utils.parseUrl(anchors.first, source) : null;
+    return anchors.isNotEmpty ? _Utils.parseUrl(anchors.first, source) : null;
   }
 
-  Uri prevUrl(Document document, Uri source) {
+  static Uri prevUrl(Document document, Uri source) {
     final anchors = document.querySelectorAll(".prev a[href*=novel]");
-    return anchors.isNotEmpty ? _utils.parseUrl(anchors.first, source) : null;
+    return anchors.isNotEmpty ? _Utils.parseUrl(anchors.first, source) : null;
   }
 
-  void cleanup(Document document, Element article) {
+  static void cleanup(Document document, Element article) {
     article.querySelectorAll("p").forEach((p) {
       p.nodes.forEach((child) {
         if (child.nodeType == Node.TEXT_NODE) {
@@ -206,8 +167,8 @@ class WuxiaWorldChapterParser {
     article.querySelectorAll(".chapter-nav").forEach((e) => e.remove());
   }
 
-  void makeTitle(Document document, Element article) {
-    final title = this.title(document, simple: false);
+  static void makeTitle(Document document, Element article) {
+    final title = _ChapterParser.title(document, simple: false);
 
     Element hidden() {
       final href = new Uri(path: "dialog", queryParameters: {"content": title});
@@ -255,7 +216,7 @@ class WuxiaWorldChapterParser {
     }
   }
 
-  bool containsIgnoreNoise(String string, String substring) {
+  static bool containsIgnoreNoise(String string, String substring) {
     final noise = new RegExp(r"[^a-z0-9\s]", caseSensitive: false);
     string = string.toLowerCase().replaceAll(noise, "");
     substring = substring.toLowerCase().replaceAll(noise, "");
@@ -265,10 +226,10 @@ class WuxiaWorldChapterParser {
     return new RegExp(substring).hasMatch(string);
   }
 
-  Chapter fromHtml(Uri source, String body) {
+  static Chapter fromHtml(Uri source, String body) {
     final document = html.parse(body);
 
-    final article = this.article(document);
+    final article = _ChapterParser.article(document);
     cleanup(document, article);
     makeTitle(document, article);
 
@@ -280,28 +241,24 @@ class WuxiaWorldChapterParser {
       title: title(document),
       content: markdown.decompile(article.innerHtml),
       createdAt: new DateTime.now(),
-      novelSlug: _utils.novelSlug(source),
+      novelSlug: _Utils.novelSlug(source),
       novelSource: "wuxiaworld",
     );
   }
 }
 
 @immutable
-class WuxiaWorldIndexParser {
-  const WuxiaWorldIndexParser(this._utils);
-
-  final WuxiaWorldUtils _utils;
-
-  List<Chapter> fromHtml(String body, Uri source) {
+class _IndexParser {
+  static List<Chapter> fromHtml(String body, Uri source) {
     final document = html.parse(body);
 
     final items = document.querySelectorAll("li.chapter-item");
 
-    final novelSlug = _utils.novelSlug(source);
+    final novelSlug = _Utils.novelSlug(source);
 
     final chapters = items.map((item) {
       final anchor = item.querySelector("a[href*=novel]");
-      final url = _utils.parseUrl(anchor, source);
+      final url = _Utils.parseUrl(anchor, source);
 
       if (url == null) {
         return null;
@@ -317,5 +274,30 @@ class WuxiaWorldIndexParser {
     });
 
     return chapters.where((e) => e != null).toList(growable: false);
+  }
+}
+
+class _Utils {
+  static Uri parseUrl(Element anchor, [Uri source]) {
+    if (anchor == null) {
+      return null;
+    }
+    final href = anchor.attributes["href"];
+    if (href == null) {
+      return null;
+    }
+    try {
+      final url = Uri.parse(href);
+      return source != null ? source.resolveUri(url) : url;
+    } on FormatException {
+      return null;
+    }
+  }
+
+  static String novelSlug(Uri url) {
+    final path = url.pathSegments;
+    final index = path.indexOf("novel");
+    // The novel slug is directly after the novel segment
+    return index >= 0 && index < path.length ? path[index + 1] : null;
   }
 }
