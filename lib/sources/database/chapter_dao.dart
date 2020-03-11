@@ -52,6 +52,7 @@ WHERE ${Chapter.type}.slug = ?""",
       orderBy: orderBy,
       limit: limit,
       offset: offset,
+      columns: [_chapterColumnSelection()],
     );
 
     return chapters.map(_fromJoin).toList();
