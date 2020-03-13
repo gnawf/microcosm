@@ -1,4 +1,5 @@
 import "package:app/sources/source.dart";
+import "package:app/ui/routes.dart" as routes;
 import "package:app/widgets/md_icons.dart";
 import "package:app/widgets/settings_icon_button.dart";
 import "package:flutter/material.dart";
@@ -61,7 +62,7 @@ class _Source extends HookWidget {
       child: Card(
         child: InkWell(
           onTap: () {
-            print("Open ${source.id}");
+            Navigator.of(context).push(routes.source(sourceId: source.id));
           },
           child: ListTile(
             title: Text(source.name),

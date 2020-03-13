@@ -9,6 +9,7 @@ import "package:app/ui/opener_page.dart";
 import "package:app/ui/reader_page.dart";
 import "package:app/ui/recents_page.dart";
 import "package:app/ui/settings_page.dart";
+import "package:app/ui/source_page.dart";
 import "package:app/ui/sources_page.dart";
 import "package:flutter/material.dart";
 import "package:meta/meta.dart";
@@ -27,12 +28,12 @@ Route _route({
 
   switch (type) {
     case RouteType.slide:
-      return new CupertinoPageRoute(settings: settings, builder: builder);
+      return CupertinoPageRoute(settings: settings, builder: builder);
     case RouteType.fade:
-      return new FadeTransitionPageRoute(settings: settings, builder: builder);
+      return FadeTransitionPageRoute(settings: settings, builder: builder);
   }
 
-  throw new UnsupportedError("no-op");
+  throw UnsupportedError("no-op");
 }
 
 Route home({RouteType type}) {
@@ -55,8 +56,8 @@ Route reader({RouteType type, Uri url}) {
   final slug = slugify(uri: url);
 
   return _route(
-    settings: new RouteSettings(name: "reader/$slug"),
-    builder: (BuildContext context) => new ReaderPage(url),
+    settings: RouteSettings(name: "reader/$slug"),
+    builder: (BuildContext context) => ReaderPage(url),
     type: type,
   );
 }
@@ -66,9 +67,9 @@ Route novel({RouteType type, Novel novel, String source, String slug}) {
   slug ??= novel.slug;
 
   return _route(
-    settings: new RouteSettings(name: "novel/$source/$slug"),
+    settings: RouteSettings(name: "novel/$source/$slug"),
     builder: (BuildContext context) =>
-        new NovelPage(source: source, slug: slug, novel: novel),
+        NovelPage(source: source, slug: slug, novel: novel),
     type: type,
   );
 }
@@ -81,11 +82,19 @@ Route browse({RouteType type, Uri url}) {
   );
 }
 
+Route source({RouteType type, @required String sourceId}) {
+  return _route(
+    settings: RouteSettings(name: "source/$sourceId"),
+    builder: (BuildContext context) => SourcePage(sourceId: sourceId),
+    type: type,
+  );
+}
+
 Route downloads({RouteType type, String novelSource, String novelSlug}) {
   return _route(
-    settings: new RouteSettings(name: "downloads/$novelSource/$novelSlug"),
+    settings: RouteSettings(name: "downloads/$novelSource/$novelSlug"),
     builder: (BuildContext context) =>
-        new DownloadsPage(novelSource: novelSource, novelSlug: novelSlug),
+        DownloadsPage(novelSource: novelSource, novelSlug: novelSlug),
     type: type,
   );
 }
@@ -101,7 +110,7 @@ Route opener({RouteType type}) {
 Route settings({RouteType type}) {
   return _route(
     settings: const RouteSettings(name: "settings"),
-    builder: (BuildContext context) => new SettingsPage(),
+    builder: (BuildContext context) => SettingsPage(),
     type: type,
   );
 }

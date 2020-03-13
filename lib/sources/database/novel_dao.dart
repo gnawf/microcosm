@@ -24,11 +24,14 @@ class NovelDao implements NovelSource {
   }
 
   @override
-  Future<List<Novel>> list({int limit, int offset}) async {
+  Future<List<Novel>> list({source: String, int limit, int offset}) async {
     final results = await _database.query(
       table: Novel.type,
       limit: limit,
       offset: offset,
+      where: {
+        if (source != null) "source": source,
+      },
     );
 
     return results.map((result) => new Novel.fromJson(result)).toList();

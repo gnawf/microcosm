@@ -1,6 +1,5 @@
 import "package:app/settings/settings.dart";
 import "package:app/ui/routes.dart" as routes;
-import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 
 class App extends StatefulWidget {

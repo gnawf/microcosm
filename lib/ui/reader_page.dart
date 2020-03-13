@@ -93,7 +93,7 @@ class _Body extends HookWidget {
         return Container(width: 0.0, height: 0.0);
       case ResourceState.loading:
         return const Center(
-          child: const CircularProgressIndicator(),
+          child: CircularProgressIndicator(),
         );
       case ResourceState.error:
         return Text("${chapter.error}");
