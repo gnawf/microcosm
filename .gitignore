@@ -10,3 +10,5 @@ packages
 pubspec.lock
 .flutter-plugins
 *.iml
+.flutter-plugins-dependencies
+.dart_tool

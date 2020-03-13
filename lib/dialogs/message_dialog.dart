@@ -1,9 +1,9 @@
 import "dart:async";
-import "dart:io";
 
-import "package:app/utils/url_launcher.dart";
+import "package:app/utils/url_launcher.dart" as urls;
 import "package:flutter/material.dart";
 import "package:flutter_markdown/flutter_markdown.dart";
+import "package:markdown/markdown.dart" as md;
 
 Future<Null> showMessageDialog({
   BuildContext context,
@@ -27,15 +27,23 @@ class _Content extends MarkdownWidget {
     BuildContext context,
     String data, {
     Key key,
+    bool selectable = false,
     MarkdownStyleSheet styleSheet,
+    MarkdownStyleSheetBaseTheme styleSheetTheme =
+        MarkdownStyleSheetBaseTheme.material,
     SyntaxHighlighter syntaxHighlighter,
-    Directory imageDirectory,
+    MarkdownTapLinkCallback onTapLink,
+    String imageDirectory,
+    md.ExtensionSet extensionSet,
+    MarkdownImageBuilder imageBuilder,
+    MarkdownCheckboxBuilder checkboxBuilder,
+    bool fitContent,
   }) : super(
           key: key,
           data: data,
           styleSheet: styleSheet ?? defaultStyleSheet(context),
           syntaxHighlighter: syntaxHighlighter,
-          onTapLink: (link) => onTapLink(context, link),
+          onTapLink: (link) => urls.onTapLink(context, link),
           imageDirectory: imageDirectory,
         );
 

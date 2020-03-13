@@ -1,5 +1,5 @@
 import "dart:async";
-import "dart:convert";
+import "dart:convert" as convert;
 
 import "package:app/models/novel.dart";
 import "package:app/providers/database_provider.dart";
@@ -31,8 +31,8 @@ class NovelProviderState extends State<NovelProvider> {
   Future<Null> _populate() async {
     // Populate the database with local novel data
     final assetBundle = DefaultAssetBundle.of(context);
-    final asset = await assetBundle.loadString("assets/novels.json");
-    final List objects = json.decode(asset);
+    final json = await assetBundle.loadString("assets/novels.json");
+    final List<dynamic> objects = convert.json.decode(json);
     final novels = objects.map((x) => new Novel.fromJson(x));
 
     // Synchronously upsert all the novels

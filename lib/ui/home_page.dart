@@ -117,7 +117,14 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return new WillPopScope(
       // Pop the internal navigator first
-      onWillPop: () async => !_navigatorKey.currentState.pop(),
+      onWillPop: () async {
+        final navigator = _navigatorKey.currentState;
+        final canPop = navigator.canPop();
+        if (canPop) {
+          navigator.pop();
+        }
+        return !canPop;
+      },
       child: new Scaffold(
         // Internal navigator for bottom navigation
         body: new Navigator(
