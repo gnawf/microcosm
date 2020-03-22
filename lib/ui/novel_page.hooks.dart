@@ -43,9 +43,9 @@ PaginatedResource<Chapter> useChapters(Novel novel) {
 }
 
 GestureTapCallback _useVisitChapter(Chapter chapter) {
-  final context = useContext();
+  final router = useRouter();
 
   return () {
-    return Navigator.of(context).push(routes.reader(url: chapter.url));
+    router.push().reader(url: chapter.url);
   };
 }

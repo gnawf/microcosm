@@ -1,5 +1,5 @@
 import "package:app/settings/settings.dart";
-import "package:app/ui/routes.dart" as routes;
+import "package:app/ui/router.dart";
 import "package:flutter/material.dart";
 
 class App extends StatefulWidget {
@@ -17,7 +17,8 @@ class _AppState extends State<App> {
   }
 
   Route _router(RouteSettings route) {
-    return route.name == "/" ? routes.home() : null;
+    assert(route.name == "/");
+    return Router.routes().home();
   }
 
   @override

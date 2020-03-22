@@ -1,6 +1,6 @@
 import "dart:async";
 
-import "package:app/ui/routes.dart" as routes;
+import "package:app/ui/router.dart";
 import "package:app/widgets/md_icons.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
@@ -34,6 +34,8 @@ class _HomePageState extends State<HomePage> {
     if (!mounted) {
       return null;
     }
+
+    final routes = Router.routes();
 
     switch (index) {
       case 0:

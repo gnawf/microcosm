@@ -1,6 +1,6 @@
 import "dart:async";
 
-import "package:app/ui/routes.dart" as routes;
+import "package:app/ui/router.dart";
 import "package:app/widgets/settings_icon_button.dart";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
@@ -27,10 +27,8 @@ class OpenerPage extends HookWidget {
         return;
       }
       try {
-        final reader = routes.reader(
-          url: Uri.parse(url.value.text),
-        );
-        Navigator.of(context).push(reader);
+        final uri = Uri.parse(url.value.text);
+        Router.of(context).push().reader(url: uri);
       } on FormatException {
         print("Unable to parse ${url.value.text}");
       }

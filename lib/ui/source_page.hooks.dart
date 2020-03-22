@@ -50,9 +50,9 @@ PaginatedResource<Novel> useNovels(Source source) {
 }
 
 OnTapNovel useOnTapNovel() {
-  final context = useContext();
+  final router = useRouter();
 
   return (novel) {
-    Navigator.of(context).push(routes.novel(novel: novel));
+    router.push().novel(novel: novel);
   };
 }

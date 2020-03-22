@@ -1,7 +1,7 @@
 import "dart:math" as math;
 
 import "package:app/models/chapter.dart";
-import "package:app/ui/routes.dart" as routes;
+import "package:app/ui/router.dart";
 import "package:app/widgets/image_view.dart";
 import "package:app/widgets/recents_provider.dart";
 import "package:app/widgets/settings_icon_button.dart";
@@ -100,7 +100,7 @@ class _RecentsListEntry extends StatelessWidget {
   final Chapter chapter;
 
   void _open(BuildContext context) {
-    Navigator.of(context).push(routes.reader(url: chapter.url));
+    Router.of(context).push().reader(url: chapter.url);
   }
 
   @override

@@ -5,7 +5,7 @@ import "package:app/providers/chapter_provider.dart";
 import "package:app/resource/resource.dart";
 import "package:app/resource/resource.hooks.dart";
 import "package:app/sources/chapter_source.dart";
-import "package:app/ui/routes.dart" as routes;
+import "package:app/ui/router.dart";
 import "package:app/utils/url_launcher.dart";
 import "package:app/widgets/mark_chapter_read.dart";
 import "package:app/widgets/settings_icon_button.dart";
@@ -169,8 +169,7 @@ class _NavigationButton extends StatelessWidget {
   final Uri url;
 
   void _open(BuildContext context) {
-    final reader = routes.reader(url: url);
-    Navigator.of(context).pushReplacement(reader);
+    Router.of(context).push().reader(url: url);
   }
 
   @override

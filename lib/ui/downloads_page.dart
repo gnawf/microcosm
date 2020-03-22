@@ -1,6 +1,6 @@
 import "package:app/models/chapter.dart";
 import "package:app/models/novel.dart";
-import "package:app/ui/routes.dart" as routes;
+import "package:app/ui/router.dart";
 import "package:app/widgets/downloaded_chapters.dart";
 import "package:app/widgets/image_view.dart";
 import "package:app/widgets/novel_holder.dart";
@@ -145,8 +145,7 @@ class _NovelItem extends StatelessWidget {
       ),
       child: new ListTile(
         onTap: () {
-          Navigator.of(context).push(routes.downloads(
-              novelSource: novel.source, novelSlug: novel.slug));
+          Router.of(context).push().downloads(novel: novel);
         },
         leading: new Container(
           constraints: const BoxConstraints(
@@ -300,7 +299,7 @@ class _ChapterItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return new ListTile(
       onTap: () {
-        Navigator.of(context).push(routes.reader(url: chapter.url));
+        Router.of(context).push().reader(url: chapter.url);
       },
       title: new Text(chapter.title),
     );

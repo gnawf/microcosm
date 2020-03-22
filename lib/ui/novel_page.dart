@@ -5,7 +5,7 @@ import "package:app/resource/paginated_resource.dart";
 import "package:app/resource/resource.dart";
 import "package:app/resource/resource.hooks.dart";
 import "package:app/ui/novel_header.dart";
-import "package:app/ui/routes.dart" as routes;
+import "package:app/ui/router.hooks.dart";
 import "package:app/widgets/settings_icon_button.dart";
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
