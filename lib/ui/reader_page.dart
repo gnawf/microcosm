@@ -3,6 +3,7 @@ import "dart:async";
 import "package:app/models/chapter.dart";
 import "package:app/providers/chapter_provider.dart";
 import "package:app/resource/resource.dart";
+import "package:app/resource/resource.hooks.dart";
 import "package:app/sources/chapter_source.dart";
 import "package:app/ui/routes.dart" as routes;
 import "package:app/utils/url_launcher.dart";

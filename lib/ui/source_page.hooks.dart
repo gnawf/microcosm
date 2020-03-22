@@ -5,7 +5,7 @@ _PageState _usePageState() {
 }
 
 Resource<Source> _useSource(String id) {
-  final source = useState(const Resource<Source>.placeholder());
+  final source = useResource<Source>();
 
   useEffect(() {
     var found = false;
@@ -30,9 +30,9 @@ Resource<Source> _useSource(String id) {
 }
 
 PaginatedResource<Novel> useNovels(Source source) {
-  final context = useContext();
-  final dao = NovelProvider.of(context).dao;
-  final novels = useState(const PaginatedResource<Novel>.placeholder());
+  final novelProvider = useNovelProvider();
+  final dao = novelProvider.dao;
+  final novels = usePaginatedResource<Novel>();
 
   useEffect(() {
     novels.value = const PaginatedResource.loading();

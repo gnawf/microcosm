@@ -1,10 +1,11 @@
 import "package:app/models/novel.dart";
-import "package:app/providers/novel_provider.dart";
+import "package:app/providers/provider.hooks.dart";
 import "package:app/resource/paginated_resource.dart";
 import "package:app/resource/resource.dart";
-import "package:app/ui/routes.dart" as routes;
+import "package:app/resource/resource.hooks.dart";
 import "package:app/sources/source.dart";
 import "package:app/sources/sources.dart";
+import "package:app/ui/routes.dart" as routes;
 import "package:app/widgets/novel_sliver_grid.dart";
 import "package:app/widgets/settings_icon_button.dart";
 import "package:flutter/cupertino.dart";

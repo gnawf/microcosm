@@ -22,7 +22,7 @@ Resource<Chapter> useChapter(Uri url) {
   // State
   final currentLoadId = useState(0);
   final refreshRequest = useState<Completer>(null);
-  final chapter = useState(const Resource<Chapter>.placeholder());
+  final chapter = useResource<Chapter>();
 
   // Get sources
   final chapters = ChapterProvider.of(context);
