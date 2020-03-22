@@ -52,7 +52,7 @@ Route recents({RouteType type}) {
   );
 }
 
-Route reader({RouteType type, Uri url}) {
+Route reader({RouteType type, @required Uri url}) {
   final slug = slugify(uri: url);
 
   return _route(
@@ -68,8 +68,7 @@ Route novel({RouteType type, Novel novel, String source, String slug}) {
 
   return _route(
     settings: RouteSettings(name: "novel/$source/$slug"),
-    builder: (BuildContext context) =>
-        NovelPage(source: source, slug: slug, novel: novel),
+    builder: (BuildContext context) => NovelPage(source: source, slug: slug),
     type: type,
   );
 }

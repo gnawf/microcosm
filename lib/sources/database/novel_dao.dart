@@ -13,10 +13,10 @@ class NovelDao implements NovelSource {
   final DatabaseWrapper _database;
 
   @override
-  Future<Novel> get({String slug, String source}) async {
+  Future<Novel> get({String source, String slug}) async {
     final results = await _database.query(
       table: Novel.type,
-      where: {"slug": slug, "source": source},
+      where: {"source": source, "slug": slug},
       limit: 1,
     );
 

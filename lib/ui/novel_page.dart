@@ -1,116 +1,210 @@
 import "package:app/models/chapter.dart";
 import "package:app/models/novel.dart";
+import "package:app/providers/provider.hooks.dart";
+import "package:app/resource/paginated_resource.dart";
+import "package:app/resource/resource.dart";
+import "package:app/resource/resource.hooks.dart";
 import "package:app/ui/novel_header.dart";
 import "package:app/ui/routes.dart" as routes;
-import "package:app/widgets/list_chapters.dart";
-import "package:app/widgets/novel_holder.dart";
+import "package:app/widgets/settings_icon_button.dart";
 import "package:flutter/material.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
 
-class NovelPage extends StatelessWidget {
+part "novel_page.hooks.dart";
+
+class NovelPage extends HookWidget {
   const NovelPage({
-    this.source,
-    this.slug,
-    this.novel,
-  }) : assert((slug != null && source != null) || novel != null);
+    @required this.source,
+    @required this.slug,
+  })  : assert(source != null),
+        assert(slug != null);
 
   final String source;
 
   final String slug;
 
-  final Novel novel;
-
   @override
   Widget build(BuildContext context) {
-    return new NovelHolder(
-      source: source,
-      slug: slug,
-      novel: novel,
-      builder: (BuildContext context, AsyncSnapshot<Novel> snapshot) {
-        final novel = snapshot.data;
+    final novel = useNovel(source, slug);
 
-        return new Scaffold(
-          appBar: new AppBar(
-            automaticallyImplyLeading: false,
-            leading: null,
-            title: new Text(novel?.name ?? ""),
-            centerTitle: false,
-          ),
-          body: new _NovelPageBody(novel),
-        );
-      },
+    return _PageState(
+      novel: novel,
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          leading: null,
+          title: _Title(),
+          centerTitle: false,
+          actions: const <Widget>[
+            const SettingsIconButton(),
+          ],
+        ),
+        body: _Body(),
+      ),
     );
   }
 }
 
-class _NovelPageBody extends StatefulWidget {
-  const _NovelPageBody(this.novel);
+class _PageState extends StatelessWidget {
+  const _PageState({
+    Key key,
+    @required this.child,
+    this.novel,
+  }) : super(key: key);
 
-  final Novel novel;
+  final Widget child;
 
-  @override
-  State createState() => new _NovelPageBodyState();
-}
+  final Resource<Novel> novel;
 
-class _NovelPageBodyState extends State<_NovelPageBody> {
   @override
   Widget build(BuildContext context) {
-    final novel = widget.novel;
+    return child;
+  }
+}
 
-    return new CustomScrollView(
+class _Title extends HookWidget {
+  @override
+  Widget build(BuildContext context) {
+    final pageState = usePageState();
+    final novel = pageState.novel;
+
+    switch (novel.state) {
+      case ResourceState.placeholder:
+        return const SizedBox.shrink();
+      case ResourceState.loading:
+        return const Text("Loading");
+      case ResourceState.done:
+        return Text(novel.data?.name ?? "Unknown");
+      case ResourceState.error:
+        return const Text("Error");
+    }
+
+    throw UnsupportedError("Switch was not exhaustive");
+  }
+}
+
+class _Body extends HookWidget {
+  @override
+  Widget build(BuildContext context) {
+    final pageState = usePageState();
+    final novel = pageState.novel;
+
+    switch (novel.state) {
+      case ResourceState.placeholder:
+        return const SizedBox.shrink();
+      case ResourceState.loading:
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      case ResourceState.done:
+        break;
+      case ResourceState.error:
+        return Center(
+          child: Text("${novel.error}"),
+        );
+    }
+
+    return CustomScrollView(
       slivers: <Widget>[
-        new SliverToBoxAdapter(
-          child: new NovelHeader(novel),
+        SliverToBoxAdapter(
+          child: NovelHeader(novel.data),
         ),
-        new SliverPadding(
+        SliverPadding(
           padding: const EdgeInsets.only(top: 16.0, bottom: 8.0),
-          sliver: new _ChapterList(novel.source, novel.slug),
+          sliver: _ChapterList(),
         ),
       ],
     );
   }
 }
 
-class _ChapterList extends StatelessWidget {
-  const _ChapterList(this.novelSource, this.novelSlug);
+class _ChapterList extends HookWidget {
+  SliverChildDelegate _emptyDelegate() {
+    return SliverChildListDelegate([]);
+  }
 
-  final String novelSource;
+  SliverChildDelegate _loadingDelegate() {
+    return SliverChildListDelegate(const [
+      Center(
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            vertical: 16.0,
+          ),
+          child: CircularProgressIndicator(),
+        ),
+      ),
+    ]);
+  }
 
-  final String novelSlug;
+  SliverChildDelegate _dataDelegate(PaginatedResource<Chapter> resource) {
+    final chapters = resource.data;
 
-  SliverChildDelegate _delegate(List<Chapter> chapters) {
-    return new SliverChildBuilderDelegate(
+    return SliverChildBuilderDelegate(
       (BuildContext context, int index) {
-        final chapter = chapters[index];
-
-        return new ListTile(
-          onTap: () {
-            Navigator.of(context).push(routes.reader(url: chapter.url));
-          },
-          title: new Text(chapter.title),
-        );
+        return _ChapterListItem(chapter: chapters[index]);
       },
       childCount: chapters.length,
     );
   }
 
+  SliverChildDelegate _errorDelegate(Object error) {
+    return SliverChildListDelegate([
+      Center(
+        child: Text("$error"),
+      )
+    ]);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return new ListChapters(
-      novelSource: novelSource,
-      novelSlug: novelSlug,
-      builder: (BuildContext context, AsyncSnapshot<List<Chapter>> snapshot) {
-        final chapters = snapshot.data;
+    final state = usePageState();
+    final novel = state.novel.data;
+    final chapters = useChapters(novel);
 
-        if (chapters?.isNotEmpty != true) {
-          return const SliverToBoxAdapter(
-            child: SizedBox.shrink(),
-          );
-        }
+    SliverChildDelegate delegate;
 
-        return new SliverList(
-          delegate: _delegate(chapters),
-        );
-      },
+    switch (chapters.state) {
+      case ResourceState.placeholder:
+        delegate = _emptyDelegate();
+        break;
+      case ResourceState.loading:
+        delegate = _loadingDelegate();
+        break;
+      case ResourceState.done:
+        delegate = _dataDelegate(chapters);
+        break;
+      case ResourceState.error:
+        delegate = _errorDelegate(chapters.error);
+        break;
+    }
+
+    assert(delegate != null);
+
+    return SliverList(
+      delegate: delegate,
+    );
+  }
+}
+
+class _ChapterListItem extends HookWidget {
+  const _ChapterListItem({
+    Key key,
+    this.chapter,
+  }) : super(key: key);
+
+  final Chapter chapter;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: _useVisitChapter(chapter),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 16.0,
+          vertical: 12.0,
+        ),
+        child: Text(chapter.title),
+      ),
     );
   }
 }
