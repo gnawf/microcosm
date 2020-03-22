@@ -102,8 +102,8 @@ class _ChapterList extends StatelessWidget {
         final chapters = snapshot.data;
 
         if (chapters?.isNotEmpty != true) {
-          return new SliverToBoxAdapter(
-            child: new Container(width: 0.0, height: 0.0),
+          return const SliverToBoxAdapter(
+            child: SizedBox.shrink(),
           );
         }
 

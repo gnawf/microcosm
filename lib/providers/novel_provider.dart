@@ -53,6 +53,6 @@ class NovelProviderState extends State<NovelProvider> {
 
   @override
   Widget build(BuildContext context) {
-    return _ready ? widget.child : new Container(width: 0.0, height: 0.0);
+    return _ready ? widget.child : const SizedBox.shrink();
   }
 }

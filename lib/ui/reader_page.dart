@@ -70,7 +70,7 @@ class _Title extends HookWidget {
 
     switch (chapter.state) {
       case ResourceState.placeholder:
-        return Container(width: 0.0, height: 0.0);
+        return const SizedBox.shrink();
       case ResourceState.loading:
         return const Text("Loading");
       case ResourceState.done:
@@ -91,7 +91,7 @@ class _Body extends HookWidget {
 
     switch (chapter.state) {
       case ResourceState.placeholder:
-        return Container(width: 0.0, height: 0.0);
+        return const SizedBox.shrink();
       case ResourceState.loading:
         return const Center(
           child: CircularProgressIndicator(),

@@ -130,7 +130,7 @@ class DatabaseProviderState extends State<DatabaseProvider> {
   @override
   Widget build(BuildContext context) {
     if (database == null) {
-      return new Container(width: 0.0, height: 0.0);
+      return const SizedBox.shrink();
     }
 
     return widget.child;

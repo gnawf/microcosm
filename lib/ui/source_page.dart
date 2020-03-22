@@ -119,7 +119,7 @@ class _Novels extends HookWidget {
 
     switch (novels.state) {
       case ResourceState.placeholder:
-        return const Text("");
+        return const SizedBox.shrink();
       case ResourceState.loading:
         return const Center(
           child: CircularProgressIndicator(),
