@@ -113,9 +113,6 @@ class DatabaseProviderState extends State<DatabaseProvider> {
         }
       });
 
-      final newChapters = await db.query(Chapter.type);
-      print(newChapters);
-
       oldVersion++;
     }
   }
