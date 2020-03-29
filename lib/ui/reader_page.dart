@@ -3,6 +3,7 @@ import "package:app/models/chapter.dart";
 import "package:app/resource/resource.dart";
 import "package:app/ui/router.hooks.dart";
 import "package:app/utils/url_launcher.dart";
+import "package:app/widgets/chapter_overscoll_navigation.dart";
 import "package:app/widgets/mark_chapter_read.dart";
 import "package:app/widgets/md_icons.dart";
 import "package:app/widgets/settings_icon_button.dart";
@@ -86,6 +87,7 @@ class _Body extends HookWidget {
   Widget build(BuildContext context) {
     final pageState = _usePageState();
     final chapter = pageState.chapter;
+    final chapterNavigation = _useChapterNavigation();
 
     switch (chapter.state) {
       case ResourceState.placeholder:
@@ -102,19 +104,22 @@ class _Body extends HookWidget {
 
     return RefreshIndicator(
       onRefresh: pageState.chapter.refresh,
-      child: ListView(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 3.0,
-          vertical: 24.0,
-        ),
-        children: <Widget>[
-          _Navigation(),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: _Content(),
+      child: ChapterOverscrollNavigation(
+        onNavigate: chapterNavigation,
+        child: ListView(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 3.0,
+            vertical: 8.0,
           ),
-          _Navigation(),
-        ],
+          children: <Widget>[
+            _Navigation(),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: _Content(),
+            ),
+            _Navigation(),
+          ],
+        ),
       ),
     );
   }

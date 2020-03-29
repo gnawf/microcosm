@@ -29,3 +29,28 @@ VoidCallback _useOpenDownloadChapters() {
     router.push().downloadChapters(novelSource: source, novelSlug: slug);
   };
 }
+
+OverscrollNavigate _useChapterNavigation() {
+  final pageState = _usePageState();
+  final router = useRouter();
+  final chapter = pageState.chapter?.data;
+
+  if (chapter == null) {
+    return null;
+  }
+
+  return (axis) {
+    switch (axis) {
+      case AxisDirection.down:
+        () async {
+          await null;
+          router.pushReplacement().reader(url: chapter.nextUrl);
+        }();
+        break;
+      case AxisDirection.up:
+      case AxisDirection.right:
+      case AxisDirection.left:
+        break;
+    }
+  };
+}
