@@ -1,10 +1,9 @@
 import "package:app/hooks/use_chapters.hook.dart";
+import "package:app/hooks/use_novel.hook.dart";
 import "package:app/models/chapter.dart";
 import "package:app/models/novel.dart";
-import "package:app/providers/provider.hooks.dart";
 import "package:app/resource/paginated_resource.dart";
 import "package:app/resource/resource.dart";
-import "package:app/resource/resource.hooks.dart";
 import "package:app/ui/novel_header.dart";
 import "package:app/ui/router.hooks.dart";
 import "package:app/widgets/settings_icon_button.dart";
@@ -26,7 +25,7 @@ class NovelPage extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final novel = _useNovel(source, slug);
+    final novel = useNovel(source, slug);
 
     return _PageState(
       novel: novel,

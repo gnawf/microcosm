@@ -1,9 +1,8 @@
 import "package:app/hooks/use_chapters.hook.dart";
+import "package:app/hooks/use_novel.hook.dart";
 import "package:app/models/chapter.dart";
 import "package:app/models/novel.dart";
-import "package:app/providers/provider.hooks.dart";
 import "package:app/resource/resource.dart";
-import "package:app/resource/resource.hooks.dart";
 import "package:app/widgets/settings_icon_button.dart";
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
