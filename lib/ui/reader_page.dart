@@ -5,9 +5,10 @@ import "package:app/providers/chapter_provider.dart";
 import "package:app/resource/resource.dart";
 import "package:app/resource/resource.hooks.dart";
 import "package:app/sources/chapter_source.dart";
-import "package:app/ui/router.dart";
+import "package:app/ui/router.hooks.dart";
 import "package:app/utils/url_launcher.dart";
 import "package:app/widgets/mark_chapter_read.dart";
+import "package:app/widgets/md_icons.dart";
 import "package:app/widgets/settings_icon_button.dart";
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
@@ -34,7 +35,8 @@ class ReaderPage extends HookWidget {
           leading: null,
           title: _Title(),
           centerTitle: false,
-          actions: const <Widget>[
+          actions: <Widget>[
+            _DownloadChaptersButton(),
             const SettingsIconButton(),
           ],
         ),
@@ -65,7 +67,7 @@ class _PageState extends HookWidget {
 class _Title extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    final pageState = usePageState();
+    final pageState = _usePageState();
     final chapter = pageState.chapter;
 
     switch (chapter.state) {
@@ -86,7 +88,7 @@ class _Title extends HookWidget {
 class _Body extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    final pageState = usePageState();
+    final pageState = _usePageState();
     final chapter = pageState.chapter;
 
     switch (chapter.state) {
@@ -125,7 +127,7 @@ class _Body extends HookWidget {
 class _Content extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    final pageState = usePageState();
+    final pageState = _usePageState();
     final chapter = pageState.chapter.data;
 
     // Automatically marks chapter as read after delay
@@ -142,7 +144,7 @@ class _Content extends HookWidget {
 class _Navigation extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    final pageState = usePageState();
+    final pageState = _usePageState();
     final chapter = pageState.chapter.data;
 
     return new Row(
@@ -161,22 +163,29 @@ class _Navigation extends HookWidget {
   }
 }
 
-class _NavigationButton extends StatelessWidget {
+class _NavigationButton extends HookWidget {
   const _NavigationButton({@required this.child, this.url});
 
   final Widget child;
 
   final Uri url;
 
-  void _open(BuildContext context) {
-    Router.of(context).push().reader(url: url);
-  }
-
   @override
   Widget build(BuildContext context) {
     return new FlatButton(
-      onPressed: url != null ? () => _open(context) : null,
+      onPressed: _useOpenReader(url),
       child: child,
+    );
+  }
+}
+
+class _DownloadChaptersButton extends HookWidget {
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: const Icon(MDIcons.download),
+      tooltip: "Download",
+      onPressed: _useOpenDownloadChapters(),
     );
   }
 }

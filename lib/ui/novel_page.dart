@@ -1,3 +1,4 @@
+import "package:app/hooks/use_chapters.hook.dart";
 import "package:app/models/chapter.dart";
 import "package:app/models/novel.dart";
 import "package:app/providers/provider.hooks.dart";
@@ -25,7 +26,7 @@ class NovelPage extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final novel = useNovel(source, slug);
+    final novel = _useNovel(source, slug);
 
     return _PageState(
       novel: novel,
@@ -65,7 +66,7 @@ class _PageState extends StatelessWidget {
 class _Title extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    final pageState = usePageState();
+    final pageState = _usePageState();
     final novel = pageState.novel;
 
     switch (novel.state) {
@@ -86,7 +87,7 @@ class _Title extends HookWidget {
 class _Body extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    final pageState = usePageState();
+    final pageState = _usePageState();
     final novel = pageState.novel;
 
     switch (novel.state) {
@@ -157,7 +158,7 @@ class _ChapterList extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final state = usePageState();
+    final state = _usePageState();
     final novel = state.novel.data;
     final chapters = useChapters(novel);
 

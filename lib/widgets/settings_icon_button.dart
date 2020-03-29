@@ -1,23 +1,19 @@
-import "package:app/ui/router.dart";
+import "package:app/ui/router.hooks.dart";
 import "package:app/widgets/md_icons.dart";
 import "package:flutter/material.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
 
-class SettingsIconButton extends StatelessWidget {
+class SettingsIconButton extends HookWidget {
   const SettingsIconButton();
-
-  void _openSettings(BuildContext context) {
-    Router.of(context, rootNavigator: true)
-        .push()
-        .useCupertinoPageRoute()
-        .settings();
-  }
 
   @override
   Widget build(BuildContext context) {
-    return new IconButton(
+    final router = useRouter(rootNavigator: true);
+
+    return IconButton(
       icon: const Icon(MDIcons.settings),
       tooltip: "Settings",
-      onPressed: () => _openSettings(context),
+      onPressed: () => router.push().useCupertinoPageRoute().settings(),
     );
   }
 }
