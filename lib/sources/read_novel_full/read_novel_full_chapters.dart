@@ -79,7 +79,7 @@ class _ChapterParser {
       content: markdown.decompile(article.innerHtml),
       createdAt: new DateTime.now(),
       novelSlug: source.pathSegments[0],
-      novelSource: "read-full-novel",
+      novelSource: "read-novel-full",
     );
   }
 }

@@ -32,7 +32,7 @@ class DatabaseProviderState extends State<DatabaseProvider> {
     final path = join(documents.path, "microcosm.db");
     final database = await openDatabase(
       path,
-      version: 6,
+      version: 7,
       onCreate: _onCreate,
       onUpgrade: _onUpgrade,
     );
@@ -112,6 +112,16 @@ class DatabaseProviderState extends State<DatabaseProvider> {
           }
         }
       });
+
+      oldVersion++;
+    }
+    if (oldVersion == 6) {
+      await db.update(
+        Chapter.type,
+        {"novelSource": "read-novel-full"},
+        where: "novelSource = ?",
+        whereArgs: ["read-full-novel"],
+      );
 
       oldVersion++;
     }
