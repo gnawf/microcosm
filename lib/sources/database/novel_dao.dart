@@ -24,7 +24,12 @@ class NovelDao implements NovelSource {
   }
 
   @override
-  Future<List<Novel>> list({source: String, int limit, int offset}) async {
+  Future<List<Novel>> list({
+    source: String,
+    int limit,
+    int offset,
+    Map<String, dynamic> extras,
+  }) async {
     final results = await _database.query(
       table: Novel.type,
       limit: limit,

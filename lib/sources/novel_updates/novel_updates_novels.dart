@@ -36,7 +36,11 @@ class NovelUpdatesNovels implements NovelSource {
   }
 
   @override
-  Future<List<Novel>> list({int limit, int offset}) async {
+  Future<List<Novel>> list({
+    int limit,
+    int offset,
+    Map<String, dynamic> extras,
+  }) async {
     final url = new Uri(
       scheme: "https",
       host: "www.novelupdates.com",

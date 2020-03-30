@@ -1,4 +1,5 @@
 import "dart:convert";
+
 import "package:app/http/http.dart";
 import "package:app/models/novel.dart";
 import "package:app/sources/novel_source.dart";
@@ -10,7 +11,11 @@ class WuxiaWorldNovels extends NovelSource {
   }
 
   @override
-  Future<List<Novel>> list({int limit, int offset}) async {
+  Future<List<Novel>> list({
+    int limit,
+    int offset,
+    Map<String, dynamic> extras,
+  }) async {
     final url = Uri.parse("https://www.wuxiaworld.com/api/novels/search");
     final request = await httpClient.postUrl(url);
     final requestBody = jsonEncode({

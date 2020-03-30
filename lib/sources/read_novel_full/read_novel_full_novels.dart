@@ -22,7 +22,11 @@ class ReadNovelFullNovels extends NovelSource {
   }
 
   @override
-  Future<List<Novel>> list({int limit, int offset}) async {
+  Future<List<Novel>> list({
+    int limit,
+    int offset,
+    Map<String, dynamic> extras,
+  }) async {
     return [];
   }
 }
