@@ -8,6 +8,7 @@ import "package:app/sources/wuxia_world/wuxia_world_chapters.dart";
 import "package:flutter/material.dart";
 import "package:meta/meta.dart";
 
+@deprecated
 class ChapterProvider extends StatefulWidget {
   const ChapterProvider({@required this.child});
 

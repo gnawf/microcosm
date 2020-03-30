@@ -1,12 +1,9 @@
-import "dart:async";
-import "dart:convert" as convert;
-
-import "package:app/models/novel.dart";
 import "package:app/providers/database_provider.dart";
 import "package:app/sources/database/novel_dao.dart";
 import "package:flutter/material.dart";
 import "package:meta/meta.dart";
 
+@deprecated
 class NovelProvider extends StatefulWidget {
   const NovelProvider({@required this.child});
 
@@ -21,25 +18,9 @@ class NovelProvider extends StatefulWidget {
 }
 
 class NovelProviderState extends State<NovelProvider> {
-  bool _ready = false;
-
   NovelDao _novelDao;
 
   NovelDao get dao => _novelDao;
-
-  Future<Null> _populate() async {
-    // Populate the database with local novel data
-    final assetBundle = DefaultAssetBundle.of(context);
-    final json = await assetBundle.loadString("assets/novels.json");
-    final List<dynamic> objects = convert.json.decode(json);
-    final novels = objects.map((x) => new Novel.fromJson(x));
-
-    await _novelDao.purge();
-    final inserts = novels.map(_novelDao.upsert);
-    await Future.wait(inserts);
-
-    setState(() => _ready = true);
-  }
 
   @override
   void initState() {
@@ -47,12 +28,10 @@ class NovelProviderState extends State<NovelProvider> {
 
     final databases = DatabaseProvider.of(context);
     _novelDao = new NovelDao(databases.database);
-
-    _populate();
   }
 
   @override
   Widget build(BuildContext context) {
-    return _ready ? widget.child : const SizedBox.shrink();
+    return widget.child;
   }
 }

@@ -6,23 +6,13 @@ _PageState _usePageState() {
 
 Resource<Source> _useSource(String id) {
   final source = useResource<Source>();
+  final sources = useSources();
 
   useEffect(() {
-    var found = false;
-
-    for (final value in sources) {
-      if (value.id != id) {
-        continue;
-      }
-      source.value = Resource.data(value);
-      found = true;
-      break;
-    }
-
-    if (!found) {
-      source.value = const Resource.error("Source Not Found");
-    }
-
+    final value = sources.firstWhere((element) => element.id == id);
+    source.value = value != null
+        ? Resource.data(value)
+        : const Resource.error("Source Not Found");
     return () {};
   }, []);
 

@@ -1,34 +1,42 @@
 import "dart:math" as math;
 
+import "package:app/hooks/use_novel.hook.dart";
 import "package:app/models/chapter.dart";
-import "package:app/ui/router.dart";
+import "package:app/providers/provider.hooks.dart";
+import "package:app/resource/resource.dart";
+import "package:app/resource/resource.hooks.dart";
+import "package:app/sources/sources.dart";
+import "package:app/ui/router.hooks.dart";
 import "package:app/widgets/image_view.dart";
-import "package:app/widgets/recents_provider.dart";
 import "package:app/widgets/settings_icon_button.dart";
+import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
+
+part "recents_page.hooks.dart";
 
 class RecentsPage extends StatelessWidget {
   const RecentsPage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
+    return Scaffold(
+      appBar: AppBar(
         automaticallyImplyLeading: false,
         leading: null,
         title: const Text("Recently Read"),
         centerTitle: false,
-        actions: const <Widget>[
-          const SettingsIconButton(),
+        actions: const [
+          SettingsIconButton(),
         ],
       ),
-      body: new CustomScrollView(
+      body: CustomScrollView(
         slivers: <Widget>[
-          new SliverPadding(
+          SliverPadding(
             padding: const EdgeInsets.symmetric(
               vertical: 16.0,
             ),
-            sliver: new _RecentsList(),
+            sliver: _RecentsList(),
           ),
         ],
       ),
@@ -36,100 +44,115 @@ class RecentsPage extends StatelessWidget {
   }
 }
 
-class _RecentsList extends StatefulWidget {
-  @override
-  State createState() => new _RecentsListState();
-}
-
-class _RecentsListState extends State<_RecentsList> {
-  final _providerKey = new GlobalKey<RecentsProviderState>();
-
-  var _deactivated = false;
-
-  var _recents = <Chapter>[];
-
-  Widget _builder(BuildContext context, int index) {
-    // Empty view
-    if (_recents.isEmpty) {
-      return const Padding(
-        padding: const EdgeInsets.only(
-          top: 16.0,
-        ),
-        child: const Center(
-          child: const Text("Nothing to see here"),
-        ),
-      );
-    }
-
-    return new _RecentsListEntry(_recents[index]);
+class _RecentsList extends HookWidget {
+  SliverChildDelegate _placeholderDelegate() {
+    return const SliverChildListDelegate.fixed([]);
   }
 
-  @override
-  void deactivate() {
-    _deactivated = true;
-    super.deactivate();
+  SliverChildDelegate _loadingDelegate() {
+    return const SliverChildListDelegate.fixed([
+      Center(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: CircularProgressIndicator(),
+        ),
+      ),
+    ]);
+  }
+
+  SliverChildDelegate _recentsDelegate(List<Chapter> data) {
+    return SliverChildBuilderDelegate(
+      (BuildContext context, int index) {
+        return new _RecentsListEntry(data[index]);
+      },
+      childCount: math.max(1, data.length),
+    );
+  }
+
+  SliverChildDelegate _errorDelegate(Object error) {
+    return SliverChildListDelegate([
+      Center(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text("$error"),
+        ),
+      ),
+    ]);
   }
 
   @override
   Widget build(BuildContext context) {
-    // Refresh recents upon reactivation
-    if (_deactivated) {
-      _providerKey.currentState?.refresh();
-      _deactivated = false;
+    final recents = _useRecents();
+    SliverChildDelegate delegate;
+
+    switch (recents.state) {
+      case ResourceState.placeholder:
+        delegate = _placeholderDelegate();
+        break;
+      case ResourceState.loading:
+        delegate = _loadingDelegate();
+        break;
+      case ResourceState.done:
+        delegate = _recentsDelegate(recents.data);
+        break;
+      case ResourceState.error:
+        delegate = _errorDelegate(recents.error);
+        break;
     }
 
-    return new RecentsProvider(
-      key: _providerKey,
-      builder: (BuildContext context, AsyncSnapshot<List<Chapter>> snapshot) {
-        _recents = snapshot.data ?? _recents;
-
-        return new SliverList(
-          delegate: new SliverChildBuilderDelegate(
-            _builder,
-            childCount: math.max(1, _recents.length),
-          ),
-        );
-      },
+    return SliverList(
+      delegate: delegate,
     );
   }
 }
 
-class _RecentsListEntry extends StatelessWidget {
+class _RecentsListEntry extends HookWidget {
   const _RecentsListEntry(this.chapter);
 
   final Chapter chapter;
 
-  void _open(BuildContext context) {
-    Router.of(context).push().reader(url: chapter.url);
-  }
-
   @override
   Widget build(BuildContext context) {
+    final chapterResource = _useChapter(this.chapter);
+    final source = useSource(chapterResource.data?.novelSource);
+
+    switch (chapterResource.state) {
+      case ResourceState.placeholder:
+        return const SizedBox.shrink();
+      case ResourceState.loading:
+        return const ListTile(
+          leading: CircularProgressIndicator(),
+          title: Text("Loading"),
+        );
+      case ResourceState.done:
+        break;
+      case ResourceState.error:
+        return ListTile(
+          title: const Text("An Error Ocurred"),
+          subtitle: Text("${chapterResource.error}"),
+        );
+    }
+
+    final chapter = chapterResource.data;
     final novel = chapter.novel;
+    final novelName = novel?.name ?? chapter.novelSlug ?? "Unknown";
+    final sourceName = source.name ?? chapter.novelSource ?? "Unknown";
+    final title = "$novelName from $sourceName";
 
-    final title = (novel?.name ?? chapter.novelSlug ?? "Unknown") +
-        " from " +
-        (novel?.source ?? chapter.novelSource ?? "unknown");
-
-    return new ListTile(
-      onTap: () => _open(context),
-      leading: new Container(
+    return ListTile(
+      onTap: _useOpenRecent(chapter),
+      leading: Container(
         constraints: const BoxConstraints(
           maxWidth: 40.0,
           maxHeight: 60.0,
         ),
-        child: new ImageView(
+        child: ImageView(
           image: novel?.posterImage,
           fit: BoxFit.cover,
         ),
       ),
-      title: new Text(title),
-      subtitle: new Padding(
-        padding: const EdgeInsets.only(
-          top: 4.0,
-        ),
-        child: new Text(chapter.title ?? ""),
-      ),
+      title: Text(chapter.title),
+      subtitle: Text(title),
     );
   }
 }
