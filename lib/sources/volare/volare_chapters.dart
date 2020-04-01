@@ -4,13 +4,14 @@ import "dart:convert";
 import "package:app/http/http.dart";
 import "package:app/models/chapter.dart";
 import "package:app/sources/chapter_source.dart";
+import "package:app/sources/data.dart";
 import "package:app/utils/html_decompiler.dart" as markdown;
 import "package:html/dom.dart";
 import "package:html/parser.dart" as html show parse;
 
 class VolareChapters implements ChapterSource {
   @override
-  Future<Chapter> get({String slug, Uri url}) async {
+  Future<Data<Chapter>> get({Uri url, Map<String, dynamic> params}) async {
     final request = await httpClient.getUrl(url);
     final response = await request.close();
     final body = await response.transform(utf8.decoder).join();
@@ -19,12 +20,17 @@ class VolareChapters implements ChapterSource {
     final redirects = response.redirects;
     final source = redirects.isNotEmpty ? redirects.last.location : url;
 
-    return _ChapterParser.fromHtml(source, body);
+    return Data(
+      data: _ChapterParser.fromHtml(source, body),
+    );
   }
 
   @override
-  Future<List<Chapter>> list({String novelSource, String novelSlug}) async {
-    return <Chapter>[];
+  Future<DataList<Chapter>> list({
+    String novelSlug,
+    Map<String, dynamic> params,
+  }) async {
+    return DataList(data: null);
   }
 }
 

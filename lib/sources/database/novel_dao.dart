@@ -3,16 +3,14 @@ import "dart:async";
 import "package:app/database/database_wrapper.dart";
 import "package:app/models/chapter.dart";
 import "package:app/models/novel.dart";
-import "package:app/sources/novel_source.dart";
 import "package:meta/meta.dart";
 
 @immutable
-class NovelDao implements NovelSource {
+class NovelDao {
   const NovelDao(this._database);
 
   final DatabaseWrapper _database;
 
-  @override
   Future<Novel> get({String source, String slug}) async {
     final results = await _database.query(
       table: Novel.type,
@@ -23,12 +21,10 @@ class NovelDao implements NovelSource {
     return results.isEmpty ? null : new Novel.fromJson(results.single);
   }
 
-  @override
   Future<List<Novel>> list({
-    source: String,
+    String source,
     int limit,
     int offset,
-    Map<String, dynamic> extras,
   }) async {
     final results = await _database.query(
       table: Novel.type,

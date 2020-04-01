@@ -13,8 +13,8 @@ PaginatedResource<Chapter> useChapters(Novel novel) {
   useEffect(() {
     chapters.value = const PaginatedResource.loading(cursor: 0);
 
-    source.list(novelSource: null, novelSlug: novel.slug).then((value) {
-      chapters.value = PaginatedResource.data(value, cursor: 1);
+    source.list(novelSlug: novel.slug).then((value) {
+      chapters.value = PaginatedResource.data(value.data, cursor: 1);
     }).catchError((error) {
       chapters.value = PaginatedResource.error(error);
     });

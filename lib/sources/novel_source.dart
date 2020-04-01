@@ -1,13 +1,19 @@
 import "dart:async";
 
 import "package:app/models/novel.dart";
+import "package:app/sources/data.dart";
 
 abstract class NovelSource {
-  Future<Novel> get({String slug});
+  Future<Data<Novel>> get({String slug, Map<String, dynamic> params});
 
-  Future<List<Novel>> list({
-    int limit,
-    int offset,
-    Map<String, dynamic> extras,
-  });
+  Future<DataList<Novel>> list({Map<String, dynamic> params});
 }
+
+typedef GetNovel = Future<Data<Novel>> Function({
+  String slug,
+  Map<String, dynamic> params,
+});
+
+typedef ListNovels = Future<DataList<Novel>> Function({
+  Map<String, dynamic> params,
+});

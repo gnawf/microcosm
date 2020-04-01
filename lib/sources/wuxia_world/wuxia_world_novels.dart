@@ -2,20 +2,17 @@ import "dart:convert";
 
 import "package:app/http/http.dart";
 import "package:app/models/novel.dart";
+import "package:app/sources/data.dart";
 import "package:app/sources/novel_source.dart";
 
 class WuxiaWorldNovels extends NovelSource {
   @override
-  Future<Novel> get({String slug}) async {
-    return null;
+  Future<Data<Novel>> get({String slug, Map<String, dynamic> params}) async {
+    return Data(data: null);
   }
 
   @override
-  Future<List<Novel>> list({
-    int limit,
-    int offset,
-    Map<String, dynamic> extras,
-  }) async {
+  Future<DataList<Novel>> list({Map<String, dynamic> params}) async {
     final url = Uri.parse("https://www.wuxiaworld.com/api/novels/search");
     final request = await httpClient.postUrl(url);
     final requestBody = jsonEncode({
@@ -26,14 +23,21 @@ class WuxiaWorldNovels extends NovelSource {
       "active": null,
       "sortType": "Name",
       "sortAsc": true,
-      "searchAfter": offset,
-      "count": limit,
+      "searchAfter": params["cursor"],
+      "count": params["limit"] ?? 10,
     });
+
     request.write(requestBody);
     final response = await request.close();
     final responseBody = await response.transform(utf8.decoder).join();
     final jsonResponseBody = jsonDecode(responseBody);
-    return _SearchResultParser.parse(jsonResponseBody);
+
+    return DataList(
+      data: _SearchResultParser.parse(jsonResponseBody),
+      extras: {
+        "cursor": _SearchResultParser.getCursor(jsonResponseBody),
+      },
+    );
   }
 }
 
@@ -42,20 +46,32 @@ class _SearchResultParser {
     if (body is Map) {
       final items = body["items"];
       if (items is List) {
-        return items.map((e) {
-          if (e is Map) {
-            return Novel(
-              slug: e["slug"],
-              name: e["name"],
-              source: "wuxia-world",
-              synopsis: e["synopsis"],
-              posterImage: e["coverUrl"],
-            );
-          }
-          return null;
-        }).toList(growable: false);
+        return items.map((e) => e is Map ? _parse(e) : null).toList();
       }
     }
     return [];
+  }
+
+  static String getCursor(Object body) {
+    if (body is Map) {
+      final items = body["items"];
+      if (items is List) {
+        final last = items[items.length - 1];
+        if (last is Map) {
+          return last["id"];
+        }
+      }
+    }
+    return null;
+  }
+
+  static Novel _parse(Map map) {
+    return Novel(
+      slug: map["slug"],
+      name: map["name"],
+      source: "wuxia-world",
+      synopsis: map["synopsis"],
+      posterImage: map["coverUrl"],
+    );
   }
 }

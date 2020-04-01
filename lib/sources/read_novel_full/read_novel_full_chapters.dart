@@ -4,6 +4,7 @@ import "dart:convert" as convert;
 import "package:app/http/http.dart";
 import "package:app/models/chapter.dart";
 import "package:app/sources/chapter_source.dart";
+import "package:app/sources/data.dart";
 import "package:app/utils/html_decompiler.dart" as markdown;
 import "package:app/utils/html_utils.dart" as utils;
 import "package:html/dom.dart";
@@ -13,27 +14,21 @@ import "package:meta/meta.dart";
 @immutable
 class ReadNovelFullChapters implements ChapterSource {
   @override
-  Future<Chapter> get({String slug, Uri url}) async {
-    if (slug != null) {
-      throw new UnsupportedError("Unable to query by slug");
-    }
+  Future<Data<Chapter>> get({Uri url, Map<String, dynamic> params}) async {
     final request = await httpClient.getUrl(url);
     final response = await request.close();
     final body = await response.transform(convert.utf8.decoder).join();
-    try {
-      return _ChapterParser.fromHtml(url, body);
-    } catch (error) {
-      print(error);
-      if (error is Error) {
-        print(error.stackTrace);
-      }
-      rethrow;
-    }
+    return Data(
+      data: _ChapterParser.fromHtml(url, body),
+    );
   }
 
   @override
-  Future<List<Chapter>> list({String novelSource, String novelSlug}) async {
-    return <Chapter>[];
+  Future<DataList<Chapter>> list({
+    String novelSlug,
+    Map<String, dynamic> params,
+  }) async {
+    return DataList(data: null);
   }
 }
 

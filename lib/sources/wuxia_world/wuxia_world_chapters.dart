@@ -4,6 +4,7 @@ import "dart:convert";
 import "package:app/http/http.dart";
 import "package:app/models/chapter.dart";
 import "package:app/sources/chapter_source.dart";
+import "package:app/sources/data.dart";
 import "package:app/utils/html_decompiler.dart" as markdown;
 import "package:app/utils/html_utils.dart" as utils;
 import "package:html/dom.dart";
@@ -13,10 +14,7 @@ import "package:meta/meta.dart";
 @immutable
 class WuxiaWorldChapters implements ChapterSource {
   @override
-  Future<Chapter> get({String slug, Uri url}) async {
-    if (slug != null) {
-      throw new UnsupportedError("Unable to query by slug");
-    }
+  Future<Data<Chapter>> get({Uri url, Map<String, dynamic> params}) async {
     final request = await httpClient.getUrl(url);
     final response = await request.close();
     final body = await response.transform(utf8.decoder).join();
@@ -25,11 +23,16 @@ class WuxiaWorldChapters implements ChapterSource {
     final redirects = response.redirects;
     final source = redirects.isNotEmpty ? redirects.last.location : url;
 
-    return _ChapterParser.fromHtml(source, body);
+    return Data(
+      data: _ChapterParser.fromHtml(source, body),
+    );
   }
 
   @override
-  Future<List<Chapter>> list({String novelSource, String novelSlug}) async {
+  Future<DataList<Chapter>> list({
+    String novelSlug,
+    Map<String, dynamic> params,
+  }) async {
     final url = new Uri(
       scheme: "https",
       host: "wuxiaworld.com",
@@ -44,7 +47,9 @@ class WuxiaWorldChapters implements ChapterSource {
     final redirects = response.redirects;
     final source = redirects.isNotEmpty ? redirects.last.location : url;
 
-    return _IndexParser.fromHtml(body, source);
+    return DataList(
+      data: _IndexParser.fromHtml(body, source),
+    );
   }
 }
 

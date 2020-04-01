@@ -3,19 +3,17 @@ import "dart:async";
 import "package:app/database/database_wrapper.dart";
 import "package:app/models/chapter.dart";
 import "package:app/models/novel.dart";
-import "package:app/sources/chapter_source.dart";
 import "package:app/sources/database/novel_dao.dart";
 import "package:meta/meta.dart";
 
 @immutable
-class ChapterDao implements ChapterSource {
+class ChapterDao {
   const ChapterDao(this._database, this._novelDao);
 
   final DatabaseWrapper _database;
 
   final NovelDao _novelDao;
 
-  @override
   Future<Chapter> get({String slug, Uri url}) async {
     slug ??= slugify(uri: url);
 
@@ -33,7 +31,6 @@ WHERE ${Chapter.type}.slug = ?""",
     return chapters.isNotEmpty ? _fromJoin(chapters.single) : null;
   }
 
-  @override
   Future<List<Chapter>> list({
     @required String novelSlug,
     @required String novelSource,

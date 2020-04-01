@@ -2,13 +2,14 @@ import "dart:convert";
 
 import "package:app/http/http.dart";
 import "package:app/models/novel.dart";
+import "package:app/sources/data.dart";
 import "package:app/sources/novel_source.dart";
 import "package:html/dom.dart";
 import "package:html/parser.dart" as html show parse;
 
 class ReadNovelFullNovels extends NovelSource {
   @override
-  Future<Novel> get({String slug}) async {
+  Future<Data<Novel>> get({String slug, Map<String, dynamic> params}) async {
     final url = Uri.parse("https://readnovelfull.com/$slug.html");
     final request = await httpClient.getUrl(url);
     final response = await request.close();
@@ -18,16 +19,16 @@ class ReadNovelFullNovels extends NovelSource {
     final redirects = response.redirects;
     final source = redirects.isNotEmpty ? redirects.last.location : url;
 
-    return _NovelParser.fromHtml(slug, source, body);
+    return Data(
+      data: _NovelParser.fromHtml(slug, source, body),
+    );
   }
 
   @override
-  Future<List<Novel>> list({
-    int limit,
-    int offset,
-    Map<String, dynamic> extras,
-  }) async {
-    return [];
+  Future<DataList<Novel>> list({Map<String, dynamic> params}) async {
+    return DataList(
+      data: [],
+    );
   }
 }
 

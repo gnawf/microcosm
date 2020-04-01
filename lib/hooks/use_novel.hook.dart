@@ -4,20 +4,20 @@ import "package:app/models/novel.dart";
 import "package:app/providers/provider.hooks.dart";
 import "package:app/resource/resource.dart";
 import "package:app/resource/resource.hooks.dart";
+import "package:app/sources/data.dart";
+import "package:app/sources/database/novel_dao.dart";
+import "package:app/sources/novel_source.dart";
 import "package:app/sources/sources.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
-import "package:meta/meta.dart";
-
-typedef _NovelFetcher = Future<Novel> Function({
-  @required String slug,
-});
 
 typedef _SaveNovel = FutureOr<void> Function(Novel novel);
 
-_NovelFetcher _save(_NovelFetcher fetcher, _SaveNovel save) {
-  return ({String slug}) async {
+GetNovel _save(GetNovel fetcher, _SaveNovel save) {
+  return ({String slug, Map<String, dynamic> params}) async {
     final novel = await fetcher(slug: slug);
-    await save(novel);
+    if (novel.data != null) {
+      await save(novel.data);
+    }
     return novel;
   };
 }
@@ -31,14 +31,14 @@ Resource<Novel> useNovel(String source, String slug) {
     () async {
       final _SaveNovel save = dao.upsert;
 
-      for (final fetcher in <_NovelFetcher>[
-        ({String slug}) => dao.get(source: source, slug: slug),
+      for (final fetcher in <GetNovel>[
+        _toGetNovel(dao, source),
         _save(novelSource.get, save),
       ]) {
         try {
           final value = await fetcher(slug: slug);
-          if (value != null) {
-            novel.value = Resource.data(value);
+          if (value.data != null) {
+            novel.value = Resource.data(value.data);
             break;
           }
         } catch (e, s) {
@@ -52,4 +52,12 @@ Resource<Novel> useNovel(String source, String slug) {
   }, []);
 
   return novel.value;
+}
+
+GetNovel _toGetNovel(NovelDao dao, String source) {
+  return ({String slug, Map<String, dynamic> params}) async {
+    return Data(
+      data: await dao.get(source: source, slug: slug),
+    );
+  };
 }
