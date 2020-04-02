@@ -2,16 +2,16 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'dart:async';
-import 'dart:math';
-import 'dart:ui' show lerpDouble, ImageFilter;
+import "dart:async";
+import "dart:math";
+import "dart:ui" show lerpDouble, ImageFilter;
 
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/gestures.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter/animation.dart' show Curves;
+import "package:flutter/animation.dart" show Curves;
+import "package:flutter/cupertino.dart";
+import "package:flutter/foundation.dart";
+import "package:flutter/gestures.dart";
+import "package:flutter/rendering.dart";
+import "package:flutter/widgets.dart";
 
 const double _kBackGestureWidth = 20.0;
 const double _kMinFlingVelocity = 1.0; // Screen widths per second.
