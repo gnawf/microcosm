@@ -4,7 +4,7 @@ import "package:app/http/http.dart";
 import "package:app/models/novel.dart";
 import "package:app/sources/data.dart";
 import "package:app/sources/novel_source.dart";
-import "package:html/dom.dart";
+import "package:app/utils/parsing.extensions.dart";
 import "package:html/parser.dart" as html show parse;
 
 class WuxiaWorldNovels extends NovelSource {
@@ -48,12 +48,6 @@ class WuxiaWorldNovels extends NovelSource {
       },
     );
   }
-}
-
-extension QueryDocument on Document {
-  Element queryOne(String selector) => querySelector(selector);
-
-  List<Element> query(String selector) => querySelectorAll(selector);
 }
 
 class _NovelParser {

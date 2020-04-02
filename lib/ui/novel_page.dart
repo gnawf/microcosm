@@ -171,7 +171,8 @@ class _ChapterList extends HookWidget {
         delegate = _loadingDelegate();
         break;
       case ResourceState.done:
-        delegate = _dataDelegate(chapters);
+        final hasData = chapters.data != null;
+        delegate = hasData ? _dataDelegate(chapters) : _emptyDelegate();
         break;
       case ResourceState.error:
         delegate = _errorDelegate(chapters.error);

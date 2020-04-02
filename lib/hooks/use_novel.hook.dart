@@ -22,7 +22,7 @@ GetNovel _save(GetNovel fetcher, _SaveNovel save) {
   };
 }
 
-Resource<Novel> useNovel(String source, String slug) {
+Resource<Novel> useNovel(String source, String slug, {bool live = true}) {
   final dao = useNovelDao();
   final novelSource = useSource(source).novels;
   final novel = useResource<Novel>();
@@ -41,7 +41,10 @@ Resource<Novel> useNovel(String source, String slug) {
           final value = await fetcher(slug: slug);
           if (value.data != null) {
             novel.value = Resource.data(value.data);
-            break;
+            // Don't fetch live data, be happy with the first result
+            if (!live) {
+              break;
+            }
           }
         } catch (e, s) {
           print(e);

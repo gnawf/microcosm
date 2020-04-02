@@ -1,4 +1,5 @@
 import "package:app/models/novel.dart";
+import "package:app/providers/provider.hooks.dart";
 import "package:app/resource/paginated_resource.dart";
 import "package:app/resource/resource.hooks.dart";
 import "package:app/sources/source.dart";
@@ -6,27 +7,38 @@ import "package:flutter_hooks/flutter_hooks.dart";
 
 PaginatedResource<Novel> useNovels(Source source) {
   final novels = usePaginatedResource<Novel>();
-  final params = useState<Map<String, dynamic>>(const {});
+  final listParams = useState<Map<String, dynamic>>(const {});
+  final dao = useNovelDao();
 
   useEffect(() {
     novels.value = const PaginatedResource.loading();
 
-    Future<void> test() {
-      return source.novels.list(params: params.value).then((value) {
+    Future<void> fetchData() async {
+      List<Novel> newNovels;
+
+      try {
         final prevData = novels.value.data ?? [];
-        final newData = [...prevData, ...value.data];
+        final newData = await source.novels.list(params: listParams.value);
+        newNovels = newData.data;
+
         novels.value = PaginatedResource.data(
-          newData,
-          fetchMore: test,
-          hasMore: value.data.isNotEmpty,
+          [...prevData, ...newData.data],
+          fetchMore: fetchData,
+          hasMore: newData.data.isNotEmpty,
         );
-        params.value = value.extras;
-      }).catchError((error) {
-        novels.value = PaginatedResource.error(error);
-      });
+        listParams.value = newData.extras;
+      } catch (e, s) {
+        novels.value = PaginatedResource.error(e);
+        print(e);
+        print(s);
+      }
+
+      if (newNovels != null) {
+        newNovels.forEach(dao.upsert);
+      }
     }
 
-    test();
+    fetchData();
 
     return () {};
   }, []);

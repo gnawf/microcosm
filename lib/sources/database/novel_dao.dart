@@ -59,7 +59,7 @@ OFFSET $offset""");
     return count > 0;
   }
 
-  Future<Null> upsert(Novel novel) async {
+  Future<void> upsert(Novel novel) async {
     if (novel == null) {
       return;
     }
@@ -81,7 +81,7 @@ OFFSET $offset""");
     }
   }
 
-  Future<Null> purge() async {
+  Future<void> purge() async {
     await _database.delete(table: Novel.type);
   }
 }

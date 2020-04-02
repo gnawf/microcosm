@@ -47,7 +47,7 @@ class NovelHeader extends StatelessWidget {
                 child: new Column(
                   children: <Widget>[
                     new Text(
-                      novel.synopsis,
+                      novel.synopsis ?? "",
                       textAlign: TextAlign.justify,
                     ),
                   ],
