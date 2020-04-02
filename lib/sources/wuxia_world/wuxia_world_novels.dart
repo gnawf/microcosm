@@ -4,11 +4,20 @@ import "package:app/http/http.dart";
 import "package:app/models/novel.dart";
 import "package:app/sources/data.dart";
 import "package:app/sources/novel_source.dart";
+import "package:html/dom.dart";
+import "package:html/parser.dart" as html show parse;
 
 class WuxiaWorldNovels extends NovelSource {
   @override
   Future<Data<Novel>> get({String slug, Map<String, dynamic> params}) async {
-    return Data(data: null);
+    final url = Uri.parse("https://www.wuxiaworld.com/novel/$slug");
+    final request = await httpClient.getUrl(url);
+    final response = await request.close();
+    final responseBody = await response.transform(utf8.decoder).join();
+
+    return Data(
+      data: _NovelParser.parse(responseBody),
+    );
   }
 
   @override
@@ -26,7 +35,7 @@ class WuxiaWorldNovels extends NovelSource {
       "searchAfter": params["cursor"],
       "count": params["limit"] ?? 10,
     });
-
+    request.headers.set("Content-Type", "application/json; charset=utf-8");
     request.write(requestBody);
     final response = await request.close();
     final responseBody = await response.transform(utf8.decoder).join();
@@ -41,6 +50,40 @@ class WuxiaWorldNovels extends NovelSource {
   }
 }
 
+extension QueryDocument on Document {
+  Element queryOne(String selector) => querySelector(selector);
+
+  List<Element> query(String selector) => querySelectorAll(selector);
+}
+
+class _NovelParser {
+  static Novel parse(String body) {
+    final document = html.parse(body);
+    final scripts = document.query("script[type]");
+    for (final script in scripts) {
+      if (script.attributes["type"] != "application/ld+json") {
+        continue;
+      }
+      if (script.text?.contains("\"@type\":\"Book\"") == true) {
+        final decoded = jsonDecode(script.text);
+        if (decoded is Map && decoded["@type"] == "Book") {
+          final url = Uri.parse(decoded["url"]);
+          final novelSegmentIndex = url.pathSegments.indexOf("novel");
+          final slug = url.pathSegments[novelSegmentIndex + 1];
+          return new Novel(
+            slug: slug,
+            name: decoded["name"],
+            source: "wuxiaworld",
+            synopsis: decoded["description"],
+            posterImage: decoded["image"],
+          );
+        }
+      }
+    }
+    return null;
+  }
+}
+
 class _SearchResultParser {
   static List<Novel> parse(Object body) {
     if (body is Map) {
@@ -52,10 +95,10 @@ class _SearchResultParser {
     return [];
   }
 
-  static String getCursor(Object body) {
+  static Object getCursor(Object body) {
     if (body is Map) {
       final items = body["items"];
-      if (items is List) {
+      if (items is List && items.isNotEmpty) {
         final last = items[items.length - 1];
         if (last is Map) {
           return last["id"];
@@ -69,7 +112,7 @@ class _SearchResultParser {
     return Novel(
       slug: map["slug"],
       name: map["name"],
-      source: "wuxia-world",
+      source: "wuxiaworld",
       synopsis: map["synopsis"],
       posterImage: map["coverUrl"],
     );

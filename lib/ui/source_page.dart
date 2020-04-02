@@ -1,6 +1,4 @@
-import "package:app/models/novel.dart";
-import "package:app/providers/provider.hooks.dart";
-import "package:app/resource/paginated_resource.dart";
+import "package:app/hooks/use_novels.hook.dart";
 import "package:app/resource/resource.dart";
 import "package:app/resource/resource.hooks.dart";
 import "package:app/sources/source.dart";
@@ -28,14 +26,14 @@ class SourcePage extends HookWidget {
 
     return _PageState(
       source: source,
-      child: new Scaffold(
-        appBar: new AppBar(
+      child: Scaffold(
+        appBar: AppBar(
           automaticallyImplyLeading: false,
           leading: null,
           title: _AppBarTitle(),
           centerTitle: false,
           actions: const <Widget>[
-            const SettingsIconButton(),
+            SettingsIconButton(),
           ],
         ),
         body: _Body(),
@@ -115,7 +113,7 @@ class _Novels extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final novels = useNovels(source);
-    final onTapNovel = useOnTapNovel();
+    final onTapNovel = _useOnTapNovel();
 
     switch (novels.state) {
       case ResourceState.placeholder:
@@ -140,7 +138,7 @@ class _Novels extends HookWidget {
             vertical: 18.0,
           ),
           sliver: NovelSliverGrid(
-            novels: novels.data,
+            novels: novels,
             onTap: onTapNovel,
           ),
         ),

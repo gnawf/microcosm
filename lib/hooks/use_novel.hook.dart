@@ -28,6 +28,8 @@ Resource<Novel> useNovel(String source, String slug) {
   final novel = useResource<Novel>();
 
   useEffect(() {
+    novel.value = const Resource.loading();
+
     () async {
       final _SaveNovel save = dao.upsert;
 

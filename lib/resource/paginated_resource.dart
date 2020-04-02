@@ -1,31 +1,30 @@
 import "package:app/resource/resource.dart";
-import "package:meta/meta.dart";
+
+typedef Future<void> FetchMore();
 
 class PaginatedResource<T> extends Resource<List<T>> {
   const PaginatedResource.data(
     List<T> data, {
-    @required this.cursor,
-    this.limit,
-  })  : assert(cursor != null),
-        super.data(data);
+    this.hasMore,
+    this.fetchMore,
+  }) : super.data(data);
 
   const PaginatedResource.error(
     Object error, {
-    this.cursor,
-    this.limit,
-  })  : assert(cursor != null),
-        super.error(error);
+    this.hasMore,
+    this.fetchMore,
+  }) : super.error(error);
 
   const PaginatedResource.loading({
-    this.cursor,
-    this.limit,
+    this.hasMore,
+    this.fetchMore,
   }) : super.loading();
 
   const PaginatedResource.placeholder({
-    this.cursor,
-    this.limit,
+    this.hasMore,
+    this.fetchMore,
   }) : super.placeholder();
 
-  final Object cursor;
-  final int limit;
+  final bool hasMore;
+  final FetchMore fetchMore;
 }

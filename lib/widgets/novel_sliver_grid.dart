@@ -1,4 +1,5 @@
 import "package:app/models/novel.dart";
+import "package:app/resource/paginated_resource.dart";
 import "package:app/widgets/custom_sliver_grid.dart";
 import "package:app/widgets/image_view.dart";
 import "package:flutter/material.dart";
@@ -7,9 +8,9 @@ import "package:flutter/rendering.dart";
 typedef void OnTapNovel(Novel novel);
 
 class NovelSliverGrid extends StatefulWidget {
-  const NovelSliverGrid({this.novels = const <Novel>[], this.onTap});
+  const NovelSliverGrid({this.novels, this.onTap});
 
-  final List<Novel> novels;
+  final PaginatedResource<Novel> novels;
 
   final OnTapNovel onTap;
 
@@ -18,8 +19,26 @@ class NovelSliverGrid extends StatefulWidget {
 }
 
 class _NovelSliverGridState extends State<NovelSliverGrid> {
+  var loading = false;
+
   Widget _builder(BuildContext context, int index) {
-    return new NovelGridItem(widget.novels[index], widget.onTap);
+    if (index == widget.novels.data.length) {
+      if (!loading) {
+        loading = true;
+        widget.novels.fetchMore().then((value) {
+          loading = false;
+        });
+      }
+      return const Padding(
+        padding: EdgeInsets.only(
+          top: 48.0,
+        ),
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+    return new NovelGridItem(widget.novels.data[index], widget.onTap);
   }
 
   @override
@@ -29,7 +48,7 @@ class _NovelSliverGridState extends State<NovelSliverGrid> {
     return new CustomSliverGrid(
       builder: _builder,
       cellWidth: 90.0,
-      cellCount: novels.length,
+      cellCount: novels.data.length + (novels.hasMore ? 1 : 0),
       rowSpacing: 8.0,
       columnSpacing: 16.0,
     );

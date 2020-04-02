@@ -11,10 +11,10 @@ PaginatedResource<Chapter> useChapters(Novel novel) {
   final chapters = usePaginatedResource<Chapter>();
 
   useEffect(() {
-    chapters.value = const PaginatedResource.loading(cursor: 0);
+    chapters.value = const PaginatedResource.loading();
 
     source.list(novelSlug: novel.slug).then((value) {
-      chapters.value = PaginatedResource.data(value.data, cursor: 1);
+      chapters.value = PaginatedResource.data(value.data);
     }).catchError((error) {
       chapters.value = PaginatedResource.error(error);
     });

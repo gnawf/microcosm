@@ -19,27 +19,7 @@ Resource<Source> _useSource(String id) {
   return source.value;
 }
 
-PaginatedResource<Novel> useNovels(Source source) {
-  final novelProvider = useNovelProvider();
-  final dao = novelProvider.dao;
-  final novels = usePaginatedResource<Novel>();
-
-  useEffect(() {
-    novels.value = const PaginatedResource.loading();
-
-    dao.list(source: source.id).then((value) {
-      novels.value = PaginatedResource.data(value, cursor: 0);
-    }).catchError((error) {
-      novels.value = PaginatedResource.error(error);
-    });
-
-    return () {};
-  }, []);
-
-  return novels.value;
-}
-
-OnTapNovel useOnTapNovel() {
+OnTapNovel _useOnTapNovel() {
   final router = useRouter();
 
   return (novel) {
