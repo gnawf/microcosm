@@ -18,5 +18,5 @@ extension QueryElement on Element {
 }
 
 extension ResolveUri on String {
-  Uri resolveUri(Uri uri) => uri.resolve(this);
+  Uri resolveToUriFrom(Uri ref) => ref.resolve(this);
 }

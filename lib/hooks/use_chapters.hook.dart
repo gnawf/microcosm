@@ -15,8 +15,10 @@ PaginatedResource<Chapter> useChapters(Novel novel) {
 
     source.list(novelSlug: novel.slug).then((value) {
       chapters.value = PaginatedResource.data(value.data);
-    }).catchError((error) {
-      chapters.value = PaginatedResource.error(error);
+    }).catchError((e, s) {
+      chapters.value = PaginatedResource.error(e);
+      print(e);
+      print(s);
     });
 
     return () {};

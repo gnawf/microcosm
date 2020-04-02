@@ -4,6 +4,7 @@ import "package:app/http/http.dart";
 import "package:app/models/novel.dart";
 import "package:app/sources/data.dart";
 import "package:app/sources/novel_source.dart";
+import "package:app/utils/list.extensions.dart";
 import "package:app/utils/map.extensions.dart";
 import "package:app/utils/parsing.extensions.dart";
 import "package:html/dom.dart";
@@ -15,11 +16,8 @@ class ReadNovelFullNovels extends NovelSource {
     final url = Uri.parse("https://readnovelfull.com/$slug.html");
     final request = await httpClient.getUrl(url);
     final response = await request.close();
-
     final body = await response.transform(utf8.decoder).join();
-
-    final redirects = response.redirects;
-    final location = redirects.isNotEmpty ? redirects.last.location : url;
+    final location = response.redirects.tail()?.location ?? url;
 
     return Data(
       data: _NovelParser.fromHtml(slug, location, body),
@@ -34,11 +32,8 @@ class ReadNovelFullNovels extends NovelSource {
     );
     final request = await httpClient.getUrl(url);
     final response = await request.close();
-
     final body = await response.transform(utf8.decoder).join();
-
-    final redirects = response.redirects;
-    final location = redirects.isNotEmpty ? redirects.last.location : url;
+    final location = response.redirects.tail()?.location ?? url;
 
     return DataList(
       data: _SearchParser.fromHtml(location, body),
@@ -98,7 +93,7 @@ class _SearchParser {
 
   static String _slug(Element result, Uri location) {
     final href = result.queryOne(".novel-title a[href]").attr("href");
-    final uri = href.resolveUri(location);
+    final uri = href.resolveToUriFrom(location);
     return uri.pathSegments[0].toSlug();
   }
 

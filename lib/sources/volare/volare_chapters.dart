@@ -6,6 +6,7 @@ import "package:app/models/chapter.dart";
 import "package:app/sources/chapter_source.dart";
 import "package:app/sources/data.dart";
 import "package:app/utils/html_decompiler.dart" as markdown;
+import "package:app/utils/list.extensions.dart";
 import "package:html/dom.dart";
 import "package:html/parser.dart" as html show parse;
 
@@ -15,13 +16,10 @@ class VolareChapters implements ChapterSource {
     final request = await httpClient.getUrl(url);
     final response = await request.close();
     final body = await response.transform(utf8.decoder).join();
-
-    // If present, follow the redirects to get the final URL
-    final redirects = response.redirects;
-    final source = redirects.isNotEmpty ? redirects.last.location : url;
+    final location = response.redirects.tail()?.location ?? url;
 
     return Data(
-      data: _ChapterParser.fromHtml(source, body),
+      data: _ChapterParser.fromHtml(location, body),
     );
   }
 
