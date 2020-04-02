@@ -1,5 +1,6 @@
 name: app
 description: A client for novels at Wuxiaworld.com
+version: 2.1.3+18
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
