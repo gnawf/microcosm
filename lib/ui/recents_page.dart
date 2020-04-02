@@ -65,7 +65,7 @@ class _RecentsList extends HookWidget {
       (BuildContext context, int index) {
         return new _RecentsListEntry(data[index]);
       },
-      childCount: math.max(1, data.length),
+      childCount: data.length,
     );
   }
 
