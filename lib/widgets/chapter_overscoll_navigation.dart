@@ -7,6 +7,7 @@ typedef OverscrollNavigate = void Function(AxisDirection direction);
 enum _Mode {
   idle,
   drag,
+  armed,
 }
 
 class ChapterOverscrollNavigation extends HookWidget {
@@ -46,28 +47,51 @@ class ChapterOverscrollNavigation extends HookWidget {
   Widget build(BuildContext context) {
     final direction = useState<AxisDirection>();
     final mode = useState(_Mode.idle);
+    final overscroll = useState(0.0);
 
-    final anim = useAnimationController();
+    final anim = useAnimationController(
+      duration: const Duration(milliseconds: 400),
+    );
     final offsetAnim = useAnim(anim, _offsetTween);
     final opacityAnim = useAnim(anim, _opacityTween, curve: Curves.easeInQuad);
 
-    final onScroll = (ScrollNotification notification) {
+    final cancel = () {
+      mode.value = _Mode.idle;
+      anim.animateTo(0.0);
+    };
+
+    final scroll = (double delta) {
+      overscroll.value += delta;
+      anim.value = overscroll.value / threshold;
+      mode.value = overscroll.value >= threshold ? _Mode.armed : _Mode.drag;
+      if (delta < 0) {
+        cancel();
+      }
+    };
+
+    final onScrollNotification = (ScrollNotification notification) {
+      if (onNavigate == null) {
+        return false;
+      }
+
       final metrics = notification.metrics;
 
       if (notification is ScrollStartNotification) {
         mode.value = metrics.extentAfter == 0 ? _Mode.drag : _Mode.idle;
         direction.value = AxisDirection.down;
+        overscroll.value = 0.0;
       } else if (notification is ScrollEndNotification) {
-        mode.value = _Mode.idle;
+        if (mode.value == _Mode.armed) {
+          onNavigate(AxisDirection.down);
+        }
+        cancel();
       } else if (notification is ScrollUpdateNotification) {
-        if (mode.value == _Mode.drag) {
-          final overscroll = metrics.pixels - metrics.maxScrollExtent;
-          anim.value = overscroll / threshold;
-          if (onNavigate != null) {
-            if (notification.dragDetails == null && overscroll >= threshold) {
-              onNavigate(direction.value);
-            }
-          }
+        if (mode.value != _Mode.idle) {
+          scroll(notification.scrollDelta);
+        }
+      } else if (notification is OverscrollNotification) {
+        if (mode.value != _Mode.idle) {
+          scroll(notification.overscroll / 2.0);
         }
       }
 
@@ -78,7 +102,7 @@ class ChapterOverscrollNavigation extends HookWidget {
       children: [
         NotificationListener<ScrollNotification>(
           key: _key,
-          onNotification: onScroll,
+          onNotification: onScrollNotification,
           child: NotificationListener<OverscrollIndicatorNotification>(
             onNotification: _handleGlowNotification,
             child: child,
@@ -87,17 +111,14 @@ class ChapterOverscrollNavigation extends HookWidget {
         AnimatedBuilder(
           animation: offsetAnim,
           builder: (BuildContext context, Widget widget) {
-            return Container(
+            return Align(
               alignment: Alignment.bottomCenter,
-              child: Positioned(
-                bottom: 0.0,
-                child: Transform.translate(
-                  offset: offsetAnim.value,
-                  child: Opacity(
-                    opacity: opacityAnim.value,
-                    child: const Chip(
-                      label: Text("Next Chapter"),
-                    ),
+              child: Transform.translate(
+                offset: offsetAnim.value,
+                child: Opacity(
+                  opacity: opacityAnim.value,
+                  child: const Chip(
+                    label: Text("Next Chapter"),
                   ),
                 ),
               ),
