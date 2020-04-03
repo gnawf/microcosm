@@ -40,27 +40,31 @@ android {
   }
 
   def keyStorePropertiesFile = new File("/Volumes/Signatures/microcosm.properties")
-  def keyStoreProperties = new Properties()
-  def keyStoreInStream = new FileInputStream(keyStorePropertiesFile)
-  keyStoreProperties.load(keyStoreInStream)
-  keyStoreInStream.close()
+  if (keyStorePropertiesFile.exists()) {
+    def keyStoreProperties = new Properties()
+    def keyStoreInStream = new FileInputStream(keyStorePropertiesFile)
+    keyStoreProperties.load(keyStoreInStream)
+    keyStoreInStream.close()
 
-  signingConfigs {
-    release {
-      keyAlias keyStoreProperties["keyAlias"]
-      keyPassword keyStoreProperties["keyPassword"]
-      storeFile file(keyStoreProperties["storeFile"])
-      storePassword keyStoreProperties["storePassword"]
+    signingConfigs {
+      release {
+        keyAlias keyStoreProperties["keyAlias"]
+        keyPassword keyStoreProperties["keyPassword"]
+        storeFile file(keyStoreProperties["storeFile"])
+        storePassword keyStoreProperties["storePassword"]
+      }
+    }
+
+    buildTypes {
+      release {
+        signingConfig signingConfigs.release
+      }
     }
   }
 
   buildTypes {
     debug {
       applicationIdSuffix ".debug"
-    }
-
-    release {
-      signingConfig signingConfigs.release
     }
   }
 }
