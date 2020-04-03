@@ -24,7 +24,6 @@ Resource<Chapter> _useChapter(Chapter chapter) {
   final novel = useNovel(chapter.novelSource, chapter.novelSlug);
 
   useEffect(() {
-    print(novel.data);
     resource.value = Resource.data(chapter.copyWith(novel: novel.data));
     return () {};
   }, [novel.state]);
