@@ -104,11 +104,7 @@ String decompile(String content, [Uri source]) {
   // 3. Remove empty lines
   // 4. Join by an empty line in between
   // Without the invisible character, the newlines are collapsed
-  return fragment.text
-      .split("\n")
-      .map(_trim)
-      .where((x) => x.isNotEmpty)
-      .join("\n\n");
+  return fragment.text.split("\n").map(_trim).where((x) => x.isNotEmpty).join("\n\n");
 }
 
 String _trim(String text) {

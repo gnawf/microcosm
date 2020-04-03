@@ -12,8 +12,7 @@ import "package:flutter_markdown/flutter_markdown.dart";
 import "package:markdown/markdown.dart" as md;
 import "package:meta/meta.dart";
 
-final MarkdownStyleSheet Function(BuildContext, MarkdownStyleSheetBaseTheme)
-    kFallbackStyle = (
+final MarkdownStyleSheet Function(BuildContext, MarkdownStyleSheetBaseTheme) kFallbackStyle = (
   BuildContext context,
   MarkdownStyleSheetBaseTheme baseTheme,
 ) {
@@ -136,12 +135,10 @@ abstract class PerformantMarkdownWidget extends StatefulWidget {
   Widget build(BuildContext context, List<Widget> children);
 
   @override
-  _PerformantMarkdownWidgetState createState() =>
-      _PerformantMarkdownWidgetState();
+  _PerformantMarkdownWidgetState createState() => _PerformantMarkdownWidgetState();
 }
 
-class _PerformantMarkdownWidgetState extends State<PerformantMarkdownWidget>
-    implements MarkdownBuilderDelegate {
+class _PerformantMarkdownWidgetState extends State<PerformantMarkdownWidget> implements MarkdownBuilderDelegate {
   List<Widget> _children;
   final List<GestureRecognizer> _recognizers = <GestureRecognizer>[];
 
@@ -154,8 +151,7 @@ class _PerformantMarkdownWidgetState extends State<PerformantMarkdownWidget>
   @override
   void didUpdateWidget(PerformantMarkdownWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.data != oldWidget.data ||
-        widget.styleSheet != oldWidget.styleSheet) {
+    if (widget.data != oldWidget.data || widget.styleSheet != oldWidget.styleSheet) {
       _parseMarkdown();
     }
   }
@@ -169,10 +165,8 @@ class _PerformantMarkdownWidgetState extends State<PerformantMarkdownWidget>
   Future<void> _parseMarkdown() async {
     await null;
 
-    final MarkdownStyleSheet fallbackStyleSheet =
-        kFallbackStyle(context, widget.styleSheetTheme);
-    final MarkdownStyleSheet styleSheet =
-        fallbackStyleSheet.merge(widget.styleSheet);
+    final MarkdownStyleSheet fallbackStyleSheet = kFallbackStyle(context, widget.styleSheetTheme);
+    final MarkdownStyleSheet styleSheet = fallbackStyleSheet.merge(widget.styleSheet);
 
     _disposeRecognizers();
 
@@ -198,8 +192,7 @@ class _PerformantMarkdownWidgetState extends State<PerformantMarkdownWidget>
 
   void _disposeRecognizers() {
     if (_recognizers.isEmpty) return;
-    final List<GestureRecognizer> localRecognizers =
-        List<GestureRecognizer>.from(_recognizers);
+    final List<GestureRecognizer> localRecognizers = List<GestureRecognizer>.from(_recognizers);
     _recognizers.clear();
     for (GestureRecognizer recognizer in localRecognizers) recognizer.dispose();
   }

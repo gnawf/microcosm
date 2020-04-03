@@ -21,9 +21,7 @@ class DownloadsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return novelSlug != null
-        ? new _ChaptersPage(slug: novelSlug, source: novelSource)
-        : new _NovelsPage();
+    return novelSlug != null ? new _ChaptersPage(slug: novelSlug, source: novelSource) : new _NovelsPage();
   }
 }
 

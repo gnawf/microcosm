@@ -107,8 +107,7 @@ class DatabaseProviderState extends State<DatabaseProvider> {
             } else {
               continue;
             }
-            await txn.update(Chapter.type, {"novelSource": source},
-                where: "slug = ?", whereArgs: [slug]);
+            await txn.update(Chapter.type, {"novelSource": source}, where: "slug = ?", whereArgs: [slug]);
           }
         }
       });

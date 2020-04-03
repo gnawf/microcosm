@@ -47,9 +47,7 @@ class ReaderPage extends HookWidget {
                 icon: const Icon(MDIcons.refresh),
                 tooltip: "Refresh",
                 disabledColor: Theme.of(context).buttonColor,
-                onPressed: refreshing.value || chapter.data == null
-                    ? null
-                    : _refresh(chapter, refreshing),
+                onPressed: refreshing.value || chapter.data == null ? null : _refresh(chapter, refreshing),
               ),
             ),
             const SettingsIconButton(),

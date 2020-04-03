@@ -41,9 +41,7 @@ class DatabaseWrapper {
     if (where == null) {
       return null;
     }
-    return where.entries
-        .expand((entry) => entry.value is List ? entry.value : [entry.value])
-        .toList(growable: false);
+    return where.entries.expand((entry) => entry.value is List ? entry.value : [entry.value]).toList(growable: false);
   }
 
   /// Counts the number of records for the given query

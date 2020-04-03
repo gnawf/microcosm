@@ -10,9 +10,7 @@ Resource<Source> _useSource(String id) {
 
   useEffect(() {
     final value = sources.firstWhere((element) => element.id == id);
-    source.value = value != null
-        ? Resource.data(value)
-        : const Resource.error("Source Not Found");
+    source.value = value != null ? Resource.data(value) : const Resource.error("Source Not Found");
     return () {};
   }, []);
 

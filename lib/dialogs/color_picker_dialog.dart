@@ -86,12 +86,10 @@ Future<T> openColorPicker<T extends Color>(
                 title: new Text(
                   name,
                   style: new TextStyle(
-                    fontWeight:
-                        color == selected ? FontWeight.bold : FontWeight.normal,
+                    fontWeight: color == selected ? FontWeight.bold : FontWeight.normal,
                   ),
                 ),
-                trailing:
-                    new Container(width: 30.0, height: 30.0, color: color),
+                trailing: new Container(width: 30.0, height: 30.0, color: color),
               );
             }).toList(),
           ),

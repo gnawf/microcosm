@@ -58,9 +58,7 @@ class _AmoledSetting extends StatelessWidget {
 
     return new CheckboxListTile(
       value: settings.amoled,
-      onChanged: settings.brightness == Brightness.dark
-          ? (value) => settings.amoled = value
-          : null,
+      onChanged: settings.brightness == Brightness.dark ? (value) => settings.amoled = value : null,
       title: const Text("Amoled Mode"),
       secondary: const Icon(MDIcons.imageFilterBlackWhite),
     );

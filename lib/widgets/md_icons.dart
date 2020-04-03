@@ -18,12 +18,9 @@ class MDIcons {
   static const accountLocation = const IconData(0xf00C, fontFamily: _family);
   static const accountMinus = const IconData(0xf00D, fontFamily: _family);
   static const accountMultiple = const IconData(0xf00E, fontFamily: _family);
-  static const accountMultipleMinus =
-      const IconData(0xf5D3, fontFamily: _family);
-  static const accountMultipleOutline =
-      const IconData(0xf00F, fontFamily: _family);
-  static const accountMultiplePlus =
-      const IconData(0xf010, fontFamily: _family);
+  static const accountMultipleMinus = const IconData(0xf5D3, fontFamily: _family);
+  static const accountMultipleOutline = const IconData(0xf00F, fontFamily: _family);
+  static const accountMultiplePlus = const IconData(0xf010, fontFamily: _family);
   static const accountNetwork = const IconData(0xf011, fontFamily: _family);
   static const accountOff = const IconData(0xf012, fontFamily: _family);
   static const accountOutline = const IconData(0xf013, fontFamily: _family);
@@ -31,8 +28,7 @@ class MDIcons {
   static const accountRemove = const IconData(0xf015, fontFamily: _family);
   static const accountSearch = const IconData(0xf016, fontFamily: _family);
   static const accountSettings = const IconData(0xf630, fontFamily: _family);
-  static const accountSettingsVariant =
-      const IconData(0xf631, fontFamily: _family);
+  static const accountSettingsVariant = const IconData(0xf631, fontFamily: _family);
   static const accountStar = const IconData(0xf017, fontFamily: _family);
   static const accountSwitch = const IconData(0xf019, fontFamily: _family);
   static const adjust = const IconData(0xf01A, fontFamily: _family);
@@ -80,12 +76,9 @@ class MDIcons {
   static const appleFinder = const IconData(0xf036, fontFamily: _family);
   static const appleIos = const IconData(0xf037, fontFamily: _family);
   static const appleKeyboardCaps = const IconData(0xf632, fontFamily: _family);
-  static const appleKeyboardCommand =
-      const IconData(0xf633, fontFamily: _family);
-  static const appleKeyboardControl =
-      const IconData(0xf634, fontFamily: _family);
-  static const appleKeyboardOption =
-      const IconData(0xf635, fontFamily: _family);
+  static const appleKeyboardCommand = const IconData(0xf633, fontFamily: _family);
+  static const appleKeyboardControl = const IconData(0xf634, fontFamily: _family);
+  static const appleKeyboardOption = const IconData(0xf635, fontFamily: _family);
   static const appleKeyboardShift = const IconData(0xf636, fontFamily: _family);
   static const appleMobileme = const IconData(0xf038, fontFamily: _family);
   static const appleSafari = const IconData(0xf039, fontFamily: _family);
@@ -93,12 +86,9 @@ class MDIcons {
   static const approval = const IconData(0xf790, fontFamily: _family);
   static const apps = const IconData(0xf03B, fontFamily: _family);
   static const archive = const IconData(0xf03C, fontFamily: _family);
-  static const arrangeBringForward =
-      const IconData(0xf03D, fontFamily: _family);
-  static const arrangeBringToFront =
-      const IconData(0xf03E, fontFamily: _family);
-  static const arrangeSendBackward =
-      const IconData(0xf03F, fontFamily: _family);
+  static const arrangeBringForward = const IconData(0xf03D, fontFamily: _family);
+  static const arrangeBringToFront = const IconData(0xf03E, fontFamily: _family);
+  static const arrangeSendBackward = const IconData(0xf03F, fontFamily: _family);
   static const arrangeSendToBack = const IconData(0xf040, fontFamily: _family);
   static const arrowAll = const IconData(0xf041, fontFamily: _family);
   static const arrowBottomLeft = const IconData(0xf042, fontFamily: _family);
@@ -112,19 +102,13 @@ class MDIcons {
   static const arrowDown = const IconData(0xf045, fontFamily: _family);
   static const arrowDownBold = const IconData(0xf72D, fontFamily: _family);
   static const arrowDownBoldBox = const IconData(0xf72E, fontFamily: _family);
-  static const arrowDownBoldBoxOutline =
-      const IconData(0xf72F, fontFamily: _family);
-  static const arrowDownBoldCircle =
-      const IconData(0xf047, fontFamily: _family);
-  static const arrowDownBoldCircleOutline =
-      const IconData(0xf048, fontFamily: _family);
-  static const arrowDownBoldHexagonOutline =
-      const IconData(0xf049, fontFamily: _family);
+  static const arrowDownBoldBoxOutline = const IconData(0xf72F, fontFamily: _family);
+  static const arrowDownBoldCircle = const IconData(0xf047, fontFamily: _family);
+  static const arrowDownBoldCircleOutline = const IconData(0xf048, fontFamily: _family);
+  static const arrowDownBoldHexagonOutline = const IconData(0xf049, fontFamily: _family);
   static const arrowDownBox = const IconData(0xf6BF, fontFamily: _family);
-  static const arrowDownDropCircle =
-      const IconData(0xf04A, fontFamily: _family);
-  static const arrowDownDropCircleOutline =
-      const IconData(0xf04B, fontFamily: _family);
+  static const arrowDownDropCircle = const IconData(0xf04A, fontFamily: _family);
+  static const arrowDownDropCircleOutline = const IconData(0xf04B, fontFamily: _family);
   static const arrowDownThick = const IconData(0xf046, fontFamily: _family);
   static const arrowExpand = const IconData(0xf616, fontFamily: _family);
   static const arrowExpandAll = const IconData(0xf04C, fontFamily: _family);
@@ -135,53 +119,37 @@ class MDIcons {
   static const arrowLeft = const IconData(0xf04D, fontFamily: _family);
   static const arrowLeftBold = const IconData(0xf730, fontFamily: _family);
   static const arrowLeftBoldBox = const IconData(0xf731, fontFamily: _family);
-  static const arrowLeftBoldBoxOutline =
-      const IconData(0xf732, fontFamily: _family);
-  static const arrowLeftBoldCircle =
-      const IconData(0xf04F, fontFamily: _family);
-  static const arrowLeftBoldCircleOutline =
-      const IconData(0xf050, fontFamily: _family);
-  static const arrowLeftBoldHexagonOutline =
-      const IconData(0xf051, fontFamily: _family);
+  static const arrowLeftBoldBoxOutline = const IconData(0xf732, fontFamily: _family);
+  static const arrowLeftBoldCircle = const IconData(0xf04F, fontFamily: _family);
+  static const arrowLeftBoldCircleOutline = const IconData(0xf050, fontFamily: _family);
+  static const arrowLeftBoldHexagonOutline = const IconData(0xf051, fontFamily: _family);
   static const arrowLeftBox = const IconData(0xf6C0, fontFamily: _family);
-  static const arrowLeftDropCircle =
-      const IconData(0xf052, fontFamily: _family);
-  static const arrowLeftDropCircleOutline =
-      const IconData(0xf053, fontFamily: _family);
+  static const arrowLeftDropCircle = const IconData(0xf052, fontFamily: _family);
+  static const arrowLeftDropCircleOutline = const IconData(0xf053, fontFamily: _family);
   static const arrowLeftThick = const IconData(0xf04E, fontFamily: _family);
   static const arrowRight = const IconData(0xf054, fontFamily: _family);
   static const arrowRightBold = const IconData(0xf733, fontFamily: _family);
   static const arrowRightBoldBox = const IconData(0xf734, fontFamily: _family);
-  static const arrowRightBoldBoxOutline =
-      const IconData(0xf735, fontFamily: _family);
-  static const arrowRightBoldCircle =
-      const IconData(0xf056, fontFamily: _family);
-  static const arrowRightBoldCircleOutline =
-      const IconData(0xf057, fontFamily: _family);
-  static const arrowRightBoldHexagonOutline =
-      const IconData(0xf058, fontFamily: _family);
+  static const arrowRightBoldBoxOutline = const IconData(0xf735, fontFamily: _family);
+  static const arrowRightBoldCircle = const IconData(0xf056, fontFamily: _family);
+  static const arrowRightBoldCircleOutline = const IconData(0xf057, fontFamily: _family);
+  static const arrowRightBoldHexagonOutline = const IconData(0xf058, fontFamily: _family);
   static const arrowRightBox = const IconData(0xf6C1, fontFamily: _family);
-  static const arrowRightDropCircle =
-      const IconData(0xf059, fontFamily: _family);
-  static const arrowRightDropCircleOutline =
-      const IconData(0xf05A, fontFamily: _family);
+  static const arrowRightDropCircle = const IconData(0xf059, fontFamily: _family);
+  static const arrowRightDropCircleOutline = const IconData(0xf05A, fontFamily: _family);
   static const arrowRightThick = const IconData(0xf055, fontFamily: _family);
   static const arrowTopLeft = const IconData(0xf05B, fontFamily: _family);
   static const arrowTopRight = const IconData(0xf05C, fontFamily: _family);
   static const arrowUp = const IconData(0xf05D, fontFamily: _family);
   static const arrowUpBold = const IconData(0xf736, fontFamily: _family);
   static const arrowUpBoldBox = const IconData(0xf737, fontFamily: _family);
-  static const arrowUpBoldBoxOutline =
-      const IconData(0xf738, fontFamily: _family);
+  static const arrowUpBoldBoxOutline = const IconData(0xf738, fontFamily: _family);
   static const arrowUpBoldCircle = const IconData(0xf05F, fontFamily: _family);
-  static const arrowUpBoldCircleOutline =
-      const IconData(0xf060, fontFamily: _family);
-  static const arrowUpBoldHexagonOutline =
-      const IconData(0xf061, fontFamily: _family);
+  static const arrowUpBoldCircleOutline = const IconData(0xf060, fontFamily: _family);
+  static const arrowUpBoldHexagonOutline = const IconData(0xf061, fontFamily: _family);
   static const arrowUpBox = const IconData(0xf6C2, fontFamily: _family);
   static const arrowUpDropCircle = const IconData(0xf062, fontFamily: _family);
-  static const arrowUpDropCircleOutline =
-      const IconData(0xf063, fontFamily: _family);
+  static const arrowUpDropCircleOutline = const IconData(0xf063, fontFamily: _family);
   static const arrowUpThick = const IconData(0xf05E, fontFamily: _family);
   static const assistant = const IconData(0xf064, fontFamily: _family);
   static const asterisk = const IconData(0xf6C3, fontFamily: _family);
@@ -220,8 +188,7 @@ class MDIcons {
   static const battery_90 = const IconData(0xf082, fontFamily: _family);
   static const batteryAlert = const IconData(0xf083, fontFamily: _family);
   static const batteryCharging = const IconData(0xf084, fontFamily: _family);
-  static const batteryCharging_100 =
-      const IconData(0xf085, fontFamily: _family);
+  static const batteryCharging_100 = const IconData(0xf085, fontFamily: _family);
   static const batteryCharging_20 = const IconData(0xf086, fontFamily: _family);
   static const batteryCharging_30 = const IconData(0xf087, fontFamily: _family);
   static const batteryCharging_40 = const IconData(0xf088, fontFamily: _family);
@@ -276,11 +243,9 @@ class MDIcons {
   static const book = const IconData(0xf0BA, fontFamily: _family);
   static const bookMinus = const IconData(0xf5D9, fontFamily: _family);
   static const bookMultiple = const IconData(0xf0BB, fontFamily: _family);
-  static const bookMultipleVariant =
-      const IconData(0xf0BC, fontFamily: _family);
+  static const bookMultipleVariant = const IconData(0xf0BC, fontFamily: _family);
   static const bookOpen = const IconData(0xf0BD, fontFamily: _family);
-  static const bookOpenPageVariant =
-      const IconData(0xf5DA, fontFamily: _family);
+  static const bookOpenPageVariant = const IconData(0xf5DA, fontFamily: _family);
   static const bookOpenVariant = const IconData(0xf0BE, fontFamily: _family);
   static const bookPlus = const IconData(0xf5DB, fontFamily: _family);
   static const bookSecure = const IconData(0xf799, fontFamily: _family);
@@ -291,8 +256,7 @@ class MDIcons {
   static const bookmarkMusic = const IconData(0xf0C2, fontFamily: _family);
   static const bookmarkOutline = const IconData(0xf0C3, fontFamily: _family);
   static const bookmarkPlus = const IconData(0xf0C5, fontFamily: _family);
-  static const bookmarkPlusOutline =
-      const IconData(0xf0C4, fontFamily: _family);
+  static const bookmarkPlusOutline = const IconData(0xf0C4, fontFamily: _family);
   static const bookmarkRemove = const IconData(0xf0C6, fontFamily: _family);
   static const boombox = const IconData(0xf5DC, fontFamily: _family);
   static const bootstrap = const IconData(0xf6C5, fontFamily: _family);
@@ -337,8 +301,7 @@ class MDIcons {
   static const burstMode = const IconData(0xf5DE, fontFamily: _family);
   static const bus = const IconData(0xf0E7, fontFamily: _family);
   static const busArticulatedEnd = const IconData(0xf79B, fontFamily: _family);
-  static const busArticulatedFront =
-      const IconData(0xf79C, fontFamily: _family);
+  static const busArticulatedFront = const IconData(0xf79C, fontFamily: _family);
   static const busDoubleDecker = const IconData(0xf79D, fontFamily: _family);
   static const busSchool = const IconData(0xf79E, fontFamily: _family);
   static const busSide = const IconData(0xf79F, fontFamily: _family);
@@ -352,8 +315,7 @@ class MDIcons {
   static const calendarCheck = const IconData(0xf0EF, fontFamily: _family);
   static const calendarClock = const IconData(0xf0F0, fontFamily: _family);
   static const calendarMultiple = const IconData(0xf0F1, fontFamily: _family);
-  static const calendarMultipleCheck =
-      const IconData(0xf0F2, fontFamily: _family);
+  static const calendarMultipleCheck = const IconData(0xf0F2, fontFamily: _family);
   static const calendarPlus = const IconData(0xf0F3, fontFamily: _family);
   static const calendarQuestion = const IconData(0xf691, fontFamily: _family);
   static const calendarRange = const IconData(0xf678, fontFamily: _family);
@@ -376,12 +338,9 @@ class MDIcons {
   static const cameraFrontVariant = const IconData(0xf103, fontFamily: _family);
   static const cameraGopro = const IconData(0xf7A0, fontFamily: _family);
   static const cameraIris = const IconData(0xf104, fontFamily: _family);
-  static const cameraMeteringCenter =
-      const IconData(0xf7A1, fontFamily: _family);
-  static const cameraMeteringMatrix =
-      const IconData(0xf7A2, fontFamily: _family);
-  static const cameraMeteringPartial =
-      const IconData(0xf7A3, fontFamily: _family);
+  static const cameraMeteringCenter = const IconData(0xf7A1, fontFamily: _family);
+  static const cameraMeteringMatrix = const IconData(0xf7A2, fontFamily: _family);
+  static const cameraMeteringPartial = const IconData(0xf7A3, fontFamily: _family);
   static const cameraMeteringSpot = const IconData(0xf7A4, fontFamily: _family);
   static const cameraOff = const IconData(0xf5DF, fontFamily: _family);
   static const cameraPartyMode = const IconData(0xf105, fontFamily: _family);
@@ -406,8 +365,7 @@ class MDIcons {
   static const caravan = const IconData(0xf7AC, fontFamily: _family);
   static const cards = const IconData(0xf638, fontFamily: _family);
   static const cardsOutline = const IconData(0xf639, fontFamily: _family);
-  static const cardsPlayingOutline =
-      const IconData(0xf63A, fontFamily: _family);
+  static const cardsPlayingOutline = const IconData(0xf63A, fontFamily: _family);
   static const cardsVariant = const IconData(0xf6C6, fontFamily: _family);
   static const carrot = const IconData(0xf10F, fontFamily: _family);
   static const cart = const IconData(0xf110, fontFamily: _family);
@@ -449,43 +407,28 @@ class MDIcons {
   static const chartLineStacked = const IconData(0xf76A, fontFamily: _family);
   static const chartLineVariant = const IconData(0xf7B0, fontFamily: _family);
   static const chartPie = const IconData(0xf12B, fontFamily: _family);
-  static const chartScatterplotHexbin =
-      const IconData(0xf66D, fontFamily: _family);
+  static const chartScatterplotHexbin = const IconData(0xf66D, fontFamily: _family);
   static const chartTimeline = const IconData(0xf66E, fontFamily: _family);
   static const check = const IconData(0xf12C, fontFamily: _family);
   static const checkAll = const IconData(0xf12D, fontFamily: _family);
   static const checkCircle = const IconData(0xf5E0, fontFamily: _family);
   static const checkCircleOutline = const IconData(0xf5E1, fontFamily: _family);
   static const checkboxBlank = const IconData(0xf12E, fontFamily: _family);
-  static const checkboxBlankCircle =
-      const IconData(0xf12F, fontFamily: _family);
-  static const checkboxBlankCircleOutline =
-      const IconData(0xf130, fontFamily: _family);
-  static const checkboxBlankOutline =
-      const IconData(0xf131, fontFamily: _family);
+  static const checkboxBlankCircle = const IconData(0xf12F, fontFamily: _family);
+  static const checkboxBlankCircleOutline = const IconData(0xf130, fontFamily: _family);
+  static const checkboxBlankOutline = const IconData(0xf131, fontFamily: _family);
   static const checkboxMarked = const IconData(0xf132, fontFamily: _family);
-  static const checkboxMarkedCircle =
-      const IconData(0xf133, fontFamily: _family);
-  static const checkboxMarkedCircleOutline =
-      const IconData(0xf134, fontFamily: _family);
-  static const checkboxMarkedOutline =
-      const IconData(0xf135, fontFamily: _family);
-  static const checkboxMultipleBlank =
-      const IconData(0xf136, fontFamily: _family);
-  static const checkboxMultipleBlankCircle =
-      const IconData(0xf63B, fontFamily: _family);
-  static const checkboxMultipleBlankCircleOutline =
-      const IconData(0xf63C, fontFamily: _family);
-  static const checkboxMultipleBlankOutline =
-      const IconData(0xf137, fontFamily: _family);
-  static const checkboxMultipleMarked =
-      const IconData(0xf138, fontFamily: _family);
-  static const checkboxMultipleMarkedCircle =
-      const IconData(0xf63D, fontFamily: _family);
-  static const checkboxMultipleMarkedCircleOutline =
-      const IconData(0xf63E, fontFamily: _family);
-  static const checkboxMultipleMarkedOutline =
-      const IconData(0xf139, fontFamily: _family);
+  static const checkboxMarkedCircle = const IconData(0xf133, fontFamily: _family);
+  static const checkboxMarkedCircleOutline = const IconData(0xf134, fontFamily: _family);
+  static const checkboxMarkedOutline = const IconData(0xf135, fontFamily: _family);
+  static const checkboxMultipleBlank = const IconData(0xf136, fontFamily: _family);
+  static const checkboxMultipleBlankCircle = const IconData(0xf63B, fontFamily: _family);
+  static const checkboxMultipleBlankCircleOutline = const IconData(0xf63C, fontFamily: _family);
+  static const checkboxMultipleBlankOutline = const IconData(0xf137, fontFamily: _family);
+  static const checkboxMultipleMarked = const IconData(0xf138, fontFamily: _family);
+  static const checkboxMultipleMarkedCircle = const IconData(0xf63D, fontFamily: _family);
+  static const checkboxMultipleMarkedCircleOutline = const IconData(0xf63E, fontFamily: _family);
+  static const checkboxMultipleMarkedOutline = const IconData(0xf139, fontFamily: _family);
   static const checkerboard = const IconData(0xf13A, fontFamily: _family);
   static const chemicalWeapon = const IconData(0xf13B, fontFamily: _family);
   static const chevronDoubleDown = const IconData(0xf13C, fontFamily: _family);
@@ -530,8 +473,7 @@ class MDIcons {
   static const closeCircleOutline = const IconData(0xf15A, fontFamily: _family);
   static const closeNetwork = const IconData(0xf15B, fontFamily: _family);
   static const closeOctagon = const IconData(0xf15C, fontFamily: _family);
-  static const closeOctagonOutline =
-      const IconData(0xf15D, fontFamily: _family);
+  static const closeOctagonOutline = const IconData(0xf15D, fontFamily: _family);
   static const closeOutline = const IconData(0xf6C8, fontFamily: _family);
   static const closedCaption = const IconData(0xf15E, fontFamily: _family);
   static const cloud = const IconData(0xf15F, fontFamily: _family);
@@ -551,14 +493,11 @@ class MDIcons {
   static const codeBrackets = const IconData(0xf16A, fontFamily: _family);
   static const codeEqual = const IconData(0xf16B, fontFamily: _family);
   static const codeGreaterThan = const IconData(0xf16C, fontFamily: _family);
-  static const codeGreaterThanOrEqual =
-      const IconData(0xf16D, fontFamily: _family);
+  static const codeGreaterThanOrEqual = const IconData(0xf16D, fontFamily: _family);
   static const codeLessThan = const IconData(0xf16E, fontFamily: _family);
-  static const codeLessThanOrEqual =
-      const IconData(0xf16F, fontFamily: _family);
+  static const codeLessThanOrEqual = const IconData(0xf16F, fontFamily: _family);
   static const codeNotEqual = const IconData(0xf170, fontFamily: _family);
-  static const codeNotEqualVariant =
-      const IconData(0xf171, fontFamily: _family);
+  static const codeNotEqualVariant = const IconData(0xf171, fontFamily: _family);
   static const codeParentheses = const IconData(0xf172, fontFamily: _family);
   static const codeString = const IconData(0xf173, fontFamily: _family);
   static const codeTags = const IconData(0xf174, fontFamily: _family);
@@ -573,25 +512,18 @@ class MDIcons {
   static const colorHelper = const IconData(0xf179, fontFamily: _family);
   static const comment = const IconData(0xf17A, fontFamily: _family);
   static const commentAccount = const IconData(0xf17B, fontFamily: _family);
-  static const commentAccountOutline =
-      const IconData(0xf17C, fontFamily: _family);
+  static const commentAccountOutline = const IconData(0xf17C, fontFamily: _family);
   static const commentAlert = const IconData(0xf17D, fontFamily: _family);
-  static const commentAlertOutline =
-      const IconData(0xf17E, fontFamily: _family);
+  static const commentAlertOutline = const IconData(0xf17E, fontFamily: _family);
   static const commentCheck = const IconData(0xf17F, fontFamily: _family);
-  static const commentCheckOutline =
-      const IconData(0xf180, fontFamily: _family);
-  static const commentMultipleOutline =
-      const IconData(0xf181, fontFamily: _family);
+  static const commentCheckOutline = const IconData(0xf180, fontFamily: _family);
+  static const commentMultipleOutline = const IconData(0xf181, fontFamily: _family);
   static const commentOutline = const IconData(0xf182, fontFamily: _family);
   static const commentPlusOutline = const IconData(0xf183, fontFamily: _family);
   static const commentProcessing = const IconData(0xf184, fontFamily: _family);
-  static const commentProcessingOutline =
-      const IconData(0xf185, fontFamily: _family);
-  static const commentQuestionOutline =
-      const IconData(0xf186, fontFamily: _family);
-  static const commentRemoveOutline =
-      const IconData(0xf187, fontFamily: _family);
+  static const commentProcessingOutline = const IconData(0xf185, fontFamily: _family);
+  static const commentQuestionOutline = const IconData(0xf186, fontFamily: _family);
+  static const commentRemoveOutline = const IconData(0xf187, fontFamily: _family);
   static const commentText = const IconData(0xf188, fontFamily: _family);
   static const commentTextOutline = const IconData(0xf189, fontFamily: _family);
   static const compare = const IconData(0xf18A, fontFamily: _family);
@@ -607,8 +539,7 @@ class MDIcons {
   static const contentPaste = const IconData(0xf192, fontFamily: _family);
   static const contentSave = const IconData(0xf193, fontFamily: _family);
   static const contentSaveAll = const IconData(0xf194, fontFamily: _family);
-  static const contentSaveSettings =
-      const IconData(0xf61B, fontFamily: _family);
+  static const contentSaveSettings = const IconData(0xf61B, fontFamily: _family);
   static const contrast = const IconData(0xf195, fontFamily: _family);
   static const contrastBox = const IconData(0xf196, fontFamily: _family);
   static const contrastCircle = const IconData(0xf197, fontFamily: _family);
@@ -656,8 +587,7 @@ class MDIcons {
   static const currencyUsd = const IconData(0xf1B3, fontFamily: _family);
   static const currencyUsdOff = const IconData(0xf679, fontFamily: _family);
   static const cursorDefault = const IconData(0xf1B4, fontFamily: _family);
-  static const cursorDefaultOutline =
-      const IconData(0xf1B5, fontFamily: _family);
+  static const cursorDefaultOutline = const IconData(0xf1B5, fontFamily: _family);
   static const cursorMove = const IconData(0xf1B6, fontFamily: _family);
   static const cursorPointer = const IconData(0xf1B7, fontFamily: _family);
   static const cursorText = const IconData(0xf5E7, fontFamily: _family);
@@ -718,8 +648,7 @@ class MDIcons {
   static const domain = const IconData(0xf1D7, fontFamily: _family);
   static const donkey = const IconData(0xf7C1, fontFamily: _family);
   static const dotsHorizontal = const IconData(0xf1D8, fontFamily: _family);
-  static const dotsHorizontalCircle =
-      const IconData(0xf7C2, fontFamily: _family);
+  static const dotsHorizontalCircle = const IconData(0xf7C2, fontFamily: _family);
   static const dotsVertical = const IconData(0xf1D9, fontFamily: _family);
   static const dotsVerticalCircle = const IconData(0xf7C3, fontFamily: _family);
   static const douban = const IconData(0xf699, fontFamily: _family);
@@ -825,8 +754,7 @@ class MDIcons {
   static const filePlus = const IconData(0xf751, fontFamily: _family);
   static const filePowerpoint = const IconData(0xf227, fontFamily: _family);
   static const filePowerpointBox = const IconData(0xf228, fontFamily: _family);
-  static const filePresentationBox =
-      const IconData(0xf229, fontFamily: _family);
+  static const filePresentationBox = const IconData(0xf229, fontFamily: _family);
   static const fileRestore = const IconData(0xf670, fontFamily: _family);
   static const fileSend = const IconData(0xf22A, fontFamily: _family);
   static const fileTree = const IconData(0xf645, fontFamily: _family);
@@ -840,8 +768,7 @@ class MDIcons {
   static const filter = const IconData(0xf232, fontFamily: _family);
   static const filterOutline = const IconData(0xf233, fontFamily: _family);
   static const filterRemove = const IconData(0xf234, fontFamily: _family);
-  static const filterRemoveOutline =
-      const IconData(0xf235, fontFamily: _family);
+  static const filterRemoveOutline = const IconData(0xf235, fontFamily: _family);
   static const filterVariant = const IconData(0xf236, fontFamily: _family);
   static const findReplace = const IconData(0xf6D3, fontFamily: _family);
   static const fingerprint = const IconData(0xf237, fontFamily: _family);
@@ -879,10 +806,8 @@ class MDIcons {
   static const folderLockOpen = const IconData(0xf251, fontFamily: _family);
   static const folderMove = const IconData(0xf252, fontFamily: _family);
   static const folderMultiple = const IconData(0xf253, fontFamily: _family);
-  static const folderMultipleImage =
-      const IconData(0xf254, fontFamily: _family);
-  static const folderMultipleOutline =
-      const IconData(0xf255, fontFamily: _family);
+  static const folderMultipleImage = const IconData(0xf254, fontFamily: _family);
+  static const folderMultipleOutline = const IconData(0xf255, fontFamily: _family);
   static const folderOpen = const IconData(0xf76F, fontFamily: _family);
   static const folderOutline = const IconData(0xf256, fontFamily: _family);
   static const folderPlus = const IconData(0xf257, fontFamily: _family);
@@ -907,8 +832,7 @@ class MDIcons {
   static const formatAlignMiddle = const IconData(0xf753, fontFamily: _family);
   static const formatAlignRight = const IconData(0xf263, fontFamily: _family);
   static const formatAlignTop = const IconData(0xf754, fontFamily: _family);
-  static const formatAnnotationPlus =
-      const IconData(0xf646, fontFamily: _family);
+  static const formatAnnotationPlus = const IconData(0xf646, fontFamily: _family);
   static const formatBold = const IconData(0xf264, fontFamily: _family);
   static const formatClear = const IconData(0xf265, fontFamily: _family);
   static const formatColorFill = const IconData(0xf266, fontFamily: _family);
@@ -924,29 +848,21 @@ class MDIcons {
   static const formatHeader_4 = const IconData(0xf26E, fontFamily: _family);
   static const formatHeader_5 = const IconData(0xf26F, fontFamily: _family);
   static const formatHeader_6 = const IconData(0xf270, fontFamily: _family);
-  static const formatHeaderDecrease =
-      const IconData(0xf271, fontFamily: _family);
+  static const formatHeaderDecrease = const IconData(0xf271, fontFamily: _family);
   static const formatHeaderEqual = const IconData(0xf272, fontFamily: _family);
-  static const formatHeaderIncrease =
-      const IconData(0xf273, fontFamily: _family);
+  static const formatHeaderIncrease = const IconData(0xf273, fontFamily: _family);
   static const formatHeaderPound = const IconData(0xf274, fontFamily: _family);
-  static const formatHorizontalAlignCenter =
-      const IconData(0xf61E, fontFamily: _family);
-  static const formatHorizontalAlignLeft =
-      const IconData(0xf61F, fontFamily: _family);
-  static const formatHorizontalAlignRight =
-      const IconData(0xf620, fontFamily: _family);
-  static const formatIndentDecrease =
-      const IconData(0xf275, fontFamily: _family);
-  static const formatIndentIncrease =
-      const IconData(0xf276, fontFamily: _family);
+  static const formatHorizontalAlignCenter = const IconData(0xf61E, fontFamily: _family);
+  static const formatHorizontalAlignLeft = const IconData(0xf61F, fontFamily: _family);
+  static const formatHorizontalAlignRight = const IconData(0xf620, fontFamily: _family);
+  static const formatIndentDecrease = const IconData(0xf275, fontFamily: _family);
+  static const formatIndentIncrease = const IconData(0xf276, fontFamily: _family);
   static const formatItalic = const IconData(0xf277, fontFamily: _family);
   static const formatLineSpacing = const IconData(0xf278, fontFamily: _family);
   static const formatLineStyle = const IconData(0xf5C8, fontFamily: _family);
   static const formatLineWeight = const IconData(0xf5C9, fontFamily: _family);
   static const formatListBulleted = const IconData(0xf279, fontFamily: _family);
-  static const formatListBulletedType =
-      const IconData(0xf27A, fontFamily: _family);
+  static const formatListBulletedType = const IconData(0xf27A, fontFamily: _family);
   static const formatListChecks = const IconData(0xf755, fontFamily: _family);
   static const formatListNumbers = const IconData(0xf27B, fontFamily: _family);
   static const formatPageBreak = const IconData(0xf6D6, fontFamily: _family);
@@ -958,30 +874,22 @@ class MDIcons {
   static const formatRotate_90 = const IconData(0xf6A9, fontFamily: _family);
   static const formatSection = const IconData(0xf69E, fontFamily: _family);
   static const formatSize = const IconData(0xf27F, fontFamily: _family);
-  static const formatStrikethrough =
-      const IconData(0xf280, fontFamily: _family);
-  static const formatStrikethroughVariant =
-      const IconData(0xf281, fontFamily: _family);
+  static const formatStrikethrough = const IconData(0xf280, fontFamily: _family);
+  static const formatStrikethroughVariant = const IconData(0xf281, fontFamily: _family);
   static const formatSubscript = const IconData(0xf282, fontFamily: _family);
   static const formatSuperscript = const IconData(0xf283, fontFamily: _family);
   static const formatText = const IconData(0xf284, fontFamily: _family);
-  static const formatTextdirectionLToR =
-      const IconData(0xf285, fontFamily: _family);
-  static const formatTextdirectionRToL =
-      const IconData(0xf286, fontFamily: _family);
+  static const formatTextdirectionLToR = const IconData(0xf285, fontFamily: _family);
+  static const formatTextdirectionRToL = const IconData(0xf286, fontFamily: _family);
   static const formatTitle = const IconData(0xf5F4, fontFamily: _family);
   static const formatUnderline = const IconData(0xf287, fontFamily: _family);
-  static const formatVerticalAlignBottom =
-      const IconData(0xf621, fontFamily: _family);
-  static const formatVerticalAlignCenter =
-      const IconData(0xf622, fontFamily: _family);
-  static const formatVerticalAlignTop =
-      const IconData(0xf623, fontFamily: _family);
+  static const formatVerticalAlignBottom = const IconData(0xf621, fontFamily: _family);
+  static const formatVerticalAlignCenter = const IconData(0xf622, fontFamily: _family);
+  static const formatVerticalAlignTop = const IconData(0xf623, fontFamily: _family);
   static const formatWrapInline = const IconData(0xf288, fontFamily: _family);
   static const formatWrapSquare = const IconData(0xf289, fontFamily: _family);
   static const formatWrapTight = const IconData(0xf28A, fontFamily: _family);
-  static const formatWrapTopBottom =
-      const IconData(0xf28B, fontFamily: _family);
+  static const formatWrapTopBottom = const IconData(0xf28B, fontFamily: _family);
   static const forum = const IconData(0xf28C, fontFamily: _family);
   static const forward = const IconData(0xf28D, fontFamily: _family);
   static const foursquare = const IconData(0xf28E, fontFamily: _family);
@@ -1013,8 +921,7 @@ class MDIcons {
   static const gestureSwipeRight = const IconData(0xf73E, fontFamily: _family);
   static const gestureSwipeUp = const IconData(0xf73F, fontFamily: _family);
   static const gestureTap = const IconData(0xf740, fontFamily: _family);
-  static const gestureTwoDoubleTap =
-      const IconData(0xf741, fontFamily: _family);
+  static const gestureTwoDoubleTap = const IconData(0xf741, fontFamily: _family);
   static const gestureTwoTap = const IconData(0xf742, fontFamily: _family);
   static const ghost = const IconData(0xf2A0, fontFamily: _family);
   static const gift = const IconData(0xf2A1, fontFamily: _family);
@@ -1037,14 +944,11 @@ class MDIcons {
   static const googleCardboard = const IconData(0xf2AE, fontFamily: _family);
   static const googleChrome = const IconData(0xf2AF, fontFamily: _family);
   static const googleCircles = const IconData(0xf2B0, fontFamily: _family);
-  static const googleCirclesCommunities =
-      const IconData(0xf2B1, fontFamily: _family);
-  static const googleCirclesExtended =
-      const IconData(0xf2B2, fontFamily: _family);
+  static const googleCirclesCommunities = const IconData(0xf2B1, fontFamily: _family);
+  static const googleCirclesExtended = const IconData(0xf2B2, fontFamily: _family);
   static const googleCirclesGroup = const IconData(0xf2B3, fontFamily: _family);
   static const googleController = const IconData(0xf2B4, fontFamily: _family);
-  static const googleControllerOff =
-      const IconData(0xf2B5, fontFamily: _family);
+  static const googleControllerOff = const IconData(0xf2B5, fontFamily: _family);
   static const googleDrive = const IconData(0xf2B6, fontFamily: _family);
   static const googleEarth = const IconData(0xf2B7, fontFamily: _family);
   static const googleGlass = const IconData(0xf2B8, fontFamily: _family);
@@ -1138,18 +1042,14 @@ class MDIcons {
   static const imageBroken = const IconData(0xf2ED, fontFamily: _family);
   static const imageBrokenVariant = const IconData(0xf2EE, fontFamily: _family);
   static const imageFilter = const IconData(0xf2EF, fontFamily: _family);
-  static const imageFilterBlackWhite =
-      const IconData(0xf2F0, fontFamily: _family);
-  static const imageFilterCenterFocus =
-      const IconData(0xf2F1, fontFamily: _family);
-  static const imageFilterCenterFocusWeak =
-      const IconData(0xf2F2, fontFamily: _family);
+  static const imageFilterBlackWhite = const IconData(0xf2F0, fontFamily: _family);
+  static const imageFilterCenterFocus = const IconData(0xf2F1, fontFamily: _family);
+  static const imageFilterCenterFocusWeak = const IconData(0xf2F2, fontFamily: _family);
   static const imageFilterDrama = const IconData(0xf2F3, fontFamily: _family);
   static const imageFilterFrames = const IconData(0xf2F4, fontFamily: _family);
   static const imageFilterHdr = const IconData(0xf2F5, fontFamily: _family);
   static const imageFilterNone = const IconData(0xf2F6, fontFamily: _family);
-  static const imageFilterTiltShift =
-      const IconData(0xf2F7, fontFamily: _family);
+  static const imageFilterTiltShift = const IconData(0xf2F7, fontFamily: _family);
   static const imageFilterVintage = const IconData(0xf2F8, fontFamily: _family);
   static const imageMultiple = const IconData(0xf2F9, fontFamily: _family);
   static const import = const IconData(0xf2FA, fontFamily: _family);
@@ -1265,8 +1165,7 @@ class MDIcons {
   static const magnetOn = const IconData(0xf348, fontFamily: _family);
   static const magnify = const IconData(0xf349, fontFamily: _family);
   static const magnifyMinus = const IconData(0xf34A, fontFamily: _family);
-  static const magnifyMinusOutline =
-      const IconData(0xf6EB, fontFamily: _family);
+  static const magnifyMinusOutline = const IconData(0xf6EB, fontFamily: _family);
   static const magnifyPlus = const IconData(0xf34B, fontFamily: _family);
   static const magnifyPlusOutline = const IconData(0xf6EC, fontFamily: _family);
   static const mailRu = const IconData(0xf34C, fontFamily: _family);
@@ -1311,8 +1210,7 @@ class MDIcons {
   static const messageReply = const IconData(0xf367, fontFamily: _family);
   static const messageReplyText = const IconData(0xf368, fontFamily: _family);
   static const messageSettings = const IconData(0xf6EF, fontFamily: _family);
-  static const messageSettingsVariant =
-      const IconData(0xf6F0, fontFamily: _family);
+  static const messageSettingsVariant = const IconData(0xf6F0, fontFamily: _family);
   static const messageText = const IconData(0xf369, fontFamily: _family);
   static const messageTextOutline = const IconData(0xf36A, fontFamily: _family);
   static const messageVideo = const IconData(0xf36B, fontFamily: _family);
@@ -1325,8 +1223,7 @@ class MDIcons {
   static const microphoneOutline = const IconData(0xf36E, fontFamily: _family);
   static const microphoneSettings = const IconData(0xf36F, fontFamily: _family);
   static const microphoneVariant = const IconData(0xf370, fontFamily: _family);
-  static const microphoneVariantOff =
-      const IconData(0xf371, fontFamily: _family);
+  static const microphoneVariantOff = const IconData(0xf371, fontFamily: _family);
   static const microscope = const IconData(0xf654, fontFamily: _family);
   static const microsoft = const IconData(0xf372, fontFamily: _family);
   static const minecraft = const IconData(0xf373, fontFamily: _family);
@@ -1360,8 +1257,7 @@ class MDIcons {
   static const musicCircle = const IconData(0xf386, fontFamily: _family);
   static const musicNote = const IconData(0xf387, fontFamily: _family);
   static const musicNoteBluetooth = const IconData(0xf5FE, fontFamily: _family);
-  static const musicNoteBluetoothOff =
-      const IconData(0xf5FF, fontFamily: _family);
+  static const musicNoteBluetoothOff = const IconData(0xf5FF, fontFamily: _family);
   static const musicNoteEighth = const IconData(0xf388, fontFamily: _family);
   static const musicNoteHalf = const IconData(0xf389, fontFamily: _family);
   static const musicNoteOff = const IconData(0xf38A, fontFamily: _family);
@@ -1388,72 +1284,48 @@ class MDIcons {
   static const nodejs = const IconData(0xf399, fontFamily: _family);
   static const note = const IconData(0xf39A, fontFamily: _family);
   static const noteMultiple = const IconData(0xf6B7, fontFamily: _family);
-  static const noteMultipleOutline =
-      const IconData(0xf6B8, fontFamily: _family);
+  static const noteMultipleOutline = const IconData(0xf6B8, fontFamily: _family);
   static const noteOutline = const IconData(0xf39B, fontFamily: _family);
   static const notePlus = const IconData(0xf39C, fontFamily: _family);
   static const notePlusOutline = const IconData(0xf39D, fontFamily: _family);
   static const noteText = const IconData(0xf39E, fontFamily: _family);
-  static const notificationClearAll =
-      const IconData(0xf39F, fontFamily: _family);
+  static const notificationClearAll = const IconData(0xf39F, fontFamily: _family);
   static const npm = const IconData(0xf6F6, fontFamily: _family);
   static const nuke = const IconData(0xf6A3, fontFamily: _family);
   static const numeric = const IconData(0xf3A0, fontFamily: _family);
   static const numeric_0Box = const IconData(0xf3A1, fontFamily: _family);
-  static const numeric_0BoxMultipleOutline =
-      const IconData(0xf3A2, fontFamily: _family);
-  static const numeric_0BoxOutline =
-      const IconData(0xf3A3, fontFamily: _family);
+  static const numeric_0BoxMultipleOutline = const IconData(0xf3A2, fontFamily: _family);
+  static const numeric_0BoxOutline = const IconData(0xf3A3, fontFamily: _family);
   static const numeric_1Box = const IconData(0xf3A4, fontFamily: _family);
-  static const numeric_1BoxMultipleOutline =
-      const IconData(0xf3A5, fontFamily: _family);
-  static const numeric_1BoxOutline =
-      const IconData(0xf3A6, fontFamily: _family);
+  static const numeric_1BoxMultipleOutline = const IconData(0xf3A5, fontFamily: _family);
+  static const numeric_1BoxOutline = const IconData(0xf3A6, fontFamily: _family);
   static const numeric_2Box = const IconData(0xf3A7, fontFamily: _family);
-  static const numeric_2BoxMultipleOutline =
-      const IconData(0xf3A8, fontFamily: _family);
-  static const numeric_2BoxOutline =
-      const IconData(0xf3A9, fontFamily: _family);
+  static const numeric_2BoxMultipleOutline = const IconData(0xf3A8, fontFamily: _family);
+  static const numeric_2BoxOutline = const IconData(0xf3A9, fontFamily: _family);
   static const numeric_3Box = const IconData(0xf3AA, fontFamily: _family);
-  static const numeric_3BoxMultipleOutline =
-      const IconData(0xf3AB, fontFamily: _family);
-  static const numeric_3BoxOutline =
-      const IconData(0xf3AC, fontFamily: _family);
+  static const numeric_3BoxMultipleOutline = const IconData(0xf3AB, fontFamily: _family);
+  static const numeric_3BoxOutline = const IconData(0xf3AC, fontFamily: _family);
   static const numeric_4Box = const IconData(0xf3AD, fontFamily: _family);
-  static const numeric_4BoxMultipleOutline =
-      const IconData(0xf3AE, fontFamily: _family);
-  static const numeric_4BoxOutline =
-      const IconData(0xf3AF, fontFamily: _family);
+  static const numeric_4BoxMultipleOutline = const IconData(0xf3AE, fontFamily: _family);
+  static const numeric_4BoxOutline = const IconData(0xf3AF, fontFamily: _family);
   static const numeric_5Box = const IconData(0xf3B0, fontFamily: _family);
-  static const numeric_5BoxMultipleOutline =
-      const IconData(0xf3B1, fontFamily: _family);
-  static const numeric_5BoxOutline =
-      const IconData(0xf3B2, fontFamily: _family);
+  static const numeric_5BoxMultipleOutline = const IconData(0xf3B1, fontFamily: _family);
+  static const numeric_5BoxOutline = const IconData(0xf3B2, fontFamily: _family);
   static const numeric_6Box = const IconData(0xf3B3, fontFamily: _family);
-  static const numeric_6BoxMultipleOutline =
-      const IconData(0xf3B4, fontFamily: _family);
-  static const numeric_6BoxOutline =
-      const IconData(0xf3B5, fontFamily: _family);
+  static const numeric_6BoxMultipleOutline = const IconData(0xf3B4, fontFamily: _family);
+  static const numeric_6BoxOutline = const IconData(0xf3B5, fontFamily: _family);
   static const numeric_7Box = const IconData(0xf3B6, fontFamily: _family);
-  static const numeric_7BoxMultipleOutline =
-      const IconData(0xf3B7, fontFamily: _family);
-  static const numeric_7BoxOutline =
-      const IconData(0xf3B8, fontFamily: _family);
+  static const numeric_7BoxMultipleOutline = const IconData(0xf3B7, fontFamily: _family);
+  static const numeric_7BoxOutline = const IconData(0xf3B8, fontFamily: _family);
   static const numeric_8Box = const IconData(0xf3B9, fontFamily: _family);
-  static const numeric_8BoxMultipleOutline =
-      const IconData(0xf3BA, fontFamily: _family);
-  static const numeric_8BoxOutline =
-      const IconData(0xf3BB, fontFamily: _family);
+  static const numeric_8BoxMultipleOutline = const IconData(0xf3BA, fontFamily: _family);
+  static const numeric_8BoxOutline = const IconData(0xf3BB, fontFamily: _family);
   static const numeric_9Box = const IconData(0xf3BC, fontFamily: _family);
-  static const numeric_9BoxMultipleOutline =
-      const IconData(0xf3BD, fontFamily: _family);
-  static const numeric_9BoxOutline =
-      const IconData(0xf3BE, fontFamily: _family);
+  static const numeric_9BoxMultipleOutline = const IconData(0xf3BD, fontFamily: _family);
+  static const numeric_9BoxOutline = const IconData(0xf3BE, fontFamily: _family);
   static const numeric_9PlusBox = const IconData(0xf3BF, fontFamily: _family);
-  static const numeric_9PlusBoxMultipleOutline =
-      const IconData(0xf3C0, fontFamily: _family);
-  static const numeric_9PlusBoxOutline =
-      const IconData(0xf3C1, fontFamily: _family);
+  static const numeric_9PlusBoxMultipleOutline = const IconData(0xf3C0, fontFamily: _family);
+  static const numeric_9PlusBoxOutline = const IconData(0xf3C1, fontFamily: _family);
   static const nut = const IconData(0xf6F7, fontFamily: _family);
   static const nutrition = const IconData(0xf3C2, fontFamily: _family);
   static const oar = const IconData(0xf67B, fontFamily: _family);
@@ -1481,17 +1353,14 @@ class MDIcons {
   static const packageDown = const IconData(0xf3D4, fontFamily: _family);
   static const packageUp = const IconData(0xf3D5, fontFamily: _family);
   static const packageVariant = const IconData(0xf3D6, fontFamily: _family);
-  static const packageVariantClosed =
-      const IconData(0xf3D7, fontFamily: _family);
+  static const packageVariantClosed = const IconData(0xf3D7, fontFamily: _family);
   static const pageFirst = const IconData(0xf600, fontFamily: _family);
   static const pageLast = const IconData(0xf601, fontFamily: _family);
   static const pageLayoutBody = const IconData(0xf6F9, fontFamily: _family);
   static const pageLayoutFooter = const IconData(0xf6FA, fontFamily: _family);
   static const pageLayoutHeader = const IconData(0xf6FB, fontFamily: _family);
-  static const pageLayoutSidebarLeft =
-      const IconData(0xf6FC, fontFamily: _family);
-  static const pageLayoutSidebarRight =
-      const IconData(0xf6FD, fontFamily: _family);
+  static const pageLayoutSidebarLeft = const IconData(0xf6FC, fontFamily: _family);
+  static const pageLayoutSidebarRight = const IconData(0xf6FD, fontFamily: _family);
   static const palette = const IconData(0xf3D8, fontFamily: _family);
   static const paletteAdvanced = const IconData(0xf3D9, fontFamily: _family);
   static const panda = const IconData(0xf3DA, fontFamily: _family);
@@ -1509,8 +1378,7 @@ class MDIcons {
   static const pauseCircle = const IconData(0xf3E5, fontFamily: _family);
   static const pauseCircleOutline = const IconData(0xf3E6, fontFamily: _family);
   static const pauseOctagon = const IconData(0xf3E7, fontFamily: _family);
-  static const pauseOctagonOutline =
-      const IconData(0xf3E8, fontFamily: _family);
+  static const pauseOctagonOutline = const IconData(0xf3E8, fontFamily: _family);
   static const paw = const IconData(0xf3E9, fontFamily: _family);
   static const pawOff = const IconData(0xf657, fontFamily: _family);
   static const pen = const IconData(0xf3EA, fontFamily: _family);
@@ -1518,8 +1386,7 @@ class MDIcons {
   static const pencilBox = const IconData(0xf3EC, fontFamily: _family);
   static const pencilBoxOutline = const IconData(0xf3ED, fontFamily: _family);
   static const pencilCircle = const IconData(0xf6FE, fontFamily: _family);
-  static const pencilCircleOutline =
-      const IconData(0xf775, fontFamily: _family);
+  static const pencilCircleOutline = const IconData(0xf775, fontFamily: _family);
   static const pencilLock = const IconData(0xf3EE, fontFamily: _family);
   static const pencilOff = const IconData(0xf3EF, fontFamily: _family);
   static const pentagon = const IconData(0xf6FF, fontFamily: _family);
@@ -1566,8 +1433,7 @@ class MDIcons {
   static const playCircle = const IconData(0xf40C, fontFamily: _family);
   static const playCircleOutline = const IconData(0xf40D, fontFamily: _family);
   static const playPause = const IconData(0xf40E, fontFamily: _family);
-  static const playProtectedContent =
-      const IconData(0xf40F, fontFamily: _family);
+  static const playProtectedContent = const IconData(0xf40F, fontFamily: _family);
   static const playlistCheck = const IconData(0xf5C7, fontFamily: _family);
   static const playlistMinus = const IconData(0xf410, fontFamily: _family);
   static const playlistPlay = const IconData(0xf411, fontFamily: _family);
@@ -1579,8 +1445,7 @@ class MDIcons {
   static const plusBox = const IconData(0xf416, fontFamily: _family);
   static const plusBoxOutline = const IconData(0xf703, fontFamily: _family);
   static const plusCircle = const IconData(0xf417, fontFamily: _family);
-  static const plusCircleMultipleOutline =
-      const IconData(0xf418, fontFamily: _family);
+  static const plusCircleMultipleOutline = const IconData(0xf418, fontFamily: _family);
   static const plusCircleOutline = const IconData(0xf419, fontFamily: _family);
   static const plusNetwork = const IconData(0xf41A, fontFamily: _family);
   static const plusOne = const IconData(0xf41B, fontFamily: _family);
@@ -1614,8 +1479,7 @@ class MDIcons {
   static const printerSettings = const IconData(0xf706, fontFamily: _family);
   static const priorityHigh = const IconData(0xf603, fontFamily: _family);
   static const priorityLow = const IconData(0xf604, fontFamily: _family);
-  static const professionalHexagon =
-      const IconData(0xf42D, fontFamily: _family);
+  static const professionalHexagon = const IconData(0xf42D, fontFamily: _family);
   static const projector = const IconData(0xf42E, fontFamily: _family);
   static const projectorScreen = const IconData(0xf42F, fontFamily: _family);
   static const publish = const IconData(0xf6A6, fontFamily: _family);
@@ -1717,8 +1581,7 @@ class MDIcons {
   static const searchWeb = const IconData(0xf70E, fontFamily: _family);
   static const seatFlat = const IconData(0xf47B, fontFamily: _family);
   static const seatFlatAngled = const IconData(0xf47C, fontFamily: _family);
-  static const seatIndividualSuite =
-      const IconData(0xf47D, fontFamily: _family);
+  static const seatIndividualSuite = const IconData(0xf47D, fontFamily: _family);
   static const seatLegroomExtra = const IconData(0xf47E, fontFamily: _family);
   static const seatLegroomNormal = const IconData(0xf47F, fontFamily: _family);
   static const seatLegroomReduced = const IconData(0xf480, fontFamily: _family);
@@ -1797,12 +1660,10 @@ class MDIcons {
   static const skipForward = const IconData(0xf4AC, fontFamily: _family);
   static const skipNext = const IconData(0xf4AD, fontFamily: _family);
   static const skipNextCircle = const IconData(0xf661, fontFamily: _family);
-  static const skipNextCircleOutline =
-      const IconData(0xf662, fontFamily: _family);
+  static const skipNextCircleOutline = const IconData(0xf662, fontFamily: _family);
   static const skipPrevious = const IconData(0xf4AE, fontFamily: _family);
   static const skipPreviousCircle = const IconData(0xf663, fontFamily: _family);
-  static const skipPreviousCircleOutline =
-      const IconData(0xf664, fontFamily: _family);
+  static const skipPreviousCircleOutline = const IconData(0xf664, fontFamily: _family);
   static const skull = const IconData(0xf68B, fontFamily: _family);
   static const skype = const IconData(0xf4AF, fontFamily: _family);
   static const skypeBusiness = const IconData(0xf4B0, fontFamily: _family);
@@ -1827,14 +1688,11 @@ class MDIcons {
   static const sourceBranch = const IconData(0xf62C, fontFamily: _family);
   static const sourceCommit = const IconData(0xf717, fontFamily: _family);
   static const sourceCommitEnd = const IconData(0xf718, fontFamily: _family);
-  static const sourceCommitEndLocal =
-      const IconData(0xf719, fontFamily: _family);
+  static const sourceCommitEndLocal = const IconData(0xf719, fontFamily: _family);
   static const sourceCommitLocal = const IconData(0xf71A, fontFamily: _family);
-  static const sourceCommitNextLocal =
-      const IconData(0xf71B, fontFamily: _family);
+  static const sourceCommitNextLocal = const IconData(0xf71B, fontFamily: _family);
   static const sourceCommitStart = const IconData(0xf71C, fontFamily: _family);
-  static const sourceCommitStartNextLocal =
-      const IconData(0xf71D, fontFamily: _family);
+  static const sourceCommitStartNextLocal = const IconData(0xf71D, fontFamily: _family);
   static const sourceFork = const IconData(0xf4C1, fontFamily: _family);
   static const sourceMerge = const IconData(0xf62D, fontFamily: _family);
   static const sourcePull = const IconData(0xf4C2, fontFamily: _family);
@@ -1879,10 +1737,8 @@ class MDIcons {
   static const store = const IconData(0xf4DC, fontFamily: _family);
   static const store_24Hour = const IconData(0xf4DD, fontFamily: _family);
   static const stove = const IconData(0xf4DE, fontFamily: _family);
-  static const subdirectoryArrowLeft =
-      const IconData(0xf60C, fontFamily: _family);
-  static const subdirectoryArrowRight =
-      const IconData(0xf60D, fontFamily: _family);
+  static const subdirectoryArrowLeft = const IconData(0xf60C, fontFamily: _family);
+  static const subdirectoryArrowRight = const IconData(0xf60D, fontFamily: _family);
   static const subway = const IconData(0xf6AB, fontFamily: _family);
   static const subwayVariant = const IconData(0xf4DF, fontFamily: _family);
   static const summit = const IconData(0xf785, fontFamily: _family);
@@ -1906,10 +1762,8 @@ class MDIcons {
   static const tabPlus = const IconData(0xf75B, fontFamily: _family);
   static const tabUnselected = const IconData(0xf4EA, fontFamily: _family);
   static const table = const IconData(0xf4EB, fontFamily: _family);
-  static const tableColumnPlusAfter =
-      const IconData(0xf4EC, fontFamily: _family);
-  static const tableColumnPlusBefore =
-      const IconData(0xf4ED, fontFamily: _family);
+  static const tableColumnPlusAfter = const IconData(0xf4EC, fontFamily: _family);
+  static const tableColumnPlusBefore = const IconData(0xf4ED, fontFamily: _family);
   static const tableColumnRemove = const IconData(0xf4EE, fontFamily: _family);
   static const tableColumnWidth = const IconData(0xf4EF, fontFamily: _family);
   static const tableEdit = const IconData(0xf4F0, fontFamily: _family);
@@ -1938,8 +1792,7 @@ class MDIcons {
   static const televisionClassic = const IconData(0xf7F3, fontFamily: _family);
   static const televisionGuide = const IconData(0xf503, fontFamily: _family);
   static const temperatureCelsius = const IconData(0xf504, fontFamily: _family);
-  static const temperatureFahrenheit =
-      const IconData(0xf505, fontFamily: _family);
+  static const temperatureFahrenheit = const IconData(0xf505, fontFamily: _family);
   static const temperatureKelvin = const IconData(0xf506, fontFamily: _family);
   static const tennis = const IconData(0xf507, fontFamily: _family);
   static const tent = const IconData(0xf508, fontFamily: _family);
@@ -1956,8 +1809,7 @@ class MDIcons {
   static const thermometer = const IconData(0xf50F, fontFamily: _family);
   static const thermometerLines = const IconData(0xf510, fontFamily: _family);
   static const thoughtBubble = const IconData(0xf7F5, fontFamily: _family);
-  static const thoughtBubbleOutline =
-      const IconData(0xf7F6, fontFamily: _family);
+  static const thoughtBubbleOutline = const IconData(0xf7F6, fontFamily: _family);
   static const thumbDown = const IconData(0xf511, fontFamily: _family);
   static const thumbDownOutline = const IconData(0xf512, fontFamily: _family);
   static const thumbUp = const IconData(0xf513, fontFamily: _family);
@@ -2011,8 +1863,7 @@ class MDIcons {
   static const trophyAward = const IconData(0xf539, fontFamily: _family);
   static const trophyOutline = const IconData(0xf53A, fontFamily: _family);
   static const trophyVariant = const IconData(0xf53B, fontFamily: _family);
-  static const trophyVariantOutline =
-      const IconData(0xf53C, fontFamily: _family);
+  static const trophyVariantOutline = const IconData(0xf53C, fontFamily: _family);
   static const truck = const IconData(0xf53D, fontFamily: _family);
   static const truckDelivery = const IconData(0xf53E, fontFamily: _family);
   static const truckFast = const IconData(0xf787, fontFamily: _family);
@@ -2030,18 +1881,15 @@ class MDIcons {
   static const twitterRetweet = const IconData(0xf547, fontFamily: _family);
   static const uber = const IconData(0xf748, fontFamily: _family);
   static const ubuntu = const IconData(0xf548, fontFamily: _family);
-  static const ultraHighDefinition =
-      const IconData(0xf7F8, fontFamily: _family);
+  static const ultraHighDefinition = const IconData(0xf7F8, fontFamily: _family);
   static const umbraco = const IconData(0xf549, fontFamily: _family);
   static const umbrella = const IconData(0xf54A, fontFamily: _family);
   static const umbrellaOutline = const IconData(0xf54B, fontFamily: _family);
   static const undo = const IconData(0xf54C, fontFamily: _family);
   static const undoVariant = const IconData(0xf54D, fontFamily: _family);
-  static const unfoldLessHorizontal =
-      const IconData(0xf54E, fontFamily: _family);
+  static const unfoldLessHorizontal = const IconData(0xf54E, fontFamily: _family);
   static const unfoldLessVertical = const IconData(0xf75F, fontFamily: _family);
-  static const unfoldMoreHorizontal =
-      const IconData(0xf54F, fontFamily: _family);
+  static const unfoldMoreHorizontal = const IconData(0xf54F, fontFamily: _family);
   static const unfoldMoreVertical = const IconData(0xf760, fontFamily: _family);
   static const ungroup = const IconData(0xf550, fontFamily: _family);
   static const unity = const IconData(0xf6AE, fontFamily: _family);
@@ -2056,8 +1904,7 @@ class MDIcons {
   static const vectorArrangeAbove = const IconData(0xf554, fontFamily: _family);
   static const vectorArrangeBelow = const IconData(0xf555, fontFamily: _family);
   static const vectorCircle = const IconData(0xf556, fontFamily: _family);
-  static const vectorCircleVariant =
-      const IconData(0xf557, fontFamily: _family);
+  static const vectorCircleVariant = const IconData(0xf557, fontFamily: _family);
   static const vectorCombine = const IconData(0xf558, fontFamily: _family);
   static const vectorCurve = const IconData(0xf559, fontFamily: _family);
   static const vectorDifference = const IconData(0xf55A, fontFamily: _family);
@@ -2135,11 +1982,9 @@ class MDIcons {
   static const weatherFog = const IconData(0xf591, fontFamily: _family);
   static const weatherHail = const IconData(0xf592, fontFamily: _family);
   static const weatherLightning = const IconData(0xf593, fontFamily: _family);
-  static const weatherLightningRainy =
-      const IconData(0xf67D, fontFamily: _family);
+  static const weatherLightningRainy = const IconData(0xf67D, fontFamily: _family);
   static const weatherNight = const IconData(0xf594, fontFamily: _family);
-  static const weatherPartlycloudy =
-      const IconData(0xf595, fontFamily: _family);
+  static const weatherPartlycloudy = const IconData(0xf595, fontFamily: _family);
   static const weatherPouring = const IconData(0xf596, fontFamily: _family);
   static const weatherRainy = const IconData(0xf597, fontFamily: _family);
   static const weatherSnowy = const IconData(0xf598, fontFamily: _family);
@@ -2149,8 +1994,7 @@ class MDIcons {
   static const weatherSunsetDown = const IconData(0xf59B, fontFamily: _family);
   static const weatherSunsetUp = const IconData(0xf59C, fontFamily: _family);
   static const weatherWindy = const IconData(0xf59D, fontFamily: _family);
-  static const weatherWindyVariant =
-      const IconData(0xf59E, fontFamily: _family);
+  static const weatherWindyVariant = const IconData(0xf59E, fontFamily: _family);
   static const web = const IconData(0xf59F, fontFamily: _family);
   static const webcam = const IconData(0xf5A0, fontFamily: _family);
   static const webhook = const IconData(0xf62F, fontFamily: _family);
@@ -2159,13 +2003,10 @@ class MDIcons {
   static const weight = const IconData(0xf5A1, fontFamily: _family);
   static const weightKilogram = const IconData(0xf5A2, fontFamily: _family);
   static const whatsapp = const IconData(0xf5A3, fontFamily: _family);
-  static const wheelchairAccessibility =
-      const IconData(0xf5A4, fontFamily: _family);
+  static const wheelchairAccessibility = const IconData(0xf5A4, fontFamily: _family);
   static const whiteBalanceAuto = const IconData(0xf5A5, fontFamily: _family);
-  static const whiteBalanceIncandescent =
-      const IconData(0xf5A6, fontFamily: _family);
-  static const whiteBalanceIridescent =
-      const IconData(0xf5A7, fontFamily: _family);
+  static const whiteBalanceIncandescent = const IconData(0xf5A6, fontFamily: _family);
+  static const whiteBalanceIridescent = const IconData(0xf5A7, fontFamily: _family);
   static const whiteBalanceSunny = const IconData(0xf5A8, fontFamily: _family);
   static const widgets = const IconData(0xf72B, fontFamily: _family);
   static const wifi = const IconData(0xf5A9, fontFamily: _family);
@@ -2188,18 +2029,12 @@ class MDIcons {
   static const xaml = const IconData(0xf673, fontFamily: _family);
   static const xbox = const IconData(0xf5B9, fontFamily: _family);
   static const xboxController = const IconData(0xf5BA, fontFamily: _family);
-  static const xboxControllerBatteryAlert =
-      const IconData(0xf74A, fontFamily: _family);
-  static const xboxControllerBatteryEmpty =
-      const IconData(0xf74B, fontFamily: _family);
-  static const xboxControllerBatteryFull =
-      const IconData(0xf74C, fontFamily: _family);
-  static const xboxControllerBatteryLow =
-      const IconData(0xf74D, fontFamily: _family);
-  static const xboxControllerBatteryMedium =
-      const IconData(0xf74E, fontFamily: _family);
-  static const xboxControllerBatteryUnknown =
-      const IconData(0xf74F, fontFamily: _family);
+  static const xboxControllerBatteryAlert = const IconData(0xf74A, fontFamily: _family);
+  static const xboxControllerBatteryEmpty = const IconData(0xf74B, fontFamily: _family);
+  static const xboxControllerBatteryFull = const IconData(0xf74C, fontFamily: _family);
+  static const xboxControllerBatteryLow = const IconData(0xf74D, fontFamily: _family);
+  static const xboxControllerBatteryMedium = const IconData(0xf74E, fontFamily: _family);
+  static const xboxControllerBatteryUnknown = const IconData(0xf74F, fontFamily: _family);
   static const xboxControllerOff = const IconData(0xf5BB, fontFamily: _family);
   static const xda = const IconData(0xf5BC, fontFamily: _family);
   static const xing = const IconData(0xf5BD, fontFamily: _family);

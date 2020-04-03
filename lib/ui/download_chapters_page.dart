@@ -35,8 +35,7 @@ class DownloadChaptersPage extends HookWidget {
     };
 
     final _SetSelected<Chapter> setSelected = (chapter, value) {
-      selected.value = Map.from(selected.value)
-        ..[chapter.slug] = value ? chapter : null;
+      selected.value = Map.from(selected.value)..[chapter.slug] = value ? chapter : null;
       hackInvalidate.value++;
     };
 

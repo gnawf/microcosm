@@ -46,10 +46,7 @@ class _ChapterParser {
       return null;
     }
 
-    final result = regexes
-        .map((regex) => regex.stringMatch(title))
-        .where((e) => e != null)
-        .join(" - ");
+    final result = regexes.map((regex) => regex.stringMatch(title)).where((e) => e != null).join(" - ");
 
     return result.isEmpty ? title : result;
   }

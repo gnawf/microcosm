@@ -130,10 +130,7 @@ class _ChapterParser {
       return title;
     }
 
-    final result = regexes
-        .map((regex) => regex.stringMatch(title))
-        .where((e) => e != null)
-        .join(" - ");
+    final result = regexes.map((regex) => regex.stringMatch(title)).where((e) => e != null).join(" - ");
 
     // If we could not extract any information, just return the original title
     return result.isEmpty ? title : result;

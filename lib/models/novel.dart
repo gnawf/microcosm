@@ -52,12 +52,7 @@ class Novel {
           posterImage == other.posterImage;
 
   @override
-  int get hashCode =>
-      slug.hashCode ^
-      name.hashCode ^
-      source.hashCode ^
-      synopsis.hashCode ^
-      posterImage.hashCode;
+  int get hashCode => slug.hashCode ^ name.hashCode ^ source.hashCode ^ synopsis.hashCode ^ posterImage.hashCode;
 
   @override
   String toString() {

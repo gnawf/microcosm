@@ -44,8 +44,7 @@ Resource<Chapter> useChapter(Uri url) {
   useEffect(() {
     final ourRefresh = refreshRequest.value;
     if (ourRefresh != null) {
-      fetch([upstream.get, _toGetChapter(dao)])
-          .then((value) => ourRefresh.complete());
+      fetch([upstream.get, _toGetChapter(dao)]).then((value) => ourRefresh.complete());
     }
     return () {};
   }, [refreshRequest.value]);

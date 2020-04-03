@@ -51,9 +51,7 @@ class CustomSliverGrid extends StatelessWidget {
         (BuildContext context, int row) {
           final children = new List<Widget>(
             // Calculate the number of cells in this row
-            row == rowCount - 1 && cellCount % columnCount != 0
-                ? cellCount % columnCount
-                : columnCount,
+            row == rowCount - 1 && cellCount % columnCount != 0 ? cellCount % columnCount : columnCount,
           );
 
           // Populate the children for this row

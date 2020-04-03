@@ -29,8 +29,7 @@ class _Content extends MarkdownWidget {
     Key key,
     bool selectable = false,
     MarkdownStyleSheet styleSheet,
-    MarkdownStyleSheetBaseTheme styleSheetTheme =
-        MarkdownStyleSheetBaseTheme.material,
+    MarkdownStyleSheetBaseTheme styleSheetTheme = MarkdownStyleSheetBaseTheme.material,
     SyntaxHighlighter syntaxHighlighter,
     MarkdownTapLinkCallback onTapLink,
     String imageDirectory,

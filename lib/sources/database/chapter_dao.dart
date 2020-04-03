@@ -140,14 +140,10 @@ OFFSET $offset""");
   static const _novelColumnPrefix = "${Novel.type}_";
 
   String _chapterColumnSelection() {
-    return Chapter.columns
-        .map((col) => "${Chapter.type}.$col AS $_chapterColumnPrefix$col")
-        .join(", ");
+    return Chapter.columns.map((col) => "${Chapter.type}.$col AS $_chapterColumnPrefix$col").join(", ");
   }
 
   String _novelColumnSelection() {
-    return Novel.columns
-        .map((col) => "${Novel.type}.$col AS $_novelColumnPrefix$col")
-        .join(", ");
+    return Novel.columns.map((col) => "${Novel.type}.$col AS $_novelColumnPrefix$col").join(", ");
   }
 }

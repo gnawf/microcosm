@@ -66,8 +66,7 @@ class NovelGridItem extends StatefulWidget {
   State<StatefulWidget> createState() => new _NovelGridItemState();
 }
 
-class _NovelGridItemState extends State<NovelGridItem>
-    with SingleTickerProviderStateMixin {
+class _NovelGridItemState extends State<NovelGridItem> with SingleTickerProviderStateMixin {
   AnimationController _controller;
 
   Animation<double> _scaleAnimation;
