@@ -6,7 +6,7 @@ _PageState _usePageState() {
 
 VoidCallback _useOpenReader(Uri url) {
   final router = useRouter();
-  return url != null ? () => router.push().reader(url: url) : null;
+  return url != null ? () => router.pushReplacement().reader(url: url) : null;
 }
 
 VoidCallback _useOpenDownloadChapters() {
