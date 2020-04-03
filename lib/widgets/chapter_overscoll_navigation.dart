@@ -12,6 +12,7 @@ enum _Mode {
 
 class ChapterOverscrollNavigation extends HookWidget {
   ChapterOverscrollNavigation({
+    Key key,
     @required this.child,
     this.threshold = 60,
     this.onNavigate,
@@ -19,15 +20,14 @@ class ChapterOverscrollNavigation extends HookWidget {
         _offsetTween = Tween<Offset>(
           begin: Offset(0, threshold),
           end: const Offset(0, -8.0),
-        );
+        ),
+        super(key: key);
 
   final Widget child;
 
   final OverscrollNavigate onNavigate;
 
   final double threshold;
-
-  final GlobalKey _key = GlobalKey();
 
   final Tween<Offset> _offsetTween;
 
@@ -101,7 +101,6 @@ class ChapterOverscrollNavigation extends HookWidget {
     return Stack(
       children: [
         NotificationListener<ScrollNotification>(
-          key: _key,
           onNotification: onScrollNotification,
           child: NotificationListener<OverscrollIndicatorNotification>(
             onNotification: _handleGlowNotification,

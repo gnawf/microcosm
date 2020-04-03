@@ -1,16 +1,14 @@
 import "package:app/hooks/use_chapter.hook.dart";
+import 'package:app/markdown/markdown.widget.dart';
 import "package:app/models/chapter.dart";
 import "package:app/resource/resource.dart";
 import "package:app/ui/router.hooks.dart";
-import "package:app/utils/url_launcher.dart";
 import "package:app/widgets/chapter_overscoll_navigation.dart";
 import "package:app/widgets/mark_chapter_read.dart";
 import "package:app/widgets/md_icons.dart";
 import "package:app/widgets/settings_icon_button.dart";
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
-import "package:flutter_markdown/flutter_markdown.dart";
-import "package:markdown/markdown.dart" as md;
 import "package:meta/meta.dart";
 
 part "reader_page.hooks.dart";
@@ -83,11 +81,16 @@ class _Title extends HookWidget {
 }
 
 class _Body extends HookWidget {
+  const _Body({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final pageState = _usePageState();
     final chapter = pageState.chapter;
     final chapterNavigation = _useChapterNavigation();
+
+    // Automatically marks chapter as read after delay
+    useReadingLog(chapter: chapter.data);
 
     switch (chapter.state) {
       case ResourceState.placeholder:
@@ -102,42 +105,58 @@ class _Body extends HookWidget {
         break;
     }
 
-    return RefreshIndicator(
-      onRefresh: pageState.chapter.refresh,
-      child: ChapterOverscrollNavigation(
-        onNavigate: chapterNavigation,
-        child: ListView(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 3.0,
-            vertical: 8.0,
-          ),
-          children: <Widget>[
-            _Navigation(),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: _Content(),
-            ),
-            _Navigation(),
-          ],
-        ),
+    return ChapterOverscrollNavigation(
+      onNavigate: chapterNavigation,
+      child: _MarkdownBody(
+        data: chapter.data?.content,
       ),
     );
   }
 }
 
-class _Content extends HookWidget {
+class _MarkdownBody extends PerformantMarkdownWidget {
+  const _MarkdownBody({
+    String data,
+    MarkdownTapLinkCallback onTapLink,
+  }) : super(
+          data: data,
+          onTapLink: onTapLink,
+        );
+
+  @override
+  Widget build(BuildContext context, List<Widget> children) {
+    final hasChildren = children?.isNotEmpty == true;
+
+    return ListView(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 16.0,
+        vertical: 8.0,
+      ),
+      children: <Widget>[
+        _Navigation(),
+        if (children == null) _RenderingChapter(),
+        if (hasChildren) ...children,
+        if (hasChildren) _Navigation(),
+      ],
+    );
+  }
+}
+
+class _RenderingChapter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final pageState = _usePageState();
-    final chapter = pageState.chapter.data;
-
-    // Automatically marks chapter as read after delay
-    useReadingLog(chapter: chapter);
-
-    return new MarkdownBody(
-      data: "${chapter.content}",
-      extensionSet: md.ExtensionSet.none,
-      onTapLink: (link) => onTapLink(context, link),
+    return Center(
+      child: Column(
+        children: const [
+          CircularProgressIndicator(),
+          Padding(
+            padding: const EdgeInsets.only(
+              top: 16.0,
+            ),
+            child: Text("Rendering Chapter"),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -174,6 +193,7 @@ class _NavigationButton extends HookWidget {
   @override
   Widget build(BuildContext context) {
     return new FlatButton(
+      padding: EdgeInsets.zero,
       onPressed: _useOpenReader(url),
       child: child,
     );
