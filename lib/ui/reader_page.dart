@@ -18,9 +18,18 @@ class ReaderPage extends HookWidget {
 
   final Uri chapterUrl;
 
+  VoidCallback _refresh(Resource<Chapter> resource, ValueNotifier<bool> state) {
+    return () async {
+      state.value = true;
+      await resource.refresh();
+      state.value = false;
+    };
+  }
+
   @override
   Widget build(BuildContext context) {
     final chapter = useChapter(chapterUrl);
+    final refreshing = useState(false);
 
     return _PageState(
       chapter: chapter,
@@ -31,7 +40,18 @@ class ReaderPage extends HookWidget {
           title: _Title(),
           centerTitle: false,
           actions: <Widget>[
-            _DownloadChaptersButton(),
+            AnimatedOpacity(
+              opacity: refreshing.value ? 0.4 : 1.0,
+              duration: const Duration(milliseconds: 400),
+              child: IconButton(
+                icon: const Icon(MDIcons.refresh),
+                tooltip: "Refresh",
+                disabledColor: Theme.of(context).buttonColor,
+                onPressed: refreshing.value || chapter.data == null
+                    ? null
+                    : _refresh(chapter, refreshing),
+              ),
+            ),
             const SettingsIconButton(),
           ],
         ),
