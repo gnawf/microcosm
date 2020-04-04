@@ -4,8 +4,10 @@ import "package:app/http/http.dart";
 import "package:app/models/novel.dart";
 import "package:app/sources/data.dart";
 import "package:app/sources/novel_source.dart";
+import "package:app/utils/map.extensions.dart";
 import "package:app/utils/parsing.extensions.dart";
 import "package:html/parser.dart" as html show parse;
+import "package:meta/meta.dart";
 
 class WuxiaWorldNovels extends NovelSource {
   @override
@@ -22,18 +24,23 @@ class WuxiaWorldNovels extends NovelSource {
 
   @override
   Future<DataList<Novel>> list({Map<String, dynamic> params}) async {
+    return search(query: "", params: params);
+  }
+
+  @override
+  Future<DataList<Novel>> search({@required String query, Map<String, dynamic> params}) async {
     final url = Uri.parse("https://www.wuxiaworld.com/api/novels/search");
     final request = await httpClient.postUrl(url);
     final requestBody = jsonEncode({
-      "title": "",
+      "title": query,
       "tags": [],
       "language": "Any",
       "genres": [],
       "active": null,
       "sortType": "Name",
       "sortAsc": true,
-      "searchAfter": params["cursor"],
-      "count": params["limit"] ?? 10,
+      "searchAfter": params?.get("cursor"),
+      "count": params?.get("limit") ?? 10,
     });
     request.headers.set("Content-Type", "application/json; charset=utf-8");
     request.write(requestBody);

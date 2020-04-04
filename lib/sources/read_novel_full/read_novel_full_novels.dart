@@ -9,6 +9,7 @@ import "package:app/utils/map.extensions.dart";
 import "package:app/utils/parsing.extensions.dart";
 import "package:html/dom.dart";
 import "package:html/parser.dart" as html show parse;
+import "package:meta/meta.dart";
 
 class ReadNovelFullNovels extends NovelSource {
   @override
@@ -26,9 +27,20 @@ class ReadNovelFullNovels extends NovelSource {
 
   @override
   Future<DataList<Novel>> list({Map<String, dynamic> params}) async {
-    final cursor = params.get("cursor") ?? 1;
-    final url = Uri.parse(
-      "https://readnovelfull.com/search?keyword=&page=$cursor",
+    return search(query: "", params: params);
+  }
+
+  @override
+  Future<DataList<Novel>> search({@required String query, Map<String, dynamic> params}) async {
+    final cursor = params?.get("cursor") ?? 1;
+    final url = Uri(
+      scheme: "https",
+      host: "readnovelfull.com",
+      pathSegments: const ["search"],
+      queryParameters: {
+        "keyword": query,
+        "page": "$cursor",
+      },
     );
     final request = await httpClient.getUrl(url);
     final response = await request.close();

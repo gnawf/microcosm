@@ -1,5 +1,6 @@
 import "dart:async";
 
+import "package:meta/meta.dart";
 import "package:app/models/novel.dart";
 import "package:app/sources/data.dart";
 
@@ -7,6 +8,8 @@ abstract class NovelSource {
   Future<Data<Novel>> get({String slug, Map<String, dynamic> params});
 
   Future<DataList<Novel>> list({Map<String, dynamic> params});
+
+  Future<DataList<Novel>> search({@required String query, Map<String, dynamic> params});
 }
 
 typedef GetNovel = Future<Data<Novel>> Function({

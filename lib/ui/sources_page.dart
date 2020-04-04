@@ -2,6 +2,7 @@ import "package:app/sources/source.dart";
 import "package:app/sources/sources.dart";
 import "package:app/ui/router.dart";
 import "package:app/widgets/md_icons.dart";
+import "package:app/widgets/search_icon_button.dart";
 import "package:app/widgets/settings_icon_button.dart";
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
@@ -19,6 +20,7 @@ class SourcesPage extends HookWidget {
         title: const Text("Browse"),
         centerTitle: false,
         actions: const <Widget>[
+          const SearchIconButton(),
           const SettingsIconButton(),
         ],
       ),

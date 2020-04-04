@@ -8,6 +8,7 @@ import "package:app/ui/novel_page.dart";
 import "package:app/ui/opener_page.dart";
 import "package:app/ui/reader_page.dart";
 import "package:app/ui/recents_page.dart";
+import "package:app/ui/search_page.dart";
 import "package:app/ui/settings_page.dart";
 import "package:app/ui/source_page.dart";
 import "package:app/ui/sources_page.dart";
@@ -114,6 +115,12 @@ class _Routes<R> {
   R settings() {
     return _execute((BuildContext context) {
       return SettingsPage();
+    });
+  }
+
+  R search() {
+    return _execute((BuildContext context) {
+      return SearchPage();
     });
   }
 
