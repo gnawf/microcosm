@@ -9,10 +9,20 @@ final _sources = [
   ReadNovelFull(),
 ];
 
+final _sourcesMap = _toMap();
+
 Source useSource(String id) {
-  return _sources.firstWhere((element) => element.id == id);
+  return _sourcesMap[id];
 }
 
 List<Source> useSources() {
   return _sources;
+}
+
+Map<String, Source> _toMap() {
+  final map = <String, Source>{};
+  for (final value in _sources) {
+    map[value.id] = value;
+  }
+  return map;
 }
