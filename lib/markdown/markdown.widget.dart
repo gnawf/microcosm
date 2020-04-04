@@ -139,6 +139,7 @@ class _PerformantMarkdownWidgetState extends State<PerformantMarkdownWidget> imp
 
   Future<void> _parseMarkdown() async {
     _renderMarkdown(
+      // Expensive operation – see [_isolateParseMarkdown] for more info
       _markdownNodes = await compute(_isolateParseMarkdown, widget.data),
     );
   }
@@ -186,7 +187,12 @@ class _PerformantMarkdownWidgetState extends State<PerformantMarkdownWidget> imp
   Widget build(BuildContext context) => widget.build(context, _children);
 }
 
-/// So this is actually a very expensive operation so we compute it in an isolate
+/// So this is actually a very expensive operation (see below) so we compute it in an isolate
+/// Running in an isolate actually takes magnitudes longer but for UI smoothness this is better
+/// In the release (AOT compilation) build this is very slow due to RegExp performance, see:
+/// https://github.com/dart-lang/sdk/issues/39260
+/// https://github.com/dart-lang/sdk/issues/37774
+/// https://github.com/dart-lang/sdk/issues/39139
 List<md.Node> _isolateParseMarkdown(String data) {
   final lines = data.split(RegExp(r"\r?\n"));
   final document = md.Document(
