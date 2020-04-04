@@ -54,3 +54,43 @@ OverscrollNavigate _useChapterNavigation() {
     }
   };
 }
+
+MarkdownStyleSheet _useMarkdownStyleSheet() {
+  final theme = useTheme();
+  final settings = useSettings();
+  final readerFontSize = settings.readerFontSize;
+
+  final styleSheet = useState();
+
+  // Set initial value
+  styleSheet.value ??= _createMarkdownStyleSheet(theme, readerFontSize);
+
+  // Cause re-render when font size changes
+  useListenable(settings.readerFontSizeChanges);
+
+  // Update stylesheet on future changes
+  for (final dependency in [readerFontSize, theme.textTheme.bodyText2.color]) {
+    useValueChanged(dependency, (oldValue, oldResult) {
+      styleSheet.value = _createMarkdownStyleSheet(theme, readerFontSize);
+    });
+  }
+
+  return styleSheet.value;
+}
+
+MarkdownStyleSheet _createMarkdownStyleSheet(ThemeData theme, double fontSize) {
+  final defaults = theme.textTheme;
+  final fontSizeScale = fontSize / defaults.bodyText2.fontSize;
+
+  return MarkdownStyleSheet.fromTheme(
+    theme.copyWith(
+      textTheme: defaults.copyWith(
+        bodyText1: defaults.bodyText1.copyWith(fontSize: defaults.bodyText1.fontSize * fontSizeScale),
+        bodyText2: defaults.bodyText2.copyWith(fontSize: defaults.bodyText2.fontSize * fontSizeScale),
+        headline5: defaults.headline5.copyWith(fontSize: defaults.headline5.fontSize * fontSizeScale),
+        headline6: defaults.headline6.copyWith(fontSize: defaults.headline6.fontSize * fontSizeScale),
+        subtitle1: defaults.subtitle1.copyWith(fontSize: defaults.subtitle1.fontSize * fontSizeScale),
+      ),
+    ),
+  );
+}

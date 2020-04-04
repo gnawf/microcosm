@@ -2,64 +2,13 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import "dart:io";
-
 import "package:flutter/cupertino.dart";
-import 'package:flutter/foundation.dart';
+import "package:flutter/foundation.dart";
 import "package:flutter/gestures.dart";
 import "package:flutter/material.dart";
 import "package:flutter_markdown/flutter_markdown.dart";
 import "package:markdown/markdown.dart" as md;
 import "package:meta/meta.dart";
-
-final MarkdownStyleSheet Function(BuildContext, MarkdownStyleSheetBaseTheme) kFallbackStyle = (
-  BuildContext context,
-  MarkdownStyleSheetBaseTheme baseTheme,
-) {
-  switch (baseTheme) {
-    case MarkdownStyleSheetBaseTheme.platform:
-      return (Platform.isIOS || Platform.isMacOS)
-          ? MarkdownStyleSheet.fromCupertinoTheme(CupertinoTheme.of(context))
-          : MarkdownStyleSheet.fromTheme(Theme.of(context));
-    case MarkdownStyleSheetBaseTheme.cupertino:
-      return MarkdownStyleSheet.fromCupertinoTheme(CupertinoTheme.of(context));
-    case MarkdownStyleSheetBaseTheme.material:
-    default:
-      return MarkdownStyleSheet.fromTheme(Theme.of(context));
-  }
-};
-
-/// Signature for callbacks used by [PerformantMarkdownWidget] when the user taps a link.
-///
-/// Used by [PerformantMarkdownWidget.onTapLink].
-typedef void MarkdownTapLinkCallback(String href);
-
-/// Signature for custom image widget.
-///
-/// Used by [PerformantMarkdownWidget.imageBuilder]
-typedef Widget MarkdownImageBuilder(Uri uri);
-
-/// Signature for custom checkbox widget.
-///
-/// Used by [PerformantMarkdownWidget.checkboxBuilder]
-typedef Widget MarkdownCheckboxBuilder(bool value);
-
-/// Creates a format [TextSpan] given a string.
-///
-/// Used by [PerformantMarkdownWidget] to highlight the contents of `pre` elements.
-abstract class SyntaxHighlighter {
-  // ignore: one_member_abstracts
-  /// Returns the formatted [TextSpan] for the given string.
-  TextSpan format(String source);
-}
-
-/// Enum to specify which theme being used when creating [MarkdownStyleSheet]
-///
-/// [material] - create MarkdownStyleSheet based on MaterialTheme
-/// [cupertino] - create MarkdownStyleSheet based on CupertinoTheme
-/// [platform] - create MarkdownStyleSheet based on the Platform where the
-/// is running on. Material on Android and Cupertino on iOS
-enum MarkdownStyleSheetBaseTheme { material, cupertino, platform }
 
 /// A base class for widgets that parse and display Markdown.
 ///
@@ -140,19 +89,33 @@ abstract class PerformantMarkdownWidget extends StatefulWidget {
 
 class _PerformantMarkdownWidgetState extends State<PerformantMarkdownWidget> implements MarkdownBuilderDelegate {
   List<Widget> _children;
+  List<md.Node> _markdownNodes;
+  MarkdownBuilder _markdownBuilder;
   final List<GestureRecognizer> _recognizers = <GestureRecognizer>[];
 
   @override
   void initState() {
     super.initState();
+    _markdownBuilder = _newMarkdownBuilder();
     _parseMarkdown();
   }
 
   @override
   void didUpdateWidget(PerformantMarkdownWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.data != oldWidget.data || widget.styleSheet != oldWidget.styleSheet) {
+    if (widget.selectable != oldWidget.selectable ||
+        widget.styleSheet != oldWidget.styleSheet ||
+        widget.imageDirectory != oldWidget.imageDirectory ||
+        widget.imageBuilder != oldWidget.imageBuilder ||
+        widget.checkboxBuilder != oldWidget.checkboxBuilder ||
+        widget.fitContent != oldWidget.fitContent) {
+      _markdownBuilder = _newMarkdownBuilder();
+    }
+    if (widget.data != oldWidget.data) {
       _parseMarkdown();
+    }
+    if (widget.styleSheet != oldWidget.styleSheet) {
+      _renderMarkdown();
     }
   }
 
@@ -162,31 +125,34 @@ class _PerformantMarkdownWidgetState extends State<PerformantMarkdownWidget> imp
     super.dispose();
   }
 
-  Future<void> _parseMarkdown() async {
-    await null;
-
-    final MarkdownStyleSheet fallbackStyleSheet = kFallbackStyle(context, widget.styleSheetTheme);
-    final MarkdownStyleSheet styleSheet = fallbackStyleSheet.merge(widget.styleSheet);
-
-    _disposeRecognizers();
-
-    final List<String> lines = widget.data.split(RegExp(r"\r?\n"));
-    final MarkdownBuilder builder = MarkdownBuilder(
+  MarkdownBuilder _newMarkdownBuilder() {
+    return MarkdownBuilder(
       delegate: this,
       selectable: widget.selectable,
-      styleSheet: styleSheet,
+      styleSheet: widget.styleSheet,
       imageDirectory: widget.imageDirectory,
       imageBuilder: widget.imageBuilder,
       checkboxBuilder: widget.checkboxBuilder,
       fitContent: widget.fitContent,
     );
+  }
 
-    // Expensive operation
-    final nodes = await compute(_isolateParseMarkdown, lines);
+  Future<void> _parseMarkdown() async {
+    _renderMarkdown(
+      _markdownNodes = await compute(_isolateParseMarkdown, widget.data),
+    );
+  }
+
+  void _renderMarkdown([List<md.Node> nodes]) {
+    nodes ??= _markdownNodes;
+
+    if (nodes == null) {
+      return;
+    }
 
     setState(() {
       // Not so expensive operation that is much harder to run in isolate
-      _children = builder.build(nodes);
+      _children = _markdownBuilder.build(nodes);
     });
   }
 
@@ -220,26 +186,9 @@ class _PerformantMarkdownWidgetState extends State<PerformantMarkdownWidget> imp
   Widget build(BuildContext context) => widget.build(context, _children);
 }
 
-/// Parse [task list items](https://github.github.com/gfm/#task-list-items-extension-).
-class TaskListSyntax extends md.InlineSyntax {
-  TaskListSyntax() : super(_pattern);
-
-  // FIXME: Waiting for dart-lang/markdown#269 to land
-  static const String _pattern = r"^ *\[([ xX])\] +";
-
-  @override
-  bool onMatch(md.InlineParser parser, Match match) {
-    md.Element el = md.Element.withTag("input");
-    el.attributes["type"] = "checkbox";
-    el.attributes["disabled"] = "true";
-    el.attributes["checked"] = "${match[1].trim().isNotEmpty}";
-    parser.addNode(el);
-    return true;
-  }
-}
-
 /// So this is actually a very expensive operation so we compute it in an isolate
-List<md.Node> _isolateParseMarkdown(List<String> lines) {
+List<md.Node> _isolateParseMarkdown(String data) {
+  final lines = data.split(RegExp(r"\r?\n"));
   final document = md.Document(
     extensionSet: md.ExtensionSet.gitHubFlavored,
     inlineSyntaxes: [TaskListSyntax()],

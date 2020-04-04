@@ -1,5 +1,7 @@
+import "package:app/hooks/use_theme.hook.dart";
 import "package:app/hooks/use_chapter.hook.dart";
-import 'package:app/markdown/markdown.widget.dart';
+import "package:app/hooks/use_settings.hook.dart";
+import "package:app/markdown/markdown.widget.dart";
 import "package:app/models/chapter.dart";
 import "package:app/resource/resource.dart";
 import "package:app/ui/router.hooks.dart";
@@ -9,6 +11,7 @@ import "package:app/widgets/md_icons.dart";
 import "package:app/widgets/settings_icon_button.dart";
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
+import "package:flutter_markdown/flutter_markdown.dart";
 import "package:meta/meta.dart";
 
 part "reader_page.hooks.dart";
@@ -106,6 +109,7 @@ class _Body extends HookWidget {
     final pageState = _usePageState();
     final chapter = pageState.chapter;
     final chapterNavigation = _useChapterNavigation();
+    final styleSheet = _useMarkdownStyleSheet();
 
     // Automatically marks chapter as read after delay
     useReadingLog(chapter: chapter.data);
@@ -127,6 +131,7 @@ class _Body extends HookWidget {
       onNavigate: chapterNavigation,
       child: _MarkdownBody(
         data: chapter.data?.content,
+        styleSheet: styleSheet,
       ),
     );
   }
@@ -136,9 +141,11 @@ class _MarkdownBody extends PerformantMarkdownWidget {
   const _MarkdownBody({
     String data,
     MarkdownTapLinkCallback onTapLink,
+    MarkdownStyleSheet styleSheet,
   }) : super(
           data: data,
           onTapLink: onTapLink,
+          styleSheet: styleSheet,
         );
 
   @override
