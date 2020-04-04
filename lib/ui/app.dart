@@ -1,5 +1,6 @@
 import "package:app/settings/settings.dart";
 import "package:app/ui/router.dart";
+import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 
 class App extends StatefulWidget {
@@ -52,6 +53,7 @@ class _AppState extends State<App> {
         accentColor: _settings.accentColor,
         brightness: _settings.brightness,
         canvasColor: amoled ? Colors.black : null,
+        typography: Typography.material2018(platform: defaultTargetPlatform),
       ),
       onGenerateRoute: _router,
       debugShowCheckedModeBanner: false,
