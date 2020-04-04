@@ -32,7 +32,6 @@ class ReaderPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final chapter = useChapter(chapterUrl);
-    final refreshing = useState(false);
 
     return _PageState(
       chapter: chapter,
@@ -40,18 +39,8 @@ class ReaderPage extends HookWidget {
         appBar: AppBar(
           title: _Title(),
           centerTitle: false,
-          actions: <Widget>[
-            AnimatedOpacity(
-              opacity: refreshing.value ? 0.4 : 1.0,
-              duration: const Duration(milliseconds: 400),
-              child: IconButton(
-                icon: const Icon(MDIcons.refresh),
-                tooltip: "Refresh",
-                disabledColor: Theme.of(context).buttonColor,
-                onPressed: refreshing.value || chapter.data == null ? null : _refresh(chapter, refreshing),
-              ),
-            ),
-            const SettingsIconButton(),
+          actions: const [
+            SettingsIconButton(),
           ],
         ),
         body: _Body(),
@@ -100,7 +89,7 @@ class _Title extends HookWidget {
 }
 
 class _Body extends HookWidget {
-  const _Body({Key key}) : super(key: key);
+  _Body({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -125,11 +114,14 @@ class _Body extends HookWidget {
         break;
     }
 
-    return ChapterOverscrollNavigation(
-      onNavigate: chapterNavigation,
-      child: _MarkdownBody(
-        data: chapter.data?.content,
-        styleSheet: styleSheet,
+    return RefreshIndicator(
+      onRefresh: chapter.refresh,
+      child: ChapterOverscrollNavigation(
+        onNavigate: chapterNavigation,
+        child: _MarkdownBody(
+          data: chapter.data?.content,
+          styleSheet: styleSheet,
+        ),
       ),
     );
   }
