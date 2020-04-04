@@ -1,4 +1,5 @@
 import "package:app/models/novel.dart";
+import "package:app/navigation/dialog_route.dart";
 import "package:app/navigation/fade_transition_route.dart";
 import "package:app/navigation/transitions.dart";
 import "package:app/ui/download_chapters_page.dart";
@@ -9,9 +10,9 @@ import "package:app/ui/opener_page.dart";
 import "package:app/ui/reader_page.dart";
 import "package:app/ui/recents_page.dart";
 import "package:app/ui/search_page.dart";
-import "package:app/ui/settings_page.dart";
 import "package:app/ui/source_page.dart";
 import "package:app/ui/sources_page.dart";
+import "package:app/widgets/popup_settings.dart";
 import "package:flutter/material.dart";
 import "package:flutter/widgets.dart";
 import "package:meta/meta.dart";
@@ -28,6 +29,14 @@ Route _useCupertinoPageRoute(WidgetBuilder builder) {
 
 Route _useFadePageRoute(WidgetBuilder builder) {
   return FadeTransitionPageRoute(builder: builder);
+}
+
+Route _useDialogPageRoute(WidgetBuilder builder) {
+  return DialogRoute(
+    pageBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
+      return builder(context);
+    },
+  );
 }
 
 @immutable
@@ -52,6 +61,10 @@ class _Routes<R> {
 
   _Routes<R> useFadePageRoute() {
     return _Routes(_action, _useFadePageRoute);
+  }
+
+  _Routes<R> useDialogPageRoute() {
+    return _Routes(_action, _useDialogPageRoute);
   }
 
   R home() {
@@ -112,15 +125,15 @@ class _Routes<R> {
     });
   }
 
-  R settings() {
-    return _execute((BuildContext context) {
-      return SettingsPage();
-    });
-  }
-
   R search() {
     return _execute((BuildContext context) {
       return SearchPage();
+    });
+  }
+
+  R settings() {
+    return _execute((BuildContext context) {
+      return PopupSettings();
     });
   }
 

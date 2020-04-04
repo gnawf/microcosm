@@ -13,7 +13,7 @@ class SettingsIconButton extends HookWidget {
     return IconButton(
       icon: const Icon(MDIcons.settings),
       tooltip: "Settings",
-      onPressed: () => router.push().useCupertinoPageRoute().settings(),
+      onPressed: () => router.push().useDialogPageRoute().settings(),
     );
   }
 }
