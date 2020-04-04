@@ -31,8 +31,6 @@ class NovelPage extends HookWidget {
       novel: novel,
       child: Scaffold(
         appBar: AppBar(
-          automaticallyImplyLeading: false,
-          leading: null,
           title: _Title(),
           centerTitle: false,
           actions: const <Widget>[

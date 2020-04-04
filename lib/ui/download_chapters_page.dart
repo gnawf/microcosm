@@ -45,8 +45,6 @@ class DownloadChaptersPage extends HookWidget {
       setSelected: setSelected,
       child: Scaffold(
         appBar: AppBar(
-          automaticallyImplyLeading: false,
-          leading: null,
           title: const Text("Download Chapters"),
           centerTitle: false,
           actions: const <Widget>[

@@ -64,20 +64,20 @@ class _HomePageState extends State<HomePage> {
 
     // Handle case where there's no back button
     if (defaultTargetPlatform == TargetPlatform.iOS) {
-      if (_indices.last == index) {
-        // Go back instead of replacing if the requested view is in the stack
-        _navigatorKey.currentState?.popUntil((r) => r.isFirst);
-      } else {
+      _navigatorKey.currentState?.popUntil((r) => r.isFirst);
+      if (_indices.first != index) {
         // Clear the navigation stack & push the requested view
-        setState(() => _indices[0] = index);
-        _navigatorKey.currentState?.pushAndRemoveUntil(route, (r) => false);
+        setState(() => _indices
+          ..clear()
+          ..add(index));
+        _navigatorKey.currentState?.pushReplacement(route);
       }
       return;
     }
 
-    // Push to the stack queue
+    // Push to the stack
     setState(() => _indices.add(index));
-    // Push if applicable
+    // Wait for the view to be popped off the stack
     await _navigatorKey.currentState?.push(route);
     // Pop off the indices stack once the view is disposed of
     if (mounted) {

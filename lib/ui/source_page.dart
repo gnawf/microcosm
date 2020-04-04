@@ -28,8 +28,6 @@ class SourcePage extends HookWidget {
       source: source,
       child: Scaffold(
         appBar: AppBar(
-          automaticallyImplyLeading: false,
-          leading: null,
           title: _AppBarTitle(),
           centerTitle: false,
           actions: const <Widget>[

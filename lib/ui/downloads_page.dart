@@ -182,8 +182,6 @@ class _ChaptersPage extends StatelessWidget {
 
         return Scaffold(
           appBar: AppBar(
-            automaticallyImplyLeading: false,
-            leading: null,
             title: Text(novel?.name ?? "Loading"),
             centerTitle: false,
             actions: const <Widget>[

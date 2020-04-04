@@ -38,8 +38,6 @@ class ReaderPage extends HookWidget {
       chapter: chapter,
       child: Scaffold(
         appBar: AppBar(
-          automaticallyImplyLeading: false,
-          leading: null,
           title: _Title(),
           centerTitle: false,
           actions: <Widget>[
