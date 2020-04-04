@@ -50,6 +50,9 @@ class _AppState extends State<App> {
       title: "Microcosm",
       theme: ThemeData(
         primarySwatch: _settings.primarySwatch,
+        primaryColor: _settings.primarySwatch,
+        primaryColorLight: _settings.primarySwatch[100],
+        primaryColorDark: _settings.primarySwatch[700],
         accentColor: _settings.accentColor,
         brightness: _settings.brightness,
         canvasColor: amoled ? Colors.black : null,
