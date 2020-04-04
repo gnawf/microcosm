@@ -21,15 +21,15 @@ class DownloadsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return novelSlug != null ? new _ChaptersPage(slug: novelSlug, source: novelSource) : new _NovelsPage();
+    return novelSlug != null ? _ChaptersPage(slug: novelSlug, source: novelSource) : _NovelsPage();
   }
 }
 
 class _NovelsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
+    return Scaffold(
+      appBar: AppBar(
         automaticallyImplyLeading: false,
         leading: null,
         title: const Text("Downloads"),
@@ -38,7 +38,7 @@ class _NovelsPage extends StatelessWidget {
           const SettingsIconButton(),
         ],
       ),
-      body: new _NovelsPageBody(),
+      body: _NovelsPageBody(),
     );
   }
 }
@@ -49,11 +49,11 @@ class _NovelsWithDownloads extends StatefulWidget {
   final AsyncWidgetBuilder<List<Novel>> builder;
 
   @override
-  State createState() => new _NovelsWithDownloadsState();
+  State createState() => _NovelsWithDownloadsState();
 }
 
 class _NovelsWithDownloadsState extends State<_NovelsWithDownloads> {
-  final _providerKey = new GlobalKey<NovelsWithDownloadsState>();
+  final _providerKey = GlobalKey<NovelsWithDownloadsState>();
 
   var _deactivated = false;
 
@@ -71,7 +71,7 @@ class _NovelsWithDownloadsState extends State<_NovelsWithDownloads> {
       _deactivated = false;
     }
 
-    return new NovelsWithDownloads(key: _providerKey, builder: widget.builder);
+    return NovelsWithDownloads(key: _providerKey, builder: widget.builder);
   }
 }
 
@@ -91,24 +91,24 @@ class _NovelsPageBody extends StatelessWidget {
 
   IndexedWidgetBuilder _builder(List<Novel> novels) {
     return (BuildContext context, int index) {
-      return new _NovelItem(novels[index]);
+      return _NovelItem(novels[index]);
     };
   }
 
   @override
   Widget build(BuildContext context) {
-    return new _NovelsWithDownloads(
+    return _NovelsWithDownloads(
       builder: (BuildContext context, AsyncSnapshot<List<Novel>> snapshot) {
         final novels = snapshot.data;
 
-        return new CustomScrollView(
+        return CustomScrollView(
           slivers: <Widget>[
-            new SliverPadding(
+            SliverPadding(
               padding: const EdgeInsets.symmetric(
                 vertical: 16.0,
               ),
-              sliver: new SliverList(
-                delegate: new SliverChildBuilderDelegate(
+              sliver: SliverList(
+                delegate: SliverChildBuilderDelegate(
                   novels?.isNotEmpty != true ? _empty() : _builder(novels),
                   // Minimum one child for the empty view
                   childCount: novels?.isNotEmpty != true ? 1 : novels.length,
@@ -136,26 +136,26 @@ class _NovelItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final source = _source(novel.source);
 
-    return new Container(
+    return Container(
       // Increase the height of the tile to add padding
       constraints: const BoxConstraints(
         minHeight: 72.0,
       ),
-      child: new ListTile(
+      child: ListTile(
         onTap: () {
           Router.of(context).push().downloads(novel: novel);
         },
-        leading: new Container(
+        leading: Container(
           constraints: const BoxConstraints(
             maxWidth: 40.0,
             maxHeight: 60.0,
           ),
-          child: new ImageView(
+          child: ImageView(
             image: novel.posterImage,
           ),
         ),
-        title: new Text(novel.name),
-        subtitle: new Text(source),
+        title: Text(novel.name),
+        subtitle: Text(source),
       ),
     );
   }
@@ -174,23 +174,23 @@ class _ChaptersPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new NovelHolder(
+    return NovelHolder(
       slug: slug,
       source: source,
       builder: (BuildContext context, AsyncSnapshot<Novel> snapshot) {
         final novel = snapshot.data;
 
-        return new Scaffold(
-          appBar: new AppBar(
+        return Scaffold(
+          appBar: AppBar(
             automaticallyImplyLeading: false,
             leading: null,
-            title: new Text(novel?.name ?? "Loading"),
+            title: Text(novel?.name ?? "Loading"),
             centerTitle: false,
             actions: const <Widget>[
               const SettingsIconButton(),
             ],
           ),
-          body: new _ChaptersPageBody(source: source, slug: slug),
+          body: _ChaptersPageBody(source: source, slug: slug),
         );
       },
     );
@@ -205,11 +205,11 @@ class _DownloadedChapters extends StatefulWidget {
   final AsyncWidgetBuilder<List<Chapter>> builder;
 
   @override
-  State createState() => new _DownloadedChaptersState();
+  State createState() => _DownloadedChaptersState();
 }
 
 class _DownloadedChaptersState extends State<_DownloadedChapters> {
-  final _providerKey = new GlobalKey<DownloadedChaptersState>();
+  final _providerKey = GlobalKey<DownloadedChaptersState>();
 
   var _deactivated = false;
 
@@ -226,7 +226,7 @@ class _DownloadedChaptersState extends State<_DownloadedChapters> {
       _deactivated = false;
     }
 
-    return new DownloadedChapters(
+    return DownloadedChapters(
       key: _providerKey,
       builder: widget.builder,
     );
@@ -245,12 +245,12 @@ class _ChaptersPageBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new DownloadedChapters(
+    return DownloadedChapters(
       novelSource: source,
       novelSlug: slug,
       builder: (BuildContext context, AsyncSnapshot<List<Chapter>> snapshot) {
         final chapters = snapshot.data;
-        return new _ChapterList(chapters);
+        return _ChapterList(chapters);
       },
     );
   }
@@ -262,7 +262,7 @@ class _ChapterList extends StatelessWidget {
   final List<Chapter> chapters;
 
   Widget _builder(BuildContext context, int index) {
-    return new _ChapterItem(chapters[index]);
+    return _ChapterItem(chapters[index]);
   }
 
   @override
@@ -278,7 +278,7 @@ class _ChapterList extends StatelessWidget {
       );
     }
 
-    return new ListView.builder(
+    return ListView.builder(
       padding: const EdgeInsets.symmetric(
         vertical: 8.0,
       ),
@@ -295,11 +295,11 @@ class _ChapterItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new ListTile(
+    return ListTile(
       onTap: () {
         Router.of(context).push().reader(url: chapter.url);
       },
-      title: new Text(chapter.title),
+      title: Text(chapter.title),
     );
   }
 }

@@ -19,7 +19,7 @@ class DatabaseProvider extends StatefulWidget {
   }
 
   @override
-  State createState() => new DatabaseProviderState();
+  State createState() => DatabaseProviderState();
 }
 
 class DatabaseProviderState extends State<DatabaseProvider> {
@@ -27,7 +27,7 @@ class DatabaseProviderState extends State<DatabaseProvider> {
 
   DatabaseWrapper get database => _database;
 
-  Future<Null> _setup() async {
+  Future<void> _setup() async {
     final documents = await getApplicationDocumentsDirectory();
     final path = join(documents.path, "microcosm.db");
     final database = await openDatabase(
@@ -37,10 +37,10 @@ class DatabaseProviderState extends State<DatabaseProvider> {
       onUpgrade: _onUpgrade,
     );
     // Update the view
-    setState(() => _database = new DatabaseWrapper(database));
+    setState(() => _database = DatabaseWrapper(database));
   }
 
-  Future<Null> _onCreate(Database db, int version) async {
+  Future<void> _onCreate(Database db, int version) async {
     await db.execute("""CREATE TABLE IF NOT EXISTS ${Chapter.type} (
         slug TEXT PRIMARY KEY,
         url TEXT NOT NULL,
@@ -64,7 +64,7 @@ class DatabaseProviderState extends State<DatabaseProvider> {
         )""");
   }
 
-  Future<Null> _onUpgrade(Database db, int oldVersion, int newVersion) async {
+  Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
     // Recreate the database
     await _onCreate(db, newVersion);
 

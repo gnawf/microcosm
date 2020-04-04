@@ -63,7 +63,7 @@ class ReaderPage extends HookWidget {
 }
 
 class _PageState extends HookWidget {
-  const _PageState({
+  _PageState({
     Key key,
     Widget child,
     @required this.chapter,
@@ -192,14 +192,14 @@ class _Navigation extends HookWidget {
     final pageState = _usePageState();
     final chapter = pageState.chapter.data;
 
-    return new Row(
+    return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        new _NavigationButton(
+        _NavigationButton(
           url: chapter.previousUrl,
           child: const Text("Previous Chapter"),
         ),
-        new _NavigationButton(
+        _NavigationButton(
           url: chapter.nextUrl,
           child: const Text("Next Chapter"),
         ),
@@ -217,7 +217,7 @@ class _NavigationButton extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new FlatButton(
+    return FlatButton(
       padding: EdgeInsets.zero,
       onPressed: _useOpenReader(url),
       child: child,

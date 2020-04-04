@@ -18,7 +18,7 @@ class NovelDao {
       limit: 1,
     );
 
-    return results.isEmpty ? null : new Novel.fromJson(results.single);
+    return results.isEmpty ? null : Novel.fromJson(results.single);
   }
 
   Future<List<Novel>> list({
@@ -35,7 +35,7 @@ class NovelDao {
       },
     );
 
-    return results.map((result) => new Novel.fromJson(result)).toList();
+    return results.map((result) => Novel.fromJson(result)).toList();
   }
 
   Future<List<Novel>> withDownloads({int limit = 20, int offset = 0}) async {
@@ -47,7 +47,7 @@ INNER JOIN ${Chapter.type} ON
 LIMIT $limit
 OFFSET $offset""");
 
-    return results.map((result) => new Novel.fromJson(result)).toList();
+    return results.map((result) => Novel.fromJson(result)).toList();
   }
 
   Future<bool> exists({String slug}) async {

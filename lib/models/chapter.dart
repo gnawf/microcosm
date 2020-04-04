@@ -29,11 +29,11 @@ String slugify({@required Uri uri}) {
 
   // Strip any subdomains from the host
   final host = uri.host.replaceAllMapped(
-    new RegExp(r".*?([a-z]+\.[a-z]{2,})$"),
+    RegExp(r".*?([a-z]+\.[a-z]{2,})$"),
     (match) => match[1],
   );
   final path = uri.path.replaceAllMapped(
-    new RegExp(r"\d{1,19}"),
+    RegExp(r"\d{1,19}"),
     (match) => "${zeroes[20 - match.end + match.start]}${match[0]}",
   );
   return host.toLowerCase() + path.toLowerCase();
@@ -86,7 +86,7 @@ class Chapter {
     String novelSource,
     Novel novel,
   }) {
-    return new Chapter(
+    return Chapter(
       slug: slug ?? this.slug,
       url: url ?? this.url,
       previousUrl: previousUrl ?? this.previousUrl,

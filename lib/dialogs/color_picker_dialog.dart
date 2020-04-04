@@ -69,33 +69,33 @@ Future<T> openColorPicker<T extends Color>(
   T selected,
   @required Map<String, T> colors,
 }) async {
-  return await showDialog(
+  return showDialog(
     context: context,
     builder: (BuildContext context) {
-      return new AlertDialog(
+      return AlertDialog(
         title: title ?? const Text("Color Picker"),
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 8.0,
         ),
-        content: new SingleChildScrollView(
-          child: new ListBody(
+        content: SingleChildScrollView(
+          child: ListBody(
             children: colors.keys.map<Widget>((name) {
               final color = colors[name];
-              return new ListTile(
+              return ListTile(
                 onTap: () => Navigator.of(context).pop(color),
-                title: new Text(
+                title: Text(
                   name,
-                  style: new TextStyle(
+                  style: TextStyle(
                     fontWeight: color == selected ? FontWeight.bold : FontWeight.normal,
                   ),
                 ),
-                trailing: new Container(width: 30.0, height: 30.0, color: color),
+                trailing: Container(width: 30.0, height: 30.0, color: color),
               );
             }).toList(),
           ),
         ),
         actions: <Widget>[
-          new FlatButton(
+          FlatButton(
             onPressed: () => Navigator.of(context).pop(),
             child: const Text("Cancel"),
           ),

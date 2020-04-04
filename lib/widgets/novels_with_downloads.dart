@@ -14,7 +14,7 @@ class NovelsWithDownloads extends StatefulWidget {
   final AsyncWidgetBuilder<List<Novel>> builder;
 
   @override
-  State createState() => new NovelsWithDownloadsState();
+  State createState() => NovelsWithDownloadsState();
 }
 
 class NovelsWithDownloadsState extends State<NovelsWithDownloads> {
@@ -22,7 +22,7 @@ class NovelsWithDownloadsState extends State<NovelsWithDownloads> {
 
   void refresh() => _setup();
 
-  Future<Null> _setup() async {
+  Future<void> _setup() async {
     if (!mounted) {
       return;
     }
@@ -44,7 +44,7 @@ class NovelsWithDownloadsState extends State<NovelsWithDownloads> {
 
   @override
   Widget build(BuildContext context) {
-    return new FutureBuilder(
+    return FutureBuilder(
       builder: widget.builder,
       future: _novels,
     );

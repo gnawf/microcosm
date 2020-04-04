@@ -6,13 +6,13 @@ class AppBarUtils {
 
   static Widget leading(BuildContext context) {
     // Nest the context so we can use the context to find the parent scaffold
-    return new Builder(builder: (context) {
+    return Builder(builder: (context) {
       final canPop = ModalRoute.of(context)?.canPop == true;
       // If we can go back, always prefer to
       // The default behavior prefers to show the menu over back
       return canPop
           ? const BackButton()
-          : new IconButton(
+          : IconButton(
               icon: const Icon(MDIcons.menu),
               onPressed: () => Scaffold.of(context).openDrawer(),
               tooltip: "Open navigation menu",

@@ -9,11 +9,11 @@ class HomePage extends StatefulWidget {
   const HomePage();
 
   @override
-  State createState() => new _HomePageState();
+  State createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  final _navigatorKey = new GlobalKey<NavigatorState>();
+  final _navigatorKey = GlobalKey<NavigatorState>();
 
   final _indices = <int>[];
 
@@ -22,7 +22,7 @@ class _HomePageState extends State<HomePage> {
   HeroController _heroController;
 
   RectTween _createRectTween(Rect begin, Rect end) {
-    return new MaterialRectArcTween(begin: begin, end: end);
+    return MaterialRectArcTween(begin: begin, end: end);
   }
 
   Route _router(RouteSettings settings) {
@@ -51,7 +51,7 @@ class _HomePageState extends State<HomePage> {
     return null;
   }
 
-  Future<Null> _pushPage(int index) async {
+  Future<void> _pushPage(int index) async {
     if (!mounted) {
       return;
     }
@@ -81,7 +81,7 @@ class _HomePageState extends State<HomePage> {
     await _navigatorKey.currentState?.push(route);
     // Pop off the indices stack once the view is disposed of
     if (mounted) {
-      setState(() => _indices.removeLast());
+      setState(_indices.removeLast);
     }
   }
 
@@ -91,33 +91,33 @@ class _HomePageState extends State<HomePage> {
 
     // Setup bottom navigation bar items
     _bottomBarItems = const <BottomNavigationBarItem>[
-      const BottomNavigationBarItem(
-        icon: const Icon(MDIcons.magnify),
-        title: const Text("Browse"),
+      BottomNavigationBarItem(
+        icon: Icon(MDIcons.magnify),
+        title: Text("Browse"),
       ),
-      const BottomNavigationBarItem(
-        icon: const Icon(MDIcons.linkVariant),
-        title: const Text("Open"),
+      BottomNavigationBarItem(
+        icon: Icon(MDIcons.linkVariant),
+        title: Text("Open"),
       ),
-      const BottomNavigationBarItem(
-        icon: const Icon(MDIcons.history),
-        title: const Text("Recents"),
+      BottomNavigationBarItem(
+        icon: Icon(MDIcons.history),
+        title: Text("Recents"),
       ),
-      const BottomNavigationBarItem(
-        icon: const Icon(MDIcons.download),
-        title: const Text("Saved"),
+      BottomNavigationBarItem(
+        icon: Icon(MDIcons.download),
+        title: Text("Saved"),
       ),
     ];
 
     // Set initial page
     _indices.add(0);
 
-    _heroController = new HeroController(createRectTween: _createRectTween);
+    _heroController = HeroController(createRectTween: _createRectTween);
   }
 
   @override
   Widget build(BuildContext context) {
-    return new WillPopScope(
+    return WillPopScope(
       // Pop the internal navigator first
       onWillPop: () async {
         final navigator = _navigatorKey.currentState;
@@ -127,15 +127,15 @@ class _HomePageState extends State<HomePage> {
         }
         return !canPop;
       },
-      child: new Scaffold(
+      child: Scaffold(
         // Internal navigator for bottom navigation
-        body: new Navigator(
+        body: Navigator(
           key: _navigatorKey,
           initialRoute: "/",
           onGenerateRoute: _router,
           observers: <NavigatorObserver>[_heroController],
         ),
-        bottomNavigationBar: new BottomNavigationBar(
+        bottomNavigationBar: BottomNavigationBar(
           onTap: _pushPage,
           currentIndex: _indices.last,
           items: _bottomBarItems,

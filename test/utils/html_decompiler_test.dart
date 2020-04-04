@@ -3,7 +3,7 @@ import "package:test/test.dart";
 
 void main() {
   // Zero width joiner character
-  final zwj = new String.fromCharCode(8205);
+  final zwj = String.fromCharCode(8205);
 
   test("it unwraps paragraphs", () {
     const html = """<p>Hello<p>Why</p><div>test</div>Why <p>xD</p></p>""";
@@ -55,7 +55,7 @@ Previous Chapter
     const html = """<a href="/test">
 Previous Chapter
 </a>""";
-    final url = new Uri(scheme: "https", host: "test.com");
+    final url = Uri(scheme: "https", host: "test.com");
     expect(
       decompile(html, url),
       equals("[Previous Chapter](https://test.com/test)"),

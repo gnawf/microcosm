@@ -8,18 +8,18 @@ import "package:app/sources/wuxia_world/wuxia_world_chapters.dart";
 import "package:flutter/material.dart";
 import "package:meta/meta.dart";
 
-@deprecated
 class ChapterProvider extends StatefulWidget {
   const ChapterProvider({@required this.child});
 
   final Widget child;
 
+  @deprecated
   static ChapterProviderState of(BuildContext context) {
     return context.findAncestorStateOfType<ChapterProviderState>();
   }
 
   @override
-  State createState() => new ChapterProviderState();
+  State createState() => ChapterProviderState();
 }
 
 class ChapterProviderState extends State<ChapterProvider> {
@@ -70,7 +70,7 @@ class ChapterProviderState extends State<ChapterProvider> {
 
     final databases = DatabaseProvider.of(context);
     final novels = NovelProvider.of(context);
-    _chapterDao = new ChapterDao(databases.database, novels.dao);
+    _chapterDao = ChapterDao(databases.database, novels.dao);
   }
 
   @override

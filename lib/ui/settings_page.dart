@@ -11,21 +11,21 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
+    return Scaffold(
+      appBar: AppBar(
         automaticallyImplyLeading: false,
         leading: const BackButton(),
         title: const Text("Settings"),
         centerTitle: false,
       ),
-      body: new ListView(
+      body: ListView(
         padding: const EdgeInsets.symmetric(
           vertical: 16.0,
           horizontal: 8.0,
         ),
         children: <Widget>[
-          new _DarkThemeSetting(),
-          new _AmoledSetting(),
+          _DarkThemeSetting(),
+          _AmoledSetting(),
           const _PrimaryColorSetting(),
           const _AccentColorSetting(),
           const _ReaderFontSizeSetting(),
@@ -40,7 +40,7 @@ class _DarkThemeSetting extends StatelessWidget {
   Widget build(BuildContext context) {
     final settings = Settings.of(context);
 
-    return new CheckboxListTile(
+    return CheckboxListTile(
       value: settings.brightness == Brightness.dark,
       onChanged: (value) {
         settings.brightness = value ? Brightness.dark : Brightness.light;
@@ -56,7 +56,7 @@ class _AmoledSetting extends StatelessWidget {
   Widget build(BuildContext context) {
     final settings = Settings.of(context);
 
-    return new CheckboxListTile(
+    return CheckboxListTile(
       value: settings.amoled,
       onChanged: settings.brightness == Brightness.dark ? (value) => settings.amoled = value : null,
       title: const Text("Amoled Mode"),
@@ -72,11 +72,11 @@ class _PrimaryColorSetting extends StatelessWidget {
   Widget build(BuildContext context) {
     final settings = Settings.of(context);
 
-    return new ListTile(
+    return ListTile(
       enabled: settings.brightness == Brightness.light,
       leading: const Icon(MDIcons.palette),
       title: const Text("Primary Color"),
-      trailing: new _TrailingColorIndicator(
+      trailing: _TrailingColorIndicator(
         color: settings.primarySwatch,
       ),
       onTap: () async {
@@ -99,10 +99,10 @@ class _AccentColorSetting extends StatelessWidget {
   Widget build(BuildContext context) {
     final settings = Settings.of(context);
 
-    return new ListTile(
+    return ListTile(
       leading: const Icon(MDIcons.eyedropper),
       title: const Text("Accent Color"),
-      trailing: new _TrailingColorIndicator(
+      trailing: _TrailingColorIndicator(
         color: settings.accentColor,
       ),
       onTap: () async {
@@ -125,11 +125,11 @@ class _TrailingColorIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new Padding(
+    return Padding(
       padding: const EdgeInsets.only(
         right: 14.5,
       ),
-      child: new Container(
+      child: Container(
         width: 18.0,
         height: 18.0,
         color: color,
@@ -142,7 +142,7 @@ class _ReaderFontSizeSetting extends StatefulWidget {
   const _ReaderFontSizeSetting();
 
   @override
-  State createState() => new _ReaderFontSizeSettingState();
+  State createState() => _ReaderFontSizeSettingState();
 }
 
 class _ReaderFontSizeSettingState extends State<_ReaderFontSizeSetting> {
@@ -150,12 +150,12 @@ class _ReaderFontSizeSettingState extends State<_ReaderFontSizeSetting> {
   Widget build(BuildContext context) {
     final settings = Settings.of(context);
 
-    return new ListTile(
+    return ListTile(
       leading: const Icon(MDIcons.formatFont),
       title: const Text("Reader Font Size"),
-      trailing: new Text("${settings.readerFontSize}px"),
+      trailing: Text("${settings.readerFontSize}px"),
       onTap: () async {
-        final newValue = await showFontSizePickerDialog(
+        final value = await showFontSizePickerDialog(
           context: context,
           title: const Text("Reader Font Size"),
           min: 8.0,
@@ -163,8 +163,8 @@ class _ReaderFontSizeSettingState extends State<_ReaderFontSizeSetting> {
           value: settings.readerFontSize,
           defaultValue: settings.defaultReaderFontSize,
         );
-        if (newValue != null) {
-          setState(() => settings.readerFontSize = newValue);
+        if (value != null) {
+          setState(() => settings.readerFontSize = value);
         }
       },
     );

@@ -1,3 +1,3 @@
 import "dart:io";
 
-HttpClient httpClient = new HttpClient();
+final httpClient = HttpClient();

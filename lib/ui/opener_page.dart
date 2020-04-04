@@ -13,9 +13,7 @@ class OpenerPage extends HookWidget {
   Widget build(BuildContext context) {
     final url = useTextEditingController();
 
-    useEffect(() {
-      return () => url.dispose();
-    }, []);
+    useEffect(() => url.dispose, []);
 
     Future<void> paste() async {
       final paste = await Clipboard.getData("text/plain");
@@ -34,8 +32,8 @@ class OpenerPage extends HookWidget {
       }
     }
 
-    return new Scaffold(
-      appBar: new AppBar(
+    return Scaffold(
+      appBar: AppBar(
         automaticallyImplyLeading: false,
         leading: null,
         title: const Text("Microcosm"),
@@ -44,14 +42,14 @@ class OpenerPage extends HookWidget {
           const SettingsIconButton(),
         ],
       ),
-      body: new Padding(
+      body: Padding(
         padding: const EdgeInsets.symmetric(
           horizontal: 24.0,
         ),
-        child: new Column(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            new TextField(
+            TextField(
               controller: url,
               autofocus: true,
               autocorrect: false,
@@ -61,24 +59,24 @@ class OpenerPage extends HookWidget {
                 border: const OutlineInputBorder(),
               ),
             ),
-            new Padding(
+            Padding(
               padding: const EdgeInsets.only(
                 top: 32.0,
                 left: 2.0,
                 right: 2.0,
               ),
-              child: new Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  new RaisedButton(
+                  RaisedButton(
                     onPressed: url.clear,
                     child: const Text("Clear"),
                   ),
-                  new RaisedButton(
+                  RaisedButton(
                     onPressed: paste,
                     child: const Text("Paste"),
                   ),
-                  new RaisedButton(
+                  RaisedButton(
                     onPressed: open,
                     child: const Text("Open"),
                   ),

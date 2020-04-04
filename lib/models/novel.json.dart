@@ -25,7 +25,7 @@ Novel fromJson(Map<String, dynamic> json) {
   final synopsis = json["synopsis"];
   final posterImage = json["posterImage"];
 
-  return new Novel(
+  return Novel(
     slug: slug,
     name: name,
     source: source,

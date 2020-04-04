@@ -1,5 +1,3 @@
-import "dart:math" as math;
-
 import "package:app/hooks/use_novel.hook.dart";
 import "package:app/models/chapter.dart";
 import "package:app/providers/provider.hooks.dart";
@@ -63,7 +61,7 @@ class _RecentsList extends HookWidget {
   SliverChildDelegate _recentsDelegate(List<Chapter> data) {
     return SliverChildBuilderDelegate(
       (BuildContext context, int index) {
-        return new _RecentsListEntry(data[index]);
+        return _RecentsListEntry(data[index]);
       },
       childCount: data.length,
     );

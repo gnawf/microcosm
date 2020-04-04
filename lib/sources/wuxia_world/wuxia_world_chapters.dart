@@ -31,7 +31,7 @@ class WuxiaWorldChapters implements ChapterSource {
     String novelSlug,
     Map<String, dynamic> params,
   }) async {
-    final url = new Uri(
+    final url = Uri(
       scheme: "https",
       host: "wuxiaworld.com",
       pathSegments: ["novel", novelSlug],
@@ -119,9 +119,9 @@ class _ChapterParser {
   static String title(Document document, {bool simple = true}) {
     // Any text that matches these regexes are kept, order preserved
     final regexes = [
-      new RegExp(r"book ?\d+", caseSensitive: false),
-      new RegExp(r"vol(?:ume)? ?\d+", caseSensitive: false),
-      new RegExp(r"chapter ?\d+", caseSensitive: false),
+      RegExp(r"book ?\d+", caseSensitive: false),
+      RegExp(r"vol(?:ume)? ?\d+", caseSensitive: false),
+      RegExp(r"chapter ?\d+", caseSensitive: false),
     ];
 
     final title = heading(document, regexes)?.text?.trim();
@@ -168,24 +168,23 @@ class _ChapterParser {
     final title = _ChapterParser.title(document, simple: false);
 
     Element hidden() {
-      final href = new Uri(path: "dialog", queryParameters: {"content": title});
-      final anchor = new Element.tag("a");
-      anchor.text = "Tap here to reveal spoiler title";
-      anchor.attributes["href"] = href.toString();
+      final href = Uri(path: "dialog", queryParameters: {"content": title});
+      final anchor = Element.tag("a")
+        ..text = "Tap here to reveal spoiler title"
+        ..attributes["href"] = href.toString();
 
-      final strong = new Element.tag("strong");
+      final strong = Element.tag("strong");
       strong.children.add(anchor);
 
-      final paragraph = new Element.tag("p");
+      final paragraph = Element.tag("p");
       paragraph.children.add(strong);
       return paragraph;
     }
 
     Element normal() {
-      final strong = new Element.tag("strong");
-      strong.text = title;
+      final strong = Element.tag("strong")..text = title;
 
-      final paragraph = new Element.tag("p");
+      final paragraph = Element.tag("p");
       paragraph.children.add(strong);
       return paragraph;
     }
@@ -214,13 +213,13 @@ class _ChapterParser {
   }
 
   static bool containsIgnoreNoise(String string, String substring) {
-    final noise = new RegExp(r"[^a-z0-9\s]", caseSensitive: false);
+    final noise = RegExp(r"[^a-z0-9\s]", caseSensitive: false);
     string = string.toLowerCase().replaceAll(noise, "");
     substring = substring.toLowerCase().replaceAll(noise, "");
     // Allow extra words in the title
-    substring = substring.replaceAll(new RegExp(r"\s+"), r".+?");
+    substring = substring.replaceAll(RegExp(r"\s+"), r".+?");
     // Do contains check using the regular expression
-    return new RegExp(substring).hasMatch(string);
+    return RegExp(substring).hasMatch(string);
   }
 
   static Chapter fromHtml(Uri source, String body) {
@@ -230,14 +229,14 @@ class _ChapterParser {
     cleanup(document, article);
     makeTitle(document, article);
 
-    return new Chapter(
+    return Chapter(
       slug: slugify(uri: source),
       url: source,
       previousUrl: prevUrl(document, source),
       nextUrl: nextUrl(document, source),
       title: title(document),
       content: markdown.decompile(article.innerHtml),
-      createdAt: new DateTime.now(),
+      createdAt: DateTime.now(),
       novelSlug: _Utils.novelSlug(source),
       novelSource: "wuxiaworld",
     );
@@ -261,7 +260,7 @@ class _IndexParser {
         return null;
       }
 
-      return new Chapter(
+      return Chapter(
         slug: slugify(uri: url),
         url: url,
         title: item.text.trim(),

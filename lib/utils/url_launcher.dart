@@ -4,7 +4,7 @@ import "package:app/dialogs/message_dialog.dart";
 import "package:flutter/material.dart";
 import "package:url_launcher/url_launcher.dart";
 
-Future<Null> onTapLink(BuildContext context, String url) async {
+Future<void> onTapLink(BuildContext context, String url) async {
   // Deep linking
   Uri uri;
   try {

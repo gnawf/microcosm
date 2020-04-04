@@ -56,7 +56,7 @@ WHERE ${Chapter.type}.slug = ?""",
   }
 
   Future<int> count({String novelSlug}) async {
-    return await _database.count(
+    return _database.count(
       table: Chapter.type,
       where: novelSlug != null ? {"novelSlug": novelSlug} : null,
     );
@@ -90,7 +90,7 @@ OFFSET $offset""");
     return count > 0;
   }
 
-  Future<Null> upsert(Chapter chapter) async {
+  Future<void> upsert(Chapter chapter) async {
     if (chapter == null) {
       return null;
     }
@@ -130,9 +130,9 @@ OFFSET $offset""");
       }
     });
 
-    return new Chapter.fromJson(chapter).copyWith(
+    return Chapter.fromJson(chapter).copyWith(
       // Attach the novel object if present
-      novel: novel["slug"] != null ? new Novel.fromJson(novel) : null,
+      novel: novel["slug"] != null ? Novel.fromJson(novel) : null,
     );
   }
 

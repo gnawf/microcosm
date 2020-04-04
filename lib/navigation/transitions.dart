@@ -143,7 +143,7 @@ class CupertinoPageRoute<T> extends PageRoute<T> {
   ValueListenable<String> get previousTitle {
     assert(
       _previousTitle != null,
-      'Cannot read the previousTitle for a route that has not yet been installed',
+      "Cannot read the previousTitle for a route that has not yet been installed",
     );
     return _previousTitle;
   }
@@ -248,7 +248,7 @@ class CupertinoPageRoute<T> extends PageRoute<T> {
       if (child == null) {
         throw FlutterError.fromParts(<DiagnosticsNode>[
           ErrorSummary('The builder for route "${settings.name}" returned null.'),
-          ErrorDescription('Route builders must never return null.'),
+          ErrorDescription("Route builders must never return null."),
         ]);
       }
       return true;
@@ -320,7 +320,7 @@ class CupertinoPageRoute<T> extends PageRoute<T> {
   }
 
   @override
-  String get debugLabel => '${super.debugLabel}(${settings.name})';
+  String get debugLabel => "${super.debugLabel}(${settings.name})";
 }
 
 /// Provides an iOS-style page transition animation.
@@ -731,7 +731,7 @@ class _CupertinoEdgeShadowDecoration extends Decoration {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<LinearGradient>('edgeGradient', edgeGradient));
+    properties.add(DiagnosticsProperty<LinearGradient>("edgeGradient", edgeGradient));
   }
 }
 
@@ -887,7 +887,7 @@ Future<T> showCupertinoModalPopup<T>({
   return Navigator.of(context, rootNavigator: useRootNavigator).push(
     _CupertinoModalPopupRoute<T>(
       barrierColor: CupertinoDynamicColor.resolve(_kModalBarrierColor, context),
-      barrierLabel: 'Dismiss',
+      barrierLabel: "Dismiss",
       builder: builder,
       filter: filter,
       semanticsDismissible: semanticsDismissible,
@@ -916,8 +916,8 @@ Widget _buildCupertinoDialogTransitions(
   return FadeTransition(
     opacity: fadeAnimation,
     child: ScaleTransition(
-      child: child,
       scale: animation.drive(_dialogScaleTween),
+      child: child,
     ),
   );
 }

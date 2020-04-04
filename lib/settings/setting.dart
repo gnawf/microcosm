@@ -38,7 +38,7 @@ class Setting<Stored, Concrete> extends ChangeNotifier {
     }
   }
 
-  Future<Null> _init() async {
+  Future<void> _init() async {
     final store = await SharedPreferences.getInstance();
     Stored stored;
     if (Stored == int) {
@@ -55,7 +55,7 @@ class Setting<Stored, Concrete> extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<Null> _save(Concrete value) async {
+  Future<void> _save(Concrete value) async {
     final store = await SharedPreferences.getInstance();
     final stored = serializer == null ? value : serializer(value);
     if (Stored == int) {

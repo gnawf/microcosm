@@ -29,7 +29,7 @@ class Novel {
     String synopsis,
     String posterImage,
   }) {
-    return new Novel(
+    return Novel(
       slug: this.slug ?? slug,
       name: this.name ?? name,
       source: this.source ?? source,

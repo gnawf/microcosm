@@ -8,8 +8,7 @@ _PageState _usePageState() {
 }
 
 void _useDebouncedSearch(String searchValue, _Consumer<String> search) {
-  final lastSearchAt = useState<DateTime>();
-  lastSearchAt.value ??= DateTime.now();
+  final lastSearchAt = useState<DateTime>()..value ??= DateTime.now();
 
   useEffect(() {
     final now = DateTime.now();
@@ -28,10 +27,8 @@ void _useDebouncedSearch(String searchValue, _Consumer<String> search) {
       search(searchValue);
     });
 
-    return () {
-      // Cancel the timer once the search field changes
-      timer.cancel();
-    };
+    // Cancel the timer once the search field changes
+    return timer.cancel;
   }, [searchValue]);
 }
 

@@ -12,37 +12,37 @@ class Settings extends StatefulWidget {
   }
 
   @override
-  State createState() => new SettingsState();
+  State createState() => SettingsState();
 }
 
 class SettingsState extends State<Settings> {
-  final _brightness = new Setting<int, Brightness>(
+  final _brightness = Setting<int, Brightness>(
     key: "brightness",
     defaultValue: Brightness.light,
     serializer: (brightness) => brightness.index,
     deserializer: (index) => index == null ? null : Brightness.values[index],
   );
 
-  final _amoled = new Setting<bool, bool>(
+  final _amoled = Setting<bool, bool>(
     key: "amoled",
     defaultValue: true,
   );
 
-  final _primarySwatch = new Setting<int, MaterialColor>(
+  final _primarySwatch = Setting<int, MaterialColor>(
     key: "primarySwatch",
     defaultValue: Colors.indigo,
     serializer: (color) => _primaryColors.indexOf(color),
     deserializer: (index) => index == null ? null : _primaryColors[index],
   );
 
-  final _accentColor = new Setting<int, MaterialAccentColor>(
+  final _accentColor = Setting<int, MaterialAccentColor>(
     key: "accentColor",
     defaultValue: Colors.indigoAccent,
     serializer: (color) => _accentColors.indexOf(color),
     deserializer: (index) => index == null ? null : _accentColors[index],
   );
 
-  final _readerFontSize = new Setting<double, double>(
+  final _readerFontSize = Setting<double, double>(
     key: "readerFontSize",
     defaultValue: 15.0,
   );

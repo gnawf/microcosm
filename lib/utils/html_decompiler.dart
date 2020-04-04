@@ -15,18 +15,18 @@ String decompile(String content, [Uri source]) {
     }
 
     // Replace consecutive spaces with one space
-    block.innerHtml = block.innerHtml.replaceAll(new RegExp(r"\s{2,}"), " ");
+    block.innerHtml = block.innerHtml.replaceAll(RegExp(r"\s{2,}"), " ");
 
     // Add padding
-    block.nodes.insert(0, new Text("\n"));
-    block.nodes.add(new Text("\n"));
+    block.nodes.insert(0, Text("\n"));
+    block.nodes.add(Text("\n"));
 
     utils.unwrap(block);
   });
 
-  // Replace line breaks with newlines
+  // Replace line breaks with lines
   fragment.querySelectorAll("br").forEach((br) {
-    br.replaceWith(new Text("\n"));
+    br.replaceWith(Text("\n"));
   });
 
   // Replace text formatting with markdown equivalent
@@ -42,10 +42,10 @@ String decompile(String content, [Uri source]) {
         switch (text.localName) {
           case "b":
           case "strong":
-            node.replaceWith(new Text("__${node.text}__"));
+            node.replaceWith(Text("__${node.text}__"));
             break;
           case "em":
-            node.replaceWith(new Text("_${node.text}_"));
+            node.replaceWith(Text("_${node.text}_"));
             break;
         }
       }
@@ -65,37 +65,37 @@ String decompile(String content, [Uri source]) {
     }
     final href = anchor.attributes["href"];
     final link = source?.resolve(href)?.toString() ?? href;
-    anchor.replaceWith(new Text("[$text]($link)"));
+    anchor.replaceWith(Text("[$text]($link)"));
   });
 
   fragment.querySelectorAll("ol").forEach((list) {
     final items = list.querySelectorAll("> li");
 
     // Add numbers before list items then unwrap them
-    for (int i = 0; i < items.length; i++) {
+    for (var i = 0; i < items.length; i++) {
       final item = items[i];
-      final index = new Text("${i + 1}. ");
+      final index = Text("${i + 1}. ");
       item.nodes.insert(0, index);
       utils.unwrap(item);
     }
 
-    // Surround with newlines & unwrap list
-    list.nodes.insert(0, new Text("\n"));
-    list.nodes.add(new Text("\n"));
+    // Surround with lines & unwrap list
+    list.nodes.insert(0, Text("\n"));
+    list.nodes.add(Text("\n"));
     utils.unwrap(list);
   });
 
   fragment.querySelectorAll("ul").forEach((list) {
     // Add bullet points before list items then unwrap them
     list.querySelectorAll("> li").forEach((item) {
-      final index = new Text("* ");
+      final index = Text("* ");
       item.nodes.insert(0, index);
       utils.unwrap(item);
     });
 
-    // Surround with newlines & unwrap list
-    list.nodes.insert(0, new Text("\n"));
-    list.nodes.add(new Text("\n"));
+    // Surround with lines & unwrap list
+    list.nodes.insert(0, Text("\n"));
+    list.nodes.add(Text("\n"));
     utils.unwrap(list);
   });
 
@@ -103,13 +103,13 @@ String decompile(String content, [Uri source]) {
   // 2. Trim lines
   // 3. Remove empty lines
   // 4. Join by an empty line in between
-  // Without the invisible character, the newlines are collapsed
+  // Without the invisible character, the lines are collapsed
   return fragment.text.split("\n").map(_trim).where((x) => x.isNotEmpty).join("\n\n");
 }
 
 String _trim(String text) {
   // Remove any whitespace and keep random characters
-  return text.replaceAllMapped(new RegExp(r"^[^a-zA-Z0-9]+"), (match) {
+  return text.replaceAllMapped(RegExp(r"^[^a-zA-Z0-9]+"), (match) {
     // If there's no text in the line, remove it
     if (match[0].length == text.length) {
       return "";
@@ -117,10 +117,10 @@ String _trim(String text) {
 
     // Preserve whitespace for lists
     if (match[0].startsWith("* ")) {
-      return match[0].replaceAll(new RegExp(r"\s{2,}"), " ");
+      return match[0].replaceAll(RegExp(r"\s{2,}"), " ");
     }
-    return match[0].replaceAll(new RegExp(r"\s+"), "");
-  }).replaceAllMapped(new RegExp(r"[^a-zA-Z0-9]+$"), (match) {
-    return match[0].replaceAll(new RegExp(r"\s+"), "");
+    return match[0].replaceAll(RegExp(r"\s+"), "");
+  }).replaceAllMapped(RegExp(r"[^a-zA-Z0-9]+$"), (match) {
+    return match[0].replaceAll(RegExp(r"\s+"), "");
   });
 }

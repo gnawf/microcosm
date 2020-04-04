@@ -12,41 +12,41 @@ class NovelHeader extends StatelessWidget {
     final theme = Theme.of(context);
     const posterImageAspectRatio = 102.0 / 145.0;
 
-    return new Material(
+    return Material(
       color: theme.cardColor,
       elevation: 2.0,
-      child: new Padding(
+      child: Padding(
         padding: const EdgeInsets.only(
           left: 16.0,
           top: 24.0,
           right: 16.0,
           bottom: 16.0,
         ),
-        child: new Row(
+        child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            new Container(
+            Container(
               width: 160.0 * posterImageAspectRatio,
               height: 160.0,
               margin: const EdgeInsets.only(
                 bottom: 4.0,
               ),
-              child: new Hero(
+              child: Hero(
                 tag: novel.slug,
-                child: new ImageView(
+                child: ImageView(
                   image: novel.posterImage,
                   fit: BoxFit.cover,
                 ),
               ),
             ),
-            new Flexible(
-              child: new Padding(
+            Flexible(
+              child: Padding(
                 padding: const EdgeInsets.only(
                   left: 16.0,
                 ),
-                child: new Column(
+                child: Column(
                   children: <Widget>[
-                    new Text(
+                    Text(
                       novel.synopsis ?? "",
                       textAlign: TextAlign.justify,
                     ),

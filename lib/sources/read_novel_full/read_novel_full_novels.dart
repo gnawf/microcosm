@@ -94,7 +94,7 @@ class _SearchParser {
   }
 
   static Novel _fromNovel(Element result, Uri location) {
-    return new Novel(
+    return Novel(
       slug: _slug(result, location),
       name: _name(result),
       source: "read-novel-full",
@@ -119,8 +119,8 @@ class _SearchParser {
 }
 
 extension _PathSegmentToSlug on String {
-  static final _regex = new RegExp(
-    "\/?(.*?)(\.html.*?)?\$",
+  static final _regex = RegExp(
+    r"/?(.*?)(.html.*?)?$",
     caseSensitive: false,
   );
 
@@ -130,8 +130,8 @@ extension _PathSegmentToSlug on String {
 }
 
 extension _ToPosterImage on String {
-  static final _regex = new RegExp(
-    "\/t-\\d+x\\d+\/",
+  static final _regex = RegExp(
+    r"/t-\d+x\d+/",
     caseSensitive: false,
   );
 

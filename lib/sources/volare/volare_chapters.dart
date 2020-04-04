@@ -35,9 +35,9 @@ class VolareChapters implements ChapterSource {
 class _ChapterParser {
   static String title(Document document) {
     final regexes = [
-      new RegExp(r"book ?\d+", caseSensitive: false),
-      new RegExp(r"vol(?:ume)? ?\d+", caseSensitive: false),
-      new RegExp(r"chapter ?\d+", caseSensitive: false),
+      RegExp(r"book ?\d+", caseSensitive: false),
+      RegExp(r"vol(?:ume)? ?\d+", caseSensitive: false),
+      RegExp(r"chapter ?\d+", caseSensitive: false),
     ];
 
     final title = document.querySelector(".entry-title")?.text?.trim();
@@ -77,14 +77,14 @@ class _ChapterParser {
     // Remove all the scripts
     content.querySelectorAll("script").forEach((e) => e.remove());
 
-    return new Chapter(
+    return Chapter(
       slug: slugify(uri: source),
       url: source,
       previousUrl: previousUrl,
       nextUrl: nextUrl,
       title: title(document),
       content: markdown.decompile(content.innerHtml, source),
-      createdAt: new DateTime.now(),
+      createdAt: DateTime.now(),
       novelSlug: source.pathSegments.first,
       novelSource: "volare-novels",
     );

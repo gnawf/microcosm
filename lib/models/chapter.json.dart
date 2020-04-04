@@ -43,7 +43,7 @@ Chapter fromJson(Map<String, dynamic> json) {
   final novelSource = json["novelSource"];
   final novel = json["novel"];
 
-  return new Chapter(
+  return Chapter(
     slug: slug,
     url: sourceUrl == null ? null : Uri.parse(sourceUrl),
     previousUrl: previousUrl == null ? null : Uri.parse(previousUrl),
@@ -54,6 +54,6 @@ Chapter fromJson(Map<String, dynamic> json) {
     readAt: readAt == null ? null : DateTime.parse(readAt),
     novelSlug: novelSlug,
     novelSource: novelSource,
-    novel: novel == null ? null : new Novel.fromJson(novel),
+    novel: novel == null ? null : Novel.fromJson(novel),
   );
 }

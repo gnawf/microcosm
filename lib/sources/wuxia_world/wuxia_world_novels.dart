@@ -71,7 +71,7 @@ class _NovelParser {
           final url = Uri.parse(decoded["url"]);
           final novelSegmentIndex = url.pathSegments.indexOf("novel");
           final slug = url.pathSegments[novelSegmentIndex + 1];
-          return new Novel(
+          return Novel(
             slug: slug,
             name: decoded["name"],
             source: "wuxiaworld",

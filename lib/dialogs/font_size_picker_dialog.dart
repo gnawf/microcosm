@@ -10,10 +10,10 @@ Future<double> showFontSizePickerDialog({
   double value,
   double defaultValue,
 }) async {
-  return await showDialog(
+  return showDialog(
     context: context,
     builder: (BuildContext context) {
-      return new _Dialog(title, min, max, value, defaultValue);
+      return _Dialog(title, min, max, value, defaultValue);
     },
   );
 }
@@ -32,7 +32,7 @@ class _Dialog extends StatefulWidget {
   final double defaultValue;
 
   @override
-  State createState() => new _DialogState();
+  State createState() => _DialogState();
 }
 
 class _DialogState extends State<_Dialog> {
@@ -52,12 +52,12 @@ class _DialogState extends State<_Dialog> {
     final max = widget.max;
     final defaultValue = widget.defaultValue;
 
-    return new AlertDialog(
+    return AlertDialog(
       title: title,
-      content: new Column(
+      content: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          new Slider(
+          Slider(
             label: "$_value",
             value: _value,
             min: min,
@@ -68,11 +68,11 @@ class _DialogState extends State<_Dialog> {
         ],
       ),
       actions: <Widget>[
-        new FlatButton(
+        FlatButton(
           onPressed: () => Navigator.of(context).pop(defaultValue),
           child: const Text("Reset"),
         ),
-        new FlatButton(
+        FlatButton(
           onPressed: () => Navigator.of(context).pop(_value),
           child: const Text("Set"),
         ),

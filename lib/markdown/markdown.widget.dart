@@ -159,9 +159,9 @@ class _PerformantMarkdownWidgetState extends State<PerformantMarkdownWidget> imp
 
   void _disposeRecognizers() {
     if (_recognizers.isEmpty) return;
-    final List<GestureRecognizer> localRecognizers = List<GestureRecognizer>.from(_recognizers);
+    final localRecognizers = List<GestureRecognizer>.from(_recognizers);
     _recognizers.clear();
-    for (GestureRecognizer recognizer in localRecognizers) recognizer.dispose();
+    for (final recognizer in localRecognizers) recognizer.dispose();
   }
 
   @override

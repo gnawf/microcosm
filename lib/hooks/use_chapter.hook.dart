@@ -29,7 +29,7 @@ Resource<Chapter> useChapter(Uri url) {
     }
     chapter.value = Resource.data(value.data, onRefresh: () {
       // Set the refresh request and then wait on its future
-      return (refreshRequest.value = new Completer()).future;
+      return (refreshRequest.value = Completer()).future;
     });
   }
 

@@ -26,13 +26,13 @@ linter:
     - no_adjacent_strings_in_list
     - no_duplicate_case_values
     - non_constant_identifier_names
+    - constant_identifier_names
     - overridden_fields
     - prefer_adjacent_string_concatenation
     - prefer_asserts_in_initializer_lists
     - prefer_collection_literals
     - prefer_conditional_assignment
     - prefer_const_constructors
-    - prefer_const_constructors_in_immutables
     - prefer_const_declarations
     - prefer_const_literals_to_create_immutables
     - prefer_contains
@@ -59,3 +59,34 @@ linter:
     - unrelated_type_equality_checks
     - use_rethrow_when_possible
     - valid_regexps
+    - avoid_returning_null_for_future
+    - close_sinks
+    - prefer_void_to_null
+    - unnecessary_statements
+    - avoid_returning_this
+    - avoid_void_async
+    - camel_case_extensions
+    - cascade_invocations
+    - only_throw_errors
+    - one_member_abstracts
+    - prefer_double_quotes
+    - prefer_final_in_for_each
+    - prefer_is_not_operator
+    - prefer_inlined_adds
+    - prefer_if_null_operators
+    - prefer_iterable_whereType
+    - prefer_null_aware_operators
+    - prefer_spread_collections
+    - sort_child_properties_last
+    - unnecessary_await_in_return
+    - unnecessary_lambdas
+    - unnecessary_new
+    - unnecessary_parenthesis
+    - unnecessary_string_interpolations
+    - unnecessary_string_escapes
+    - use_raw_strings
+    - use_setters_to_change_properties
+    - sort_pub_dependencies
+    - use_string_buffers
+    - use_to_and_as_if_applicable
+    - void_checks

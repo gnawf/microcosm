@@ -60,10 +60,7 @@ MarkdownStyleSheet _useMarkdownStyleSheet() {
   final settings = useSettings();
   final readerFontSize = settings.readerFontSize;
 
-  final styleSheet = useState();
-
-  // Set initial value
-  styleSheet.value ??= _createMarkdownStyleSheet(theme, readerFontSize);
+  final styleSheet = useState()..value ??= _createMarkdownStyleSheet(theme, readerFontSize);
 
   // Cause re-render when font size changes
   useListenable(settings.readerFontSizeChanges);

@@ -5,7 +5,7 @@ import "package:flutter/material.dart";
 import "package:flutter_markdown/flutter_markdown.dart";
 import "package:markdown/markdown.dart" as md;
 
-Future<Null> showMessageDialog({
+Future<void> showMessageDialog({
   BuildContext context,
   String title,
   String content,
@@ -14,9 +14,9 @@ Future<Null> showMessageDialog({
   await showDialog(
     context: context,
     builder: (BuildContext context) {
-      return new AlertDialog(
-        title: title != null ? new Text(title) : null,
-        content: content != null ? new _Content(context, content) : null,
+      return AlertDialog(
+        title: title != null ? Text(title) : null,
+        content: content != null ? _Content(context, content) : null,
       );
     },
   );
@@ -48,7 +48,7 @@ class _Content extends MarkdownWidget {
 
   static MarkdownStyleSheet defaultStyleSheet(BuildContext context) {
     final theme = Theme.of(context);
-    final ss = new MarkdownStyleSheet.fromTheme(theme);
+    final ss = MarkdownStyleSheet.fromTheme(theme);
     return ss.copyWith(
       p: ss.p.copyWith(fontSize: 15.0),
     );
@@ -56,11 +56,11 @@ class _Content extends MarkdownWidget {
 
   @override
   Widget build(BuildContext context, List<Widget> children) {
-    return new Padding(
+    return Padding(
       padding: const EdgeInsets.only(
         top: 4.0,
       ),
-      child: new Column(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: children,

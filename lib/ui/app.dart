@@ -7,7 +7,7 @@ class App extends StatefulWidget {
   const App();
 
   @override
-  State createState() => new _AppState();
+  State createState() => _AppState();
 }
 
 class _AppState extends State<App> {
@@ -46,9 +46,9 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     final amoled = _settings.brightness == Brightness.dark && _settings.amoled;
 
-    return new MaterialApp(
+    return MaterialApp(
       title: "Microcosm",
-      theme: new ThemeData(
+      theme: ThemeData(
         primarySwatch: _settings.primarySwatch,
         accentColor: _settings.accentColor,
         brightness: _settings.brightness,

@@ -72,7 +72,7 @@ class _ChapterParser {
 
   static String title(Document document) {
     final title = document.querySelector(".chr-title");
-    return title != null ? title.text : null;
+    return title?.text;
   }
 
   static Chapter fromHtml(Uri source, String body) {
@@ -90,14 +90,14 @@ class _ChapterParser {
       return true;
     });
 
-    return new Chapter(
+    return Chapter(
       slug: slugify(uri: source),
       url: source,
       previousUrl: prevUrl(document, source),
       nextUrl: nextUrl(document, source),
       title: title(document),
       content: markdown.decompile(article.innerHtml),
-      createdAt: new DateTime.now(),
+      createdAt: DateTime.now(),
       novelSlug: source.pathSegments[0],
       novelSource: "read-novel-full",
     );

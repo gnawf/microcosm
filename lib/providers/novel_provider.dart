@@ -3,18 +3,18 @@ import "package:app/sources/database/novel_dao.dart";
 import "package:flutter/material.dart";
 import "package:meta/meta.dart";
 
-@deprecated
 class NovelProvider extends StatefulWidget {
   const NovelProvider({@required this.child});
 
   final Widget child;
 
+  @deprecated
   static NovelProviderState of(BuildContext context) {
     return context.findAncestorStateOfType<NovelProviderState>();
   }
 
   @override
-  State createState() => new NovelProviderState();
+  State createState() => NovelProviderState();
 }
 
 class NovelProviderState extends State<NovelProvider> {
@@ -27,7 +27,7 @@ class NovelProviderState extends State<NovelProvider> {
     super.initState();
 
     final databases = DatabaseProvider.of(context);
-    _novelDao = new NovelDao(databases.database);
+    _novelDao = NovelDao(databases.database);
   }
 
   @override

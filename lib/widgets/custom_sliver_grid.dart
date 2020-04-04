@@ -28,14 +28,14 @@ class CustomSliverGrid extends StatelessWidget {
     if (row == 0 || rowSpacing == null) {
       return null;
     }
-    return new EdgeInsets.only(top: rowSpacing);
+    return EdgeInsets.only(top: rowSpacing);
   }
 
   EdgeInsets _columnEdgeInsets(int column) {
     if (column == 0 || columnSpacing == null) {
       return null;
     }
-    return new EdgeInsets.only(left: columnSpacing);
+    return EdgeInsets.only(left: columnSpacing);
   }
 
   Widget _builder(BuildContext context, SliverConstraints constraints) {
@@ -46,17 +46,17 @@ class CustomSliverGrid extends StatelessWidget {
     final width = maxWidth - (columnCount - 1) * (columnSpacing ?? 0.0);
 
     // The custom grid is composed of a list of rows
-    return new SliverList(
-      delegate: new SliverChildBuilderDelegate(
+    return SliverList(
+      delegate: SliverChildBuilderDelegate(
         (BuildContext context, int row) {
-          final children = new List<Widget>(
+          final children = List<Widget>(
             // Calculate the number of cells in this row
             row == rowCount - 1 && cellCount % columnCount != 0 ? cellCount % columnCount : columnCount,
           );
 
           // Populate the children for this row
           for (var column = 0; column < children.length; column++) {
-            children[column] = new Container(
+            children[column] = Container(
               margin: _columnEdgeInsets(column),
               width: width / columnCount,
               child: builder(context, row * columnCount + column),
@@ -64,11 +64,11 @@ class CustomSliverGrid extends StatelessWidget {
           }
 
           final insets = _rowEdgeInsets(row);
-          final r = new Row(
-            children: children,
+          final r = Row(
             crossAxisAlignment: CrossAxisAlignment.start,
+            children: children,
           );
-          return insets != null ? new Padding(padding: insets, child: r) : r;
+          return insets != null ? Padding(padding: insets, child: r) : r;
         },
         childCount: rowCount,
       ),
@@ -77,6 +77,6 @@ class CustomSliverGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new SliverLayoutBuilder(builder: _builder);
+    return SliverLayoutBuilder(builder: _builder);
   }
 }

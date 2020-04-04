@@ -19,13 +19,11 @@ void useReadingLog({
       return () {};
     }
 
-    final timer = new Timer(delay, () {
-      final now = new DateTime.now();
+    final timer = Timer(delay, () {
+      final now = DateTime.now();
       final read = chapter.copyWith(readAt: now);
       dao.upsert(read);
     });
-    return () {
-      timer.cancel();
-    };
+    return timer.cancel;
   }, [chapter]);
 }

@@ -15,7 +15,7 @@ class NovelSliverGrid extends StatefulWidget {
   final OnTapNovel onTap;
 
   @override
-  State createState() => new _NovelSliverGridState();
+  State createState() => _NovelSliverGridState();
 }
 
 class _NovelSliverGridState extends State<NovelSliverGrid> {
@@ -38,14 +38,14 @@ class _NovelSliverGridState extends State<NovelSliverGrid> {
         ),
       );
     }
-    return new NovelGridItem(widget.novels.data[index], widget.onTap);
+    return NovelGridItem(widget.novels.data[index], widget.onTap);
   }
 
   @override
   Widget build(BuildContext context) {
     final novels = widget.novels;
 
-    return new CustomSliverGrid(
+    return CustomSliverGrid(
       builder: _builder,
       cellWidth: 90.0,
       cellCount: novels.data.length + (novels.hasMore ? 1 : 0),
@@ -63,7 +63,7 @@ class NovelGridItem extends StatefulWidget {
   final OnTapNovel onTap;
 
   @override
-  State<StatefulWidget> createState() => new _NovelGridItemState();
+  State<StatefulWidget> createState() => _NovelGridItemState();
 }
 
 class _NovelGridItemState extends State<NovelGridItem> with SingleTickerProviderStateMixin {
@@ -75,13 +75,13 @@ class _NovelGridItemState extends State<NovelGridItem> with SingleTickerProvider
   void initState() {
     super.initState();
 
-    _controller = new AnimationController(
+    _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 200),
     );
 
-    _scaleAnimation = new Tween(begin: 1.0, end: 0.9).animate(
-      new CurvedAnimation(parent: _controller, curve: Curves.easeOut),
+    _scaleAnimation = Tween(begin: 1.0, end: 0.9).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeOut),
     );
   }
 
@@ -90,32 +90,32 @@ class _NovelGridItemState extends State<NovelGridItem> with SingleTickerProvider
     final novel = widget.novel;
     final onTap = widget.onTap;
 
-    return new GestureDetector(
+    return GestureDetector(
       onTap: onTap != null ? () => onTap(novel) : null,
       // Start the scale transition on tap
       onTapDown: (event) => _controller.forward(),
       onTapUp: (event) => _controller.reverse(),
       onTapCancel: () => _controller.reverse(),
       // Scale the entire widget upon request
-      child: new ScaleTransition(
+      child: ScaleTransition(
         scale: _scaleAnimation,
-        child: new Column(
+        child: Column(
           children: <Widget>[
-            new AspectRatio(
+            AspectRatio(
               aspectRatio: 102.0 / 145.0,
-              child: new Hero(
+              child: Hero(
                 tag: novel.slug,
-                child: new ImageView(
+                child: ImageView(
                   image: novel.posterImage,
                   fit: BoxFit.cover,
                 ),
               ),
             ),
-            new Padding(
+            Padding(
               padding: const EdgeInsets.only(
                 top: 8.0,
               ),
-              child: new Text(
+              child: Text(
                 novel.name,
                 maxLines: 3,
                 textAlign: TextAlign.center,

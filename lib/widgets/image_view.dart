@@ -5,7 +5,7 @@ ImageProvider networkImageOrPlaceholder(String url) {
   if (url == null) {
     return const AssetImage("assets/images/1x1.png");
   }
-  return new NetworkImage(url);
+  return NetworkImage(url);
 }
 
 class ImageView extends StatelessWidget {
@@ -43,10 +43,10 @@ class ImageView extends StatelessWidget {
   Widget build(BuildContext context) {
     // Return an empty view if we don't have an image to display
     if (image == null) {
-      return new Container(width: width, height: height);
+      return Container(width: width, height: height);
     }
 
-    return new FadeInImage.assetNetwork(
+    return FadeInImage.assetNetwork(
       placeholder: "assets/images/1x1.png",
       placeholderScale: 1.0,
       image: image,

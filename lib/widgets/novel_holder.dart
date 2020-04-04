@@ -22,13 +22,13 @@ class NovelHolder extends StatefulWidget {
   final AsyncWidgetBuilder<Novel> builder;
 
   @override
-  State createState() => new _NovelHolderState();
+  State createState() => _NovelHolderState();
 }
 
 class _NovelHolderState extends State<NovelHolder> {
   Future<Novel> _novel;
 
-  Future<Null> _setup() async {
+  Future<void> _setup() async {
     if (!mounted) {
       return;
     }
@@ -62,7 +62,7 @@ class _NovelHolderState extends State<NovelHolder> {
 
   @override
   Widget build(BuildContext context) {
-    return new FutureBuilder<Novel>(
+    return FutureBuilder<Novel>(
       builder: widget.builder,
       future: _novel,
       initialData: widget.novel,
