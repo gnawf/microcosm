@@ -89,5 +89,7 @@ MarkdownStyleSheet _createMarkdownStyleSheet(ThemeData theme, double fontSize) {
         subtitle1: defaults.subtitle1.copyWith(fontSize: defaults.subtitle1.fontSize * fontSizeScale),
       ),
     ),
+  ).copyWith(
+    textAlign: WrapAlignment.spaceBetween,
   );
 }
