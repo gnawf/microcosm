@@ -77,16 +77,22 @@ class ChapterOverscrollNavigation extends HookWidget {
       final metrics = notification.metrics;
 
       if (notification is ScrollStartNotification) {
-        mode.value = metrics.extentAfter == 0 ? _Mode.drag : _Mode.idle;
+        mode.value = metrics.extentAfter <= 10 ? _Mode.drag : _Mode.idle;
         direction.value = AxisDirection.down;
         overscroll.value = 0.0;
       } else if (notification is ScrollEndNotification) {
+        // This is for Android: fire once scroll ends i.e. user lets go
         if (mode.value == _Mode.armed) {
           onNavigate(AxisDirection.down);
+          mode.value = _Mode.idle;
         }
         cancel();
       } else if (notification is ScrollUpdateNotification) {
-        if (mode.value != _Mode.idle) {
+        // iOS: fire as soon as the user lets go i.e. dragDetails=null
+        if (mode.value == _Mode.armed && notification.dragDetails == null) {
+          onNavigate(AxisDirection.down);
+          mode.value = _Mode.idle;
+        } else if (mode.value != _Mode.idle) {
           scroll(notification.scrollDelta);
         }
       } else if (notification is OverscrollNotification) {
