@@ -3,7 +3,7 @@ import "dart:async";
 import "package:flutter/material.dart";
 import "package:meta/meta.dart";
 
-typedef Future<void> ResourceRefresher();
+typedef ResourceRefresher = Future<void> Function();
 
 enum ResourceState {
   placeholder,
