@@ -6,6 +6,8 @@ abstract class Source {
 
   String get name;
 
+  List<String> get hosts;
+
   ChapterSource get chapters;
 
   NovelSource get novels;

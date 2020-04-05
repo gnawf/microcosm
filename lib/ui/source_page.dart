@@ -1,6 +1,5 @@
 import "package:app/hooks/use_novels.hook.dart";
 import "package:app/resource/resource.dart";
-import "package:app/resource/resource.hooks.dart";
 import "package:app/sources/source.dart";
 import "package:app/sources/sources.dart";
 import "package:app/ui/router.hooks.dart";
@@ -22,7 +21,7 @@ class SourcePage extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final source = _useSource(sourceId);
+    final source = useSource(id: sourceId);
 
     return _PageState(
       source: source,
@@ -34,7 +33,7 @@ class SourcePage extends HookWidget {
             SettingsIconButton(),
           ],
         ),
-        body: _Body(),
+        body: _Novels(),
       ),
     );
   }
@@ -47,7 +46,7 @@ class _PageState extends StatelessWidget {
     @required this.child,
   }) : super(key: key);
 
-  final Resource<Source> source;
+  final Source source;
 
   final Widget child;
 
@@ -62,54 +61,15 @@ class _AppBarTitle extends HookWidget {
   Widget build(BuildContext context) {
     final state = _usePageState();
     final source = state.source;
-
-    switch (source.state) {
-      case ResourceState.placeholder:
-        return const Text("");
-      case ResourceState.loading:
-        return const Text("Loading");
-      case ResourceState.done:
-        return Text(source.data.name);
-      case ResourceState.error:
-        return const Text("Error");
-    }
-
-    throw UnsupportedError("Switch was not exhaustive");
-  }
-}
-
-class _Body extends HookWidget {
-  @override
-  Widget build(BuildContext context) {
-    final state = _usePageState();
-    final source = state.source;
-
-    switch (source.state) {
-      case ResourceState.placeholder:
-        return const SizedBox.shrink();
-      case ResourceState.loading:
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
-      case ResourceState.done:
-        break;
-      case ResourceState.error:
-        return Center(
-          child: Text("${source.error}"),
-        );
-    }
-
-    return _Novels(source.data);
+    return Text(source.name);
   }
 }
 
 class _Novels extends HookWidget {
-  const _Novels(this.source);
-
-  final Source source;
-
   @override
   Widget build(BuildContext context) {
+    final state = _usePageState();
+    final source = state.source;
     final novels = useNovels(source);
     final onTapNovel = _useOnTapNovel();
 

@@ -44,8 +44,6 @@ class _HomePageState extends State<HomePage> {
         return routes.opener();
       case 2:
         return routes.recents();
-      case 3:
-        return routes.downloads();
     }
 
     return null;
@@ -102,10 +100,6 @@ class _HomePageState extends State<HomePage> {
       BottomNavigationBarItem(
         icon: Icon(MDIcons.history),
         title: Text("Recents"),
-      ),
-      BottomNavigationBarItem(
-        icon: Icon(MDIcons.download),
-        title: Text("Saved"),
       ),
     ];
 

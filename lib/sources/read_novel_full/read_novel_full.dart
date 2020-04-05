@@ -10,6 +10,11 @@ class ReadNovelFull extends Source {
   @override
   final String name = "Read Novel Full";
   @override
+  final List<String> hosts = const [
+    "readnovelfull.com",
+    "www.readnovelfull.com",
+  ];
+  @override
   final ChapterSource chapters = ReadNovelFullChapters();
   @override
   final NovelSource novels = ReadNovelFullNovels();

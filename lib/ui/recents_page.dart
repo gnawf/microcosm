@@ -1,8 +1,8 @@
+import "package:app/hooks/use_daos.hook.dart";
 import "package:app/hooks/use_navigator_observers.dart";
 import "package:app/hooks/use_novel.hook.dart";
 import "package:app/models/chapter.dart";
 import "package:app/navigation/on_navigate.dart";
-import "package:app/providers/provider.hooks.dart";
 import "package:app/resource/resource.dart";
 import "package:app/resource/resource.hooks.dart";
 import "package:app/sources/database/chapter_dao.dart";
@@ -166,7 +166,7 @@ class _RecentsListEntry extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final chapterResource = _useChapter(this.chapter);
-    final source = useSource(chapterResource.data?.novelSource);
+    final source = useSource(id: chapterResource.data?.novelSource);
 
     switch (chapterResource.state) {
       case ResourceState.placeholder:

@@ -3,7 +3,6 @@ import "package:app/navigation/dialog_route.dart";
 import "package:app/navigation/fade_transition_route.dart";
 import "package:app/navigation/transitions.dart";
 import "package:app/ui/download_chapters_page.dart";
-import "package:app/ui/downloads_page.dart";
 import "package:app/ui/home_page.dart";
 import "package:app/ui/novel_page.dart";
 import "package:app/ui/opener_page.dart";
@@ -105,19 +104,6 @@ class _Routes<R> {
   R source({@required String sourceId}) {
     return _execute((BuildContext context) {
       return SourcePage(sourceId: sourceId);
-    });
-  }
-
-  R downloads({
-    String novelSource,
-    String novelSlug,
-    Novel novel,
-  }) {
-    novelSource ??= novel?.source;
-    novelSlug ??= novel?.slug;
-
-    return _execute((BuildContext context) {
-      return DownloadsPage(novelSource: novelSource, novelSlug: novelSlug);
     });
   }
 

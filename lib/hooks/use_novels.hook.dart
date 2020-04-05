@@ -1,5 +1,5 @@
+import "package:app/hooks/use_daos.hook.dart";
 import "package:app/models/novel.dart";
-import "package:app/providers/provider.hooks.dart";
 import "package:app/resource/paginated_resource.dart";
 import "package:app/resource/resource.hooks.dart";
 import "package:app/sources/source.dart";

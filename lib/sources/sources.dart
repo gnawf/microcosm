@@ -11,8 +11,9 @@ final _sources = [
 
 final _sourcesMap = _toMap();
 
-Source useSource(String id) {
-  return _sourcesMap[id];
+Source useSource({String id, String host, Uri url}) {
+  host ??= url?.host;
+  return _sourcesMap[_key(id: id, host: host)];
 }
 
 List<Source> useSources() {
@@ -21,8 +22,20 @@ List<Source> useSources() {
 
 Map<String, Source> _toMap() {
   final map = <String, Source>{};
-  for (final value in _sources) {
-    map[value.id] = value;
+  for (final source in _sources) {
+    final idKey = _key(id: source.id);
+    assert(!map.containsKey(idKey), "No two sources can share the same id: ${source.id}");
+    map[idKey] = source;
+    for (final host in source.hosts) {
+      final hostKey = _key(host: host);
+      assert(!map.containsKey(hostKey), "No two sources can support the same host: $host");
+      map[hostKey] = source;
+    }
   }
   return map;
+}
+
+String _key({String id, String host}) {
+  assert(id == null || host == null, "Can only generate key for one property at a time");
+  return id != null ? "id.$id" : host != null ? "host.$host" : null;
 }

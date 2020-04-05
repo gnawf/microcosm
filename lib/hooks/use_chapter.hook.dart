@@ -1,12 +1,13 @@
 import "dart:async";
 
+import "package:app/hooks/use_daos.hook.dart";
 import "package:app/models/chapter.dart";
-import "package:app/providers/provider.hooks.dart";
 import "package:app/resource/resource.dart";
 import "package:app/resource/resource.hooks.dart";
 import "package:app/sources/chapter_source.dart";
 import "package:app/sources/data.dart";
 import "package:app/sources/database/chapter_dao.dart";
+import "package:app/sources/sources.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 
 Resource<Chapter> useChapter(Uri url) {
@@ -16,9 +17,8 @@ Resource<Chapter> useChapter(Uri url) {
   final chapter = useResource<Chapter>();
 
   // Get sources
-  final chapters = useChapterProvider();
   final dao = useChapterDao();
-  final upstream = chapters.source(url: url);
+  final upstream = useSource(url: url).chapters;
 
   // Fetches the chapter and updates the relevant state hooks
   Future<void> fetch(List<GetChapter> sources) async {

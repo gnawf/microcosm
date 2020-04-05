@@ -1,7 +1,7 @@
 import "dart:async";
 
+import "package:app/hooks/use_daos.hook.dart";
 import "package:app/models/novel.dart";
-import "package:app/providers/provider.hooks.dart";
 import "package:app/resource/resource.dart";
 import "package:app/resource/resource.hooks.dart";
 import "package:app/sources/data.dart";
@@ -24,7 +24,7 @@ GetNovel _save(GetNovel fetcher, _SaveNovel save) {
 
 Resource<Novel> useNovel(String source, String slug, {bool live = true}) {
   final dao = useNovelDao();
-  final novelSource = useSource(source).novels;
+  final novelSource = useSource(id: source).novels;
   final novel = useResource<Novel>();
 
   useEffect(() {
