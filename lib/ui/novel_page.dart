@@ -157,7 +157,7 @@ class _ChapterList extends HookWidget {
   Widget build(BuildContext context) {
     final state = _usePageState();
     final novel = state.novel.data;
-    final chapters = useChapters(novel);
+    final chapters = useChapters(novel.source, novel.slug);
 
     SliverChildDelegate delegate;
 

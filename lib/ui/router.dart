@@ -1,3 +1,4 @@
+import "package:app/models/chapter.dart";
 import "package:app/models/novel.dart";
 import "package:app/navigation/dialog_route.dart";
 import "package:app/navigation/fade_transition_route.dart";
@@ -128,15 +129,25 @@ class _Routes<R> {
   R downloadChapters({
     String novelSource,
     String novelSlug,
+    Uri chapterUrl,
     Novel novel,
+    Chapter chapter,
   }) {
-    novelSource ??= novel.source;
-    novelSlug ??= novel.slug;
+    if (novel != null) {
+      novelSource ??= novel.source;
+      novelSlug ??= novel.slug;
+    }
+    if (chapter != null) {
+      novelSource ??= chapter.novelSource;
+      novelSlug ??= chapter.novelSlug;
+      chapterUrl ??= chapter.url;
+    }
 
     return _execute((context) {
       return DownloadChaptersPage(
         novelSource: novelSource,
         novelSlug: novelSlug,
+        chapterUrl: chapterUrl,
       );
     });
   }

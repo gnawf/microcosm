@@ -13,27 +13,24 @@ VoidCallback _useOpenDownloadChapters() {
   final context = useContext();
   final state = _usePageState();
   final router = useRouter();
-  final chapter = state.chapter;
+  final chapter = state.chapter.data;
 
   return () {
-    if (chapter.data == null) {
-      const snackBar = SnackBar(
-        content: Text("No chapter data"),
-      );
-      Scaffold.of(context).showSnackBar(snackBar);
+    if (chapter == null) {
+      Scaffold.of(context).showMessageAsSnackBar("No chapter data");
       return;
     }
 
-    final source = chapter.data.novelSource;
-    final slug = chapter.data.novelSlug;
-    router.push().downloadChapters(novelSource: source, novelSlug: slug);
+    final source = chapter.novelSource;
+    final slug = chapter.novelSlug;
+    router.push().downloadChapters(novelSource: source, novelSlug: slug, chapter: chapter);
   };
 }
 
 OverscrollNavigate _useChapterNavigation() {
   final pageState = _usePageState();
   final router = useRouter();
-  final chapter = pageState.chapter?.data;
+  final chapter = pageState.chapter.data;
 
   if (chapter == null) {
     return null;

@@ -18,10 +18,11 @@ Resource<Chapter> useChapter(Uri url) {
 
   // Get sources
   final dao = useChapterDao();
-  final upstream = useSource(url: url).chapters;
+  final daoFetcher = (useState<GetChapter>()..value ??= _toGetChapter(dao)).value;
+  final upstreamFetcher = useSource(url: url)?.chapters?.get;
 
   // Fetches the chapter and updates the relevant state hooks
-  Future<void> fetch(List<GetChapter> sources) async {
+  Future<void> stateAwareFetch(List<GetChapter> sources) async {
     final loadId = ++currentLoadId.value;
     final value = await _fetch(url, sources);
     if (loadId != currentLoadId.value) {
@@ -35,16 +36,22 @@ Resource<Chapter> useChapter(Uri url) {
 
   // Initial load
   useEffect(() {
-    chapter.value = const Resource.loading();
-    fetch([_toGetChapter(dao), upstream.get]);
+    if (url != null) {
+      chapter.value = const Resource.loading();
+      stateAwareFetch([daoFetcher, upstreamFetcher]);
+    }
     return () {};
   }, [url]);
 
   // Fulfill refresh requests
   useEffect(() {
-    final ourRefresh = refreshRequest.value;
-    if (ourRefresh != null) {
-      fetch([upstream.get, _toGetChapter(dao)]).then((value) => ourRefresh.complete());
+    if (url != null) {
+      final ourRefresh = refreshRequest.value;
+      if (ourRefresh != null) {
+        stateAwareFetch([upstreamFetcher, daoFetcher]).then((value) {
+          ourRefresh.complete();
+        });
+      }
     }
     return () {};
   }, [refreshRequest.value]);
@@ -54,12 +61,16 @@ Resource<Chapter> useChapter(Uri url) {
 
 Future<Data<Chapter>> _fetch(Uri url, List<GetChapter> fetchers) async {
   for (final fetcher in fetchers) {
+    if (fetcher == null) {
+      continue;
+    }
+
     try {
       final result = await fetcher(url: url);
       if (result.data != null) {
         return result;
       }
-    } catch (e, s) {
+    } on Error catch (e, s) {
       print(e);
       print(s);
     }

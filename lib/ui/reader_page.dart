@@ -1,10 +1,11 @@
-import "package:app/hooks/use_theme.hook.dart";
 import "package:app/hooks/use_chapter.hook.dart";
 import "package:app/hooks/use_settings.hook.dart";
+import "package:app/hooks/use_theme.hook.dart";
 import "package:app/markdown/markdown.widget.dart";
 import "package:app/models/chapter.dart";
 import "package:app/resource/resource.dart";
 import "package:app/ui/router.hooks.dart";
+import "package:app/utils/scaffold.extensions.dart";
 import "package:app/widgets/chapter_overscoll_navigation.dart";
 import "package:app/widgets/mark_chapter_read.dart";
 import "package:app/widgets/md_icons.dart";
@@ -21,14 +22,6 @@ class ReaderPage extends HookWidget {
 
   final Uri chapterUrl;
 
-  VoidCallback _refresh(Resource<Chapter> resource, ValueNotifier<bool> state) {
-    return () async {
-      state.value = true;
-      await resource.refresh();
-      state.value = false;
-    };
-  }
-
   @override
   Widget build(BuildContext context) {
     final chapter = useChapter(chapterUrl);
@@ -39,8 +32,9 @@ class ReaderPage extends HookWidget {
         appBar: AppBar(
           title: _Title(),
           centerTitle: false,
-          actions: const [
-            SettingsIconButton(),
+          actions: [
+            _DownloadChaptersButton(),
+            const SettingsIconButton(),
           ],
         ),
         body: _Body(),
