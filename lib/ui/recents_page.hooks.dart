@@ -1,17 +1,29 @@
 part of "recents_page.dart";
 
+Future<Resource<List<Chapter>>> _fetchRecents(ChapterDao dao, ResourceRefresher refresher) async {
+  try {
+    return Resource.data(await dao.recents(), onRefresh: refresher);
+  } on Error catch (e, s) {
+    print(e);
+    print(s);
+    return Resource.error(e);
+  }
+}
+
+_PageState _usePageState() {
+  return useContext().findAncestorWidgetOfExactType<_PageState>();
+}
+
 Resource<List<Chapter>> _useRecents() {
   final recents = useResource<List<Chapter>>();
   final dao = useChapterDao();
 
   useEffect(() {
-    dao.recents().then((value) {
-      recents.value = Resource.data(value);
-    }).catchError((error, stacktrace) {
-      recents.value = Resource.error(error);
-      print(error);
-      print(stacktrace);
-    });
+    Future<void> execute() async {
+      recents.value = await _fetchRecents(dao, execute);
+    }
+
+    execute();
 
     return () {};
   }, []);
@@ -26,7 +38,7 @@ Resource<Chapter> _useChapter(Chapter chapter) {
   useEffect(() {
     resource.value = Resource.data(chapter.copyWith(novel: novel.data));
     return () {};
-  }, [novel.state]);
+  }, [chapter, novel.state]);
 
   return resource.value;
 }

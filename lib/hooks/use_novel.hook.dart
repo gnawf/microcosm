@@ -54,7 +54,7 @@ Resource<Novel> useNovel(String source, String slug, {bool live = true}) {
     }();
 
     return () {};
-  }, []);
+  }, [source, slug, live]);
 
   return novel.value;
 }

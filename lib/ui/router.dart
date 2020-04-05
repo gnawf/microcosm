@@ -21,21 +21,23 @@ typedef RouteAction<R, T> = R Function(Route<T> route);
 
 typedef RouteBuilder<T extends Route> = T Function(
   WidgetBuilder builder,
+  RouteSettings settings,
 );
 
-Route _useCupertinoPageRoute(WidgetBuilder builder) {
-  return CupertinoPageRoute(builder: builder);
+Route _useCupertinoPageRoute(WidgetBuilder builder, RouteSettings settings) {
+  return CupertinoPageRoute(builder: builder, settings: settings);
 }
 
-Route _useFadePageRoute(WidgetBuilder builder) {
-  return FadeTransitionPageRoute(builder: builder);
+Route _useFadePageRoute(WidgetBuilder builder, RouteSettings settings) {
+  return FadeTransitionPageRoute(builder: builder, settings: settings);
 }
 
-Route _useDialogPageRoute(WidgetBuilder builder) {
+Route _useDialogPageRoute(WidgetBuilder builder, RouteSettings settings) {
   return DialogRoute(
     pageBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
       return builder(context);
     },
+    settings: settings,
   );
 }
 
@@ -47,8 +49,8 @@ class _Routes<R> {
 
   final RouteBuilder _routeBuilder;
 
-  R _execute(WidgetBuilder builder) {
-    return _action(_routeBuilder(builder));
+  R _execute(WidgetBuilder builder, [RouteSettings settings]) {
+    return _action(_routeBuilder(builder, settings));
   }
 
   _Routes<R> usePageRoute(RouteBuilder pageRouteBuilder) {
@@ -76,7 +78,7 @@ class _Routes<R> {
   R recents() {
     return _execute((BuildContext context) {
       return const RecentsPage();
-    });
+    }, const RouteSettings(name: "recents"));
   }
 
   R reader({@required Uri url}) {

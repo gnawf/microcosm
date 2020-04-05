@@ -1,8 +1,11 @@
+import "package:app/hooks/use_navigator_observers.dart";
 import "package:app/hooks/use_novel.hook.dart";
 import "package:app/models/chapter.dart";
+import "package:app/navigation/on_navigate.dart";
 import "package:app/providers/provider.hooks.dart";
 import "package:app/resource/resource.dart";
 import "package:app/resource/resource.hooks.dart";
+import "package:app/sources/database/chapter_dao.dart";
 import "package:app/sources/sources.dart";
 import "package:app/ui/router.hooks.dart";
 import "package:app/widgets/image_view.dart";
@@ -13,31 +16,81 @@ import "package:flutter_hooks/flutter_hooks.dart";
 
 part "recents_page.hooks.dart";
 
-class RecentsPage extends StatelessWidget {
+class RecentsPage extends HookWidget {
   const RecentsPage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        leading: null,
-        title: const Text("Recently Read"),
-        centerTitle: false,
-        actions: const [
-          SettingsIconButton(),
-        ],
+    return _PageState.create(
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          leading: null,
+          title: const Text("Recently Read"),
+          centerTitle: false,
+          actions: const [
+            SettingsIconButton(),
+          ],
+        ),
+        body: _Body(),
       ),
-      body: CustomScrollView(
-        slivers: <Widget>[
-          SliverPadding(
-            padding: const EdgeInsets.symmetric(
-              vertical: 16.0,
-            ),
-            sliver: _RecentsList(),
+    );
+  }
+}
+
+class _PageState extends HookWidget {
+  _PageState._({
+    @required this.recents,
+    @required this.child,
+  })  : assert(recents != null),
+        assert(child != null);
+
+  factory _PageState.create({@required Widget child}) {
+    final recents = _useRecents();
+
+    return _PageState._(
+      recents: recents,
+      child: child,
+    );
+  }
+
+  final Resource<List<Chapter>> recents;
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return child;
+  }
+}
+
+class _Body extends HookWidget {
+  @override
+  Widget build(BuildContext context) {
+    final pageState = _usePageState();
+    final observer = useState<NavigatorObserver>();
+
+    useEffect(() {
+      observer.value = OnNavigate(onPop: (route, prevRoute) {
+        if (prevRoute.settings.name == "recents") {
+          pageState.recents.refresh();
+        }
+      });
+
+      return () {};
+    }, [pageState.recents]);
+
+    useNavigatorObserver(observer.value);
+
+    return CustomScrollView(
+      slivers: [
+        SliverPadding(
+          padding: const EdgeInsets.symmetric(
+            vertical: 16.0,
           ),
-        ],
-      ),
+          sliver: _RecentsList(),
+        ),
+      ],
     );
   }
 }
@@ -80,7 +133,8 @@ class _RecentsList extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final recents = _useRecents();
+    final pageState = _usePageState();
+    final recents = pageState.recents;
     SliverChildDelegate delegate;
 
     switch (recents.state) {
