@@ -7,6 +7,8 @@ import "package:meta/meta.dart";
 abstract class ChapterSource {
   Future<Data<Chapter>> get({Uri url, Map<String, dynamic> params});
 
+  Future<Chapter> parseGet(Uri url, String html);
+
   Future<DataList<Chapter>> list({
     @required String novelSlug,
     Map<String, dynamic> params,

@@ -19,7 +19,7 @@ class VolareChapters implements ChapterSource {
     final location = response.redirects.tail()?.location ?? url;
 
     return Data(
-      data: _ChapterParser.fromHtml(location, body),
+      data: await parseGet(location, body),
     );
   }
 
@@ -29,6 +29,11 @@ class VolareChapters implements ChapterSource {
     Map<String, dynamic> params,
   }) async {
     return DataList(data: null);
+  }
+
+  @override
+  Future<Chapter> parseGet(Uri url, String html) async {
+    return _ChapterParser.fromHtml(url, html);
   }
 }
 

@@ -15,6 +15,7 @@ class Setting<Stored, Concrete> extends ChangeNotifier {
     this.deserializer,
   }) : assert(// Require a de(serializer) when stored type != concrete type
             Stored == Concrete || serializer != null && deserializer != null) {
+    _value = defaultValue;
     _init();
   }
 

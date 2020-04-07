@@ -22,10 +22,16 @@ if (flutterVersionName == null) {
 }
 
 apply plugin: "com.android.application"
+apply plugin: "kotlin-android"
+apply plugin: "kotlin-kapt"
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
   compileSdkVersion 29
+
+  sourceSets {
+    main.java.srcDirs += "src/main/kotlin"
+  }
 
   lintOptions {
     disable "InvalidPackage"
@@ -33,8 +39,8 @@ android {
 
   defaultConfig {
     applicationId "com.gnawf.microcosm"
-    minSdkVersion 16
-    targetSdkVersion 28
+    minSdkVersion 21
+    targetSdkVersion 29
     versionCode flutterVersionCode.toInteger()
     versionName flutterVersionName
   }
@@ -48,10 +54,10 @@ android {
 
     signingConfigs {
       release {
-        keyAlias keyStoreProperties["keyAlias"]
-        keyPassword keyStoreProperties["keyPassword"]
+        keyAlias keyStoreProperties["keyAlias"] as String
+        keyPassword keyStoreProperties["keyPassword"] as String
         storeFile file(keyStoreProperties["storeFile"])
-        storePassword keyStoreProperties["storePassword"]
+        storePassword keyStoreProperties["storePassword"] as String
       }
     }
 
@@ -70,6 +76,14 @@ android {
       applicationIdSuffix ".profile"
     }
   }
+}
+
+dependencies {
+  implementation("org.jetbrains.kotlin:kotlin-stdlib:${rootProject.ext.kotlin_version}")
+  implementation("androidx.work:work-runtime:${rootProject.ext.work_version}")
+  implementation("com.squareup.okhttp3:okhttp:${rootProject.ext.okhttp_version}")
+  implementation("com.squareup.moshi:moshi:1.9.2")
+  kapt("com.squareup.moshi:moshi-kotlin-codegen:1.9.2")
 }
 
 flutter {

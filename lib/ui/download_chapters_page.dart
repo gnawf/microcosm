@@ -1,12 +1,18 @@
+import "dart:async";
+
+import "package:app/downloads/downloads_manager.dart";
 import "package:app/hooks/use_chapter.hook.dart";
+import "package:app/hooks/use_chapters.hook.dart";
+import "package:app/hooks/use_downloads_manager.hook.dart";
 import "package:app/hooks/use_theme.hook.dart";
 import "package:app/models/chapter.dart";
+import "package:app/resource/paginated_resource.dart";
 import "package:app/resource/resource.dart";
 import "package:app/resource/resource.hooks.dart";
 import "package:app/sources/sources.dart";
-import "package:app/ui/router.dart";
 import "package:app/ui/router.hooks.dart";
 import "package:app/widgets/settings_icon_button.dart";
+import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 
@@ -50,10 +56,10 @@ class _PageState extends StatelessWidget {
   const _PageState._({
     Key key,
     @required this.anchorChapter,
-    @required Router router,
+    @required this.numToDownload,
+    @required this.chapters,
     @required this.child,
-  })  : _router = router,
-        super(key: key);
+  }) : super(key: key);
 
   factory _PageState.use({
     Key key,
@@ -64,7 +70,9 @@ class _PageState extends StatelessWidget {
 
     final chapter = useChapter(parent.chapterUrl);
     final referenceChapter = useResource<Chapter>();
-    final router = useRouter();
+    final numToDownload = useState<int>(null);
+    final isWaitingOnUserInput = numToDownload.value == null;
+    final chapters = useChapters(parent.novelSource, isWaitingOnUserInput ? null : parent.novelSlug);
 
     useEffect(() {
       referenceChapter.value = chapter;
@@ -74,7 +82,8 @@ class _PageState extends StatelessWidget {
     return _PageState._(
       key: key,
       anchorChapter: referenceChapter,
-      router: router,
+      numToDownload: numToDownload,
+      chapters: chapters,
       child: child,
     );
   }
@@ -83,10 +92,13 @@ class _PageState extends StatelessWidget {
 
   final ValueNotifier<Resource<Chapter>> anchorChapter;
 
-  final Router _router;
+  final ValueNotifier<int> numToDownload;
 
-  void download(int next) {
-    _router.pop();
+  final PaginatedResource<Chapter> chapters;
+
+  // ignore: use_setters_to_change_properties
+  void requestDownload(int numToDownload) {
+    this.numToDownload.value = numToDownload;
   }
 
   @override
@@ -121,7 +133,13 @@ class _Body extends HookWidget {
         );
     }
 
-    return _DownloadActions();
+    final waitingForUserInput = state.numToDownload.value == null;
+    return AnimatedCrossFade(
+      crossFadeState: waitingForUserInput ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+      firstChild: _DownloadActions(),
+      secondChild: waitingForUserInput ? const SizedBox.shrink() : _ProcessDownload(),
+      duration: const Duration(milliseconds: 400),
+    );
   }
 }
 
@@ -132,7 +150,7 @@ class _DownloadActions extends HookWidget {
     final anchor = state.anchorChapter.value.data;
     final source = useSource(id: anchor.novelSource);
     final theme = useTheme();
-    final actionsEnabled = false;
+    final platformSupported = defaultTargetPlatform == TargetPlatform.android;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -146,33 +164,16 @@ class _DownloadActions extends HookWidget {
           subtitle: Text(source.name),
         ),
         const Divider(),
-        ListTile(
-          contentPadding: const EdgeInsets.only(
-            left: 24.0,
-            right: 8.0,
-          ),
-          onTap: () => state.download(10),
-          title: const Text("Download next 10 chapters"),
-          enabled: actionsEnabled,
-        ),
-        ListTile(
-          contentPadding: const EdgeInsets.only(
-            left: 24.0,
-            right: 8.0,
-          ),
-          onTap: () => state.download(50),
-          title: const Text("Download next 50 chapters"),
-          enabled: actionsEnabled,
-        ),
-        ListTile(
-          contentPadding: const EdgeInsets.only(
-            left: 24.0,
-            right: 8.0,
-          ),
-          onTap: () => state.download(100),
-          title: const Text("Download next 100 chapters"),
-          enabled: actionsEnabled,
-        ),
+        if (platformSupported)
+          for (final count in const [10, 50, 100, 250, 500, 1000])
+            ListTile(
+              contentPadding: const EdgeInsets.only(
+                left: 24.0,
+                right: 8.0,
+              ),
+              onTap: () => state.requestDownload(count),
+              title: Text("Download next $count chapters"),
+            ),
         const Divider(),
         Padding(
           padding: const EdgeInsets.only(
@@ -187,5 +188,100 @@ class _DownloadActions extends HookWidget {
         ),
       ],
     );
+  }
+}
+
+class _ProcessDownload extends HookWidget {
+  void _download(DownloadsManager manager, List<Chapter> chapters, Chapter anchor, int numToDownload) {
+    final anchorIndex = chapters.searchFor(anchor);
+    if (anchorIndex >= 0) {
+      final urls = <String>[]..length = numToDownload;
+      for (var nth = 0; nth < numToDownload; nth++) {
+        final i = anchorIndex + nth + 1;
+        if (i >= chapters.length) {
+          urls.length = nth + 1;
+          break;
+        }
+        urls[nth] = chapters[i].url.toString();
+      }
+
+      manager.downloadUrls(urls);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final pageState = _usePageState();
+    final downloadsManager = useDownloadsManager();
+    final chapters = pageState.chapters;
+    final anchorChapter = pageState.anchorChapter.value;
+    final numToDownload = pageState.numToDownload.value;
+    final router = useRouter();
+
+    useEffect(() {
+      if (chapters.state != ResourceState.done) {
+        return () {};
+      }
+      _download(downloadsManager, chapters.data, anchorChapter.data, numToDownload);
+      // Close the page after 2 seconds
+      const delay = Duration(seconds: 1);
+      final timer = Timer(delay, router.pop);
+      return timer.cancel;
+    }, [chapters.state]);
+
+    switch (chapters.state) {
+      case ResourceState.placeholder:
+        return const SizedBox.shrink();
+      case ResourceState.loading:
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      case ResourceState.done:
+        if (chapters.data == null) {
+          return const Center(
+            child: Text("Unable to grab chapter data"),
+          );
+        }
+        break;
+      case ResourceState.error:
+        return Center(
+          child: Text("${chapters.error}"),
+        );
+    }
+
+    return const Center(
+      child: Text("Downloading"),
+    );
+  }
+}
+
+extension _ChapterSearch on List<Chapter> {
+  int searchFor(Chapter chapter) {
+    final candidate = _indexOfSearch(chapter);
+    return candidate >= 0 ? candidate : _numberSearch(chapter);
+  }
+
+  int _indexOfSearch(Chapter chapter) {
+    return indexWhere((element) => element.slug == chapter.slug);
+  }
+
+  int _numberSearch(Chapter chapter) {
+    final numberMatches = RegExp(r"\d+").allMatches(chapter.title);
+
+    if (numberMatches.isEmpty) {
+      return 0;
+    }
+
+    final numberRegex = RegExp(r"^((.*[^\d])|)" + numberMatches.map((e) => e[0]).join(r"[^\d]+") + r"(([^\d].*)|)$");
+    var candidate = -1;
+    for (var i = 0; i < length; i++) {
+      if (numberRegex.matchAsPrefix(this[i].title) != null) {
+        if (candidate >= 0) {
+          return null;
+        }
+        candidate = i;
+      }
+    }
+    return candidate;
   }
 }

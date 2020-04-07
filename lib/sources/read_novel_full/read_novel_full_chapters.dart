@@ -21,7 +21,7 @@ class ReadNovelFullChapters implements ChapterSource {
     final response = await request.close();
     final body = await response.transform(convert.utf8.decoder).join();
     return Data(
-      data: _ChapterParser.fromHtml(url, body),
+      data: await parseGet(url, body),
     );
   }
 
@@ -46,6 +46,11 @@ class ReadNovelFullChapters implements ChapterSource {
     return DataList(
       data: _ChapterListingParser.fromHtml(novelSlug, body, location),
     );
+  }
+
+  @override
+  Future<Chapter> parseGet(Uri url, String html) async {
+    return _ChapterParser.fromHtml(url, html);
   }
 
   Future<int> _getNovelId(String novelSlug) async {

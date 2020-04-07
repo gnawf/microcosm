@@ -22,7 +22,7 @@ class WuxiaWorldChapters implements ChapterSource {
     final location = response.redirects.tail()?.location ?? url;
 
     return Data(
-      data: _ChapterParser.fromHtml(location, body),
+      data: await parseGet(location, body),
     );
   }
 
@@ -45,6 +45,11 @@ class WuxiaWorldChapters implements ChapterSource {
     return DataList(
       data: _IndexParser.fromHtml(body, location),
     );
+  }
+
+  @override
+  Future<Chapter> parseGet(Uri url, String html) async {
+    return _ChapterParser.fromHtml(url, html);
   }
 }
 
