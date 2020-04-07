@@ -32,8 +32,8 @@ WHERE ${Chapter.type}.slug = ?""",
   }
 
   Future<List<Chapter>> list({
-    @required String novelSlug,
     @required String novelSource,
+    @required String novelSlug,
     String orderBy,
     int limit,
     int offset,

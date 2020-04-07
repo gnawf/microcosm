@@ -4,6 +4,8 @@ import "package:app/navigation/dialog_route.dart";
 import "package:app/navigation/fade_transition_route.dart";
 import "package:app/navigation/transitions.dart";
 import "package:app/ui/download_chapters_page.dart";
+import "package:app/ui/downloaded_chapters_page.dart";
+import "package:app/ui/downloaded_novels_page.dart";
 import "package:app/ui/home_page.dart";
 import "package:app/ui/novel_page.dart";
 import "package:app/ui/opener_page.dart";
@@ -149,6 +151,18 @@ class _Routes<R> {
         novelSlug: novelSlug,
         chapterUrl: chapterUrl,
       );
+    });
+  }
+
+  R downloadedNovels() {
+    return _execute((BuildContext context) {
+      return DownloadedNovelsPage();
+    });
+  }
+
+  R downloadedChapters(String novelSource, String novelSlug) {
+    return _execute((BuildContext context) {
+      return DownloadedChaptersPage(novelSource: novelSource, novelSlug: novelSlug);
     });
   }
 }

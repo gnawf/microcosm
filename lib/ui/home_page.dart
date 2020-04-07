@@ -44,6 +44,8 @@ class _HomePageState extends State<HomePage> {
         return routes.opener();
       case 2:
         return routes.recents();
+      case 3:
+        return routes.downloadedNovels();
     }
 
     return null;
@@ -88,7 +90,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
 
     // Setup bottom navigation bar items
-    _bottomBarItems = const <BottomNavigationBarItem>[
+    _bottomBarItems = const [
       BottomNavigationBarItem(
         icon: Icon(MDIcons.magnify),
         title: Text("Browse"),
@@ -100,6 +102,10 @@ class _HomePageState extends State<HomePage> {
       BottomNavigationBarItem(
         icon: Icon(MDIcons.history),
         title: Text("Recents"),
+      ),
+      BottomNavigationBarItem(
+        icon: Icon(MDIcons.download),
+        title: Text("Downloads"),
       ),
     ];
 
