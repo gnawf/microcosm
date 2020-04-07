@@ -39,6 +39,9 @@ class _Body extends HookWidget {
       resource: novels,
       doneBuilder: (BuildContext context, List<Novel> novels) {
         return ListView.builder(
+          padding: const EdgeInsets.symmetric(
+            vertical: 16.0,
+          ),
           itemBuilder: (BuildContext context, int index) {
             return _NovelListTile(novel: novels[index]);
           },

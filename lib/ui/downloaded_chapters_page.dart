@@ -106,7 +106,7 @@ class _Body extends HookWidget {
       doneBuilder: (BuildContext context, List<Chapter> chapters) {
         return ListView.builder(
           padding: const EdgeInsets.symmetric(
-            vertical: 8.0,
+            vertical: 16.0,
           ),
           itemBuilder: (BuildContext context, int index) {
             return _ChapterListTile(chapter: chapters[index]);
