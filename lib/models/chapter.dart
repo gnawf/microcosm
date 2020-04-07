@@ -3,30 +3,6 @@ import "package:app/models/novel.dart";
 import "package:meta/meta.dart";
 
 String slugify({@required Uri uri}) {
-  // Bunch of zeroes to pad the numbers to a length of 20 characters
-  const zeroes = const <String>[
-    "",
-    "0",
-    "00",
-    "000",
-    "0000",
-    "00000",
-    "000000",
-    "0000000",
-    "00000000",
-    "000000000",
-    "0000000000",
-    "00000000000",
-    "000000000000",
-    "0000000000000",
-    "00000000000000",
-    "000000000000000",
-    "0000000000000000",
-    "00000000000000000",
-    "000000000000000000",
-    "0000000000000000000",
-  ];
-
   // Strip any subdomains from the host
   final host = uri.host.replaceAllMapped(
     RegExp(r".*?([a-z]+\.[a-z]{2,})$"),
@@ -34,16 +10,13 @@ String slugify({@required Uri uri}) {
   );
   final path = uri.path.replaceAllMapped(
     RegExp(r"\d{1,19}"),
-    (match) => "${zeroes[20 - match.end + match.start]}${match[0]}",
+    (match) => "0" * (20 - match.end + match.start) + match[0],
   );
   return host.toLowerCase() + path.toLowerCase();
 }
 
 @immutable
 class Chapter {
-  static const type = "chapter";
-  static const columns = mapper.columns;
-
   const Chapter({
     this.slug,
     this.url,
@@ -59,6 +32,9 @@ class Chapter {
   });
 
   factory Chapter.fromJson(Map<String, dynamic> json) => mapper.fromJson(json);
+
+  static const type = "chapter";
+  static const columns = mapper.columns;
 
   final String slug;
   final Uri url;

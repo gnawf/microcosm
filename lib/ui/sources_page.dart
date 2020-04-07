@@ -19,9 +19,9 @@ class SourcesPage extends HookWidget {
         leading: null,
         title: const Text("Browse"),
         centerTitle: false,
-        actions: const <Widget>[
-          const SearchIconButton(),
-          const SettingsIconButton(),
+        actions: const [
+          SearchIconButton(),
+          SettingsIconButton(),
         ],
       ),
       body: _PageBody(),

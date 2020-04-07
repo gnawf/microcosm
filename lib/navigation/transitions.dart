@@ -926,7 +926,7 @@ Widget _buildCupertinoDialogTransitions(
 /// iOS-style entrance and exit animations, modal barrier color, and modal
 /// barrier behavior (the dialog is not dismissible with a tap on the barrier).
 ///
-/// This function takes a `builder` which typically builds a [CupertinoDialog]
+/// This function takes a `builder` which typically builds a [CupertinoPopupSurface]
 /// or [CupertinoAlertDialog] widget. Content below the dialog is dimmed with a
 /// [ModalBarrier]. The widget returned by the `builder` does not share a
 /// context with the location that `showCupertinoDialog` is originally called
@@ -951,7 +951,7 @@ Widget _buildCupertinoDialogTransitions(
 ///
 /// See also:
 ///
-///  * [CupertinoDialog], an iOS-style dialog.
+///  * [CupertinoPopupSurface], an iOS-style dialog.
 ///  * [CupertinoAlertDialog], an iOS-style alert dialog.
 ///  * [showDialog], which displays a Material-style dialog.
 ///  * [showGeneralDialog], which allows for customization of the dialog popup.

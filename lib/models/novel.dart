@@ -3,9 +3,6 @@ import "package:meta/meta.dart";
 
 @immutable
 class Novel {
-  static const type = "novel";
-  static const columns = mapper.columns;
-
   const Novel({
     this.slug,
     this.name,
@@ -15,6 +12,9 @@ class Novel {
   });
 
   factory Novel.fromJson(Map<String, dynamic> json) => mapper.fromJson(json);
+
+  static const type = "novel";
+  static const columns = mapper.columns;
 
   final String slug;
   final String name;
