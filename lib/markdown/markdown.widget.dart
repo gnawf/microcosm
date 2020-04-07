@@ -147,13 +147,19 @@ class _PerformantMarkdownWidgetState extends State<PerformantMarkdownWidget> imp
   void _renderMarkdown([List<md.Node> nodes]) {
     nodes ??= _markdownNodes;
 
-    if (nodes == null) {
+    if (nodes == null || !mounted) {
+      return;
+    }
+
+    final children = _markdownBuilder.build(nodes);
+
+    if (!mounted) {
       return;
     }
 
     setState(() {
       // Not so expensive operation that is much harder to run in isolate
-      _children = _markdownBuilder.build(nodes);
+      _children = children;
     });
   }
 
