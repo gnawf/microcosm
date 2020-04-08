@@ -96,35 +96,38 @@ class _Body extends HookWidget {
             controller: searchFieldController,
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.only(
-            left: 24.0,
-            right: 16.0,
-            bottom: 8.0,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              if (isLoading.value)
-                Transform.scale(
-                  scale: 0.65,
-                  child: const CircularProgressIndicator(),
+        Material(
+          elevation: 1.0,
+          child: Padding(
+            padding: const EdgeInsets.only(
+              left: 24.0,
+              right: 16.0,
+              bottom: 16.0,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                if (isLoading.value)
+                  Transform.scale(
+                    scale: 0.65,
+                    child: const CircularProgressIndicator(),
+                  ),
+                const SizedBox.shrink(),
+                DropdownButton(
+                  value: source.value,
+                  onChanged: (selected) {
+                    source.value = selected;
+                  },
+                  items: [
+                    for (final source in sources)
+                      DropdownMenuItem(
+                        value: source,
+                        child: Text(source.name),
+                      ),
+                  ],
                 ),
-              const SizedBox.shrink(),
-              DropdownButton(
-                value: source.value,
-                onChanged: (selected) {
-                  source.value = selected;
-                },
-                items: [
-                  for (final source in sources)
-                    DropdownMenuItem(
-                      value: source,
-                      child: Text(source.name),
-                    ),
-                ],
-              ),
-            ],
+              ],
+            ),
           ),
         ),
         Expanded(
@@ -170,8 +173,8 @@ class _SearchResults extends HookWidget {
     });
 
     return ListView.builder(
-      padding: const EdgeInsets.only(
-        bottom: 12.0,
+      padding: const EdgeInsets.symmetric(
+        vertical: 16.0,
       ),
       itemBuilder: (BuildContext context, int index) {
         return _SearchResult(novel: results.value[index]);
