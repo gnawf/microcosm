@@ -1,5 +1,5 @@
 name: app
-description: A client for novels at Wuxiaworld.com
+description: A client for reading Xianxia & Wuxia novels
 version: 3.0.2+21
 
 environment:
