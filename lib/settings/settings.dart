@@ -1,5 +1,5 @@
+import "package:app/settings/landing_page.dart";
 import "package:app/settings/setting.dart";
-import "package:app/ui/landing_page.dart";
 import "package:flutter/material.dart";
 import "package:meta/meta.dart";
 

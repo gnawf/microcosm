@@ -153,6 +153,16 @@ class _LandingPageSetting extends HookWidget {
 }
 
 Text _landingPageToText(LandingPage page) {
-  final string = landingPageToString(page);
-  return Text(string);
+  switch (page) {
+    case LandingPage.browse:
+      return const Text("Browse");
+    case LandingPage.open:
+      return const Text("Open");
+    case LandingPage.recents:
+      return const Text("Recents");
+    case LandingPage.downloads:
+      return const Text("Downloads");
+  }
+
+  throw UnsupportedError("Unknown landing page $page");
 }
