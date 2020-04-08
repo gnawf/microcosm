@@ -1,4 +1,5 @@
 import "package:app/settings/setting.dart";
+import "package:app/ui/landing_page.dart";
 import "package:flutter/material.dart";
 import "package:meta/meta.dart";
 
@@ -47,6 +48,13 @@ class SettingsState extends State<Settings> {
     defaultValue: 15.0,
   );
 
+  final _landingPage = Setting<int, LandingPage>(
+    key: "landingPage",
+    defaultValue: LandingPage.browse,
+    serializer: _landingPageSerializer,
+    deserializer: _landingPageDeserializer,
+  );
+
   ChangeNotifier get brightnessChanges => _brightness;
 
   Brightness get brightness => _brightness.value;
@@ -78,6 +86,12 @@ class SettingsState extends State<Settings> {
   double get defaultReaderFontSize => _readerFontSize.defaultValue;
 
   set readerFontSize(double value) => _readerFontSize.value = value;
+
+  LandingPage get landingPage => _landingPage.value;
+
+  LandingPage get defaultLandingPage => _landingPage.defaultValue;
+
+  set landingPage(LandingPage value) => _landingPage.value = value;
 
   @override
   Widget build(BuildContext context) {
@@ -128,3 +142,16 @@ const _accentColors = const <MaterialAccentColor>[
   Colors.orangeAccent,
   Colors.deepOrangeAccent,
 ];
+
+const _landingPageToInt = {
+  LandingPage.browse: 0,
+  LandingPage.open: 1,
+  LandingPage.recents: 2,
+  LandingPage.downloads: 3,
+};
+
+final _intToLandingPage = _landingPageToInt.map((k, v) => MapEntry(v, k));
+
+int _landingPageSerializer(LandingPage page) => _landingPageToInt[page];
+
+LandingPage _landingPageDeserializer(int int) => _intToLandingPage[int];

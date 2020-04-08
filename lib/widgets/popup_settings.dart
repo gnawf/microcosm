@@ -4,6 +4,7 @@ import "package:app/hooks/use_animation.hook.dart";
 import "package:app/hooks/use_list_state.hook.dart";
 import "package:app/hooks/use_settings.hook.dart";
 import "package:app/settings/settings.dart";
+import "package:app/ui/landing_page.dart";
 import "package:app/ui/router.hooks.dart";
 import "package:app/widgets/md_icons.dart";
 import "package:flutter/material.dart";
@@ -40,7 +41,7 @@ class _Popup extends HookWidget {
     final widthAnim = useAnim(controller, widthTween.value, curve: widthCurve);
 
     const heightCurve = Interval(0.25, 1.0, curve: Curves.easeInCubic);
-    final heightTween = useState<Tween>()..value ??= Tween(begin: 48.0, end: 368.0);
+    final heightTween = useState<Tween>()..value ??= Tween(begin: 48.0, end: 424.0);
     final heightAnim = useAnim(controller, heightTween.value, curve: heightCurve);
 
     final settings = _useSettings();
@@ -113,6 +114,7 @@ List<Widget> _useSettings() {
       _PrimaryColorSetting(),
       _AccentColorSetting(),
       _ReaderFontSizeSetting(),
+      _LandingPageSetting(),
     ];
     return () {};
   });

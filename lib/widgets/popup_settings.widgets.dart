@@ -123,3 +123,36 @@ class _ReaderFontSizeSetting extends StatelessWidget {
     );
   }
 }
+
+class _LandingPageSetting extends HookWidget {
+  @override
+  Widget build(BuildContext context) {
+    final settings = Settings.of(context);
+    final setting = useState(settings.landingPage);
+
+    useEffect(() => () => settings.landingPage = setting.value, []);
+
+    return ListTile(
+      leading: const Icon(MDIcons.home),
+      title: const Text("Home Page"),
+      trailing: DropdownButton<LandingPage>(
+        items: [
+          for (final page in LandingPage.values)
+            DropdownMenuItem(
+              value: page,
+              child: _landingPageToText(page),
+            ),
+        ],
+        value: setting.value,
+        onChanged: (LandingPage page) {
+          setting.value = page;
+        },
+      ),
+    );
+  }
+}
+
+Text _landingPageToText(LandingPage page) {
+  final string = landingPageToString(page);
+  return Text(string);
+}

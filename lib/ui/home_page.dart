@@ -1,5 +1,6 @@
 import "dart:async";
 
+import "package:app/settings/settings.dart";
 import "package:app/ui/router.dart";
 import "package:app/widgets/md_icons.dart";
 import "package:flutter/foundation.dart";
@@ -109,14 +110,19 @@ class _HomePageState extends State<HomePage> {
       ),
     ];
 
-    // Set initial page
-    _indices.add(0);
-
     _heroController = HeroController(createRectTween: _createRectTween);
   }
 
   @override
   Widget build(BuildContext context) {
+    final settings = Settings.of(context);
+
+    if (_indices.isEmpty) {
+      // Note: the LandingPage indices currently maps to the bottom bar page indices
+      // But there is no guarantee that this will be the case in the future
+      _indices.add(settings.landingPage.index);
+    }
+
     return WillPopScope(
       // Pop the internal navigator first
       onWillPop: () async {
