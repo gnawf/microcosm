@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import "dart:io";
+
 import "package:flutter/cupertino.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/gestures.dart";
@@ -96,8 +98,13 @@ class _PerformantMarkdownWidgetState extends State<PerformantMarkdownWidget> imp
   @override
   void initState() {
     super.initState();
-    _markdownBuilder = _newMarkdownBuilder();
     _parseMarkdown();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _markdownBuilder ??= _newMarkdownBuilder();
   }
 
   @override
@@ -126,10 +133,13 @@ class _PerformantMarkdownWidgetState extends State<PerformantMarkdownWidget> imp
   }
 
   MarkdownBuilder _newMarkdownBuilder() {
+    final MarkdownStyleSheet fallbackStyleSheet = _kFallbackStyle(context, widget.styleSheetTheme);
+    final MarkdownStyleSheet styleSheet = fallbackStyleSheet.merge(widget.styleSheet);
+
     return MarkdownBuilder(
       delegate: this,
       selectable: widget.selectable,
-      styleSheet: widget.styleSheet,
+      styleSheet: styleSheet,
       imageDirectory: widget.imageDirectory,
       imageBuilder: widget.imageBuilder,
       checkboxBuilder: widget.checkboxBuilder,
@@ -192,6 +202,23 @@ class _PerformantMarkdownWidgetState extends State<PerformantMarkdownWidget> imp
   @override
   Widget build(BuildContext context) => widget.build(context, _children);
 }
+
+final MarkdownStyleSheet Function(BuildContext, MarkdownStyleSheetBaseTheme) _kFallbackStyle = (
+  BuildContext context,
+  MarkdownStyleSheetBaseTheme baseTheme,
+) {
+  switch (baseTheme) {
+    case MarkdownStyleSheetBaseTheme.platform:
+      return (Platform.isIOS || Platform.isMacOS)
+          ? MarkdownStyleSheet.fromCupertinoTheme(CupertinoTheme.of(context))
+          : MarkdownStyleSheet.fromTheme(Theme.of(context));
+    case MarkdownStyleSheetBaseTheme.cupertino:
+      return MarkdownStyleSheet.fromCupertinoTheme(CupertinoTheme.of(context));
+    case MarkdownStyleSheetBaseTheme.material:
+    default:
+      return MarkdownStyleSheet.fromTheme(Theme.of(context));
+  }
+};
 
 /// So this is actually a very expensive operation (see below) so we compute it in an isolate
 /// Running in an isolate actually takes magnitudes longer but for UI smoothness this is better
