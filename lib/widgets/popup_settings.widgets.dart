@@ -87,7 +87,7 @@ class _TrailingColorIndicator extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(
-        right: 14.5,
+        right: 10,
       ),
       child: Container(
         width: 18.0,
