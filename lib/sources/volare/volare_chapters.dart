@@ -7,6 +7,7 @@ import "package:app/sources/chapter_source.dart";
 import "package:app/sources/data.dart";
 import "package:app/utils/html_decompiler.dart" as markdown;
 import "package:app/utils/list.extensions.dart";
+import "package:app/utils/parsing.extensions.dart";
 import "package:html/dom.dart";
 import "package:html/parser.dart" as html show parse;
 
@@ -28,7 +29,19 @@ class VolareChapters implements ChapterSource {
     String novelSlug,
     Map<String, dynamic> params,
   }) async {
-    return DataList(data: null);
+    final url = Uri(
+      scheme: "https",
+      host: "www.volarenovels.com",
+      pathSegments: ["novel", novelSlug],
+    );
+    final request = await httpClient.getUrl(url);
+    final response = await request.close();
+    final body = await response.transform(utf8.decoder).join();
+    final location = response.redirects.tail()?.location ?? url;
+
+    return DataList(
+      data: _IndexParser.fromHtml(body, location),
+    );
   }
 
   @override
@@ -45,7 +58,7 @@ class _ChapterParser {
       RegExp(r"chapter ?\d+", caseSensitive: false),
     ];
 
-    final title = document.querySelector(".entry-title")?.text?.trim();
+    final title = document.queryOne(".entry-title")?.text?.trim();
 
     if (title == null) {
       return null;
@@ -59,12 +72,12 @@ class _ChapterParser {
   static Chapter fromHtml(Uri source, String body) {
     final document = html.parse(body);
 
-    final content = document.querySelector(".entry-content");
+    final content = document.queryOne(".entry-content");
 
     Uri previousUrl;
     Uri nextUrl;
 
-    content.querySelectorAll("a[href*=volarenovels]").forEach((element) {
+    content.query("a[href*=volarenovels]").forEach((element) {
       final text = element.text.toLowerCase();
       final href = element.attributes["href"];
       final uri = source.resolve(href);
@@ -80,7 +93,7 @@ class _ChapterParser {
     });
 
     // Remove all the scripts
-    content.querySelectorAll("script").forEach((e) => e.remove());
+    content.query("script").forEach((e) => e.remove());
 
     return Chapter(
       slug: slugify(uri: source),
@@ -93,5 +106,59 @@ class _ChapterParser {
       novelSlug: source.pathSegments.first,
       novelSource: "volare-novels",
     );
+  }
+}
+
+class _IndexParser {
+  static List<Chapter> fromHtml(String body, Uri location) {
+    final document = html.parse(body);
+
+    final items = document.querySelectorAll("li.chapter-item");
+
+    final novelSlug = _Utils.novelSlug(location);
+
+    final chapters = items.map((item) {
+      final anchor = item.querySelector("a[href*=novel]");
+      final url = _Utils.parseUrl(anchor, location);
+
+      if (url == null) {
+        return null;
+      }
+
+      return Chapter(
+        slug: slugify(uri: url),
+        url: url,
+        title: item.text.trim(),
+        novelSlug: novelSlug,
+        novelSource: "wuxiaworld",
+      );
+    });
+
+    return chapters.where((e) => e != null).toList(growable: false);
+  }
+}
+
+class _Utils {
+  static Uri parseUrl(Element anchor, [Uri source]) {
+    if (anchor == null) {
+      return null;
+    }
+    final href = anchor.attributes["href"];
+    if (href == null) {
+      return null;
+    }
+    try {
+      final url = Uri.parse(href);
+      return source != null ? source.resolveUri(url) : url;
+    } on FormatException {
+      return null;
+    }
+  }
+
+  static String novelSlug(Uri url) {
+    final path = url.pathSegments;
+    final index = path.indexOf("novel");
+    // The novel slug is directly after the novel segment
+    return index >= 0 && index < path.length ? path[index + 1] : null;
   }
 }

@@ -1,3 +1,4 @@
+import "package:app/markdown/markdown.widget.dart";
 import "package:app/models/novel.dart";
 import "package:app/widgets/image_view.dart";
 import "package:flutter/material.dart";
@@ -44,13 +45,8 @@ class NovelHeader extends StatelessWidget {
                 padding: const EdgeInsets.only(
                   left: 16.0,
                 ),
-                child: Column(
-                  children: <Widget>[
-                    Text(
-                      novel.synopsis ?? "",
-                      textAlign: TextAlign.justify,
-                    ),
-                  ],
+                child: _NovelDescription(
+                  data: novel.synopsis ?? "",
                 ),
               ),
             ),
@@ -58,5 +54,27 @@ class NovelHeader extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class _NovelDescription extends PerformantMarkdownWidget {
+  _NovelDescription({
+    @required String data,
+  }) : super(data: data);
+
+  @override
+  Widget build(BuildContext context, List<Widget> children) {
+    if (children == null) {
+      return const Padding(
+        padding: EdgeInsets.only(
+          top: 64.0,
+        ),
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
+    return Column(children: children);
   }
 }

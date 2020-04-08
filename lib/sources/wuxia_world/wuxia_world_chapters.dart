@@ -248,18 +248,17 @@ class _ChapterParser {
   }
 }
 
-@immutable
 class _IndexParser {
-  static List<Chapter> fromHtml(String body, Uri source) {
+  static List<Chapter> fromHtml(String body, Uri location) {
     final document = html.parse(body);
 
     final items = document.querySelectorAll("li.chapter-item");
 
-    final novelSlug = _Utils.novelSlug(source);
+    final novelSlug = _Utils.novelSlug(location);
 
     final chapters = items.map((item) {
       final anchor = item.querySelector("a[href*=novel]");
-      final url = _Utils.parseUrl(anchor, source);
+      final url = _Utils.parseUrl(anchor, location);
 
       if (url == null) {
         return null;

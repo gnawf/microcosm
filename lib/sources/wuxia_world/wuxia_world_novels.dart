@@ -6,6 +6,7 @@ import "package:app/sources/data.dart";
 import "package:app/sources/novel_source.dart";
 import "package:app/utils/map.extensions.dart";
 import "package:app/utils/parsing.extensions.dart";
+import "package:app/utils/html_decompiler.dart" as markdown;
 import "package:html/parser.dart" as html show parse;
 import "package:meta/meta.dart";
 
@@ -75,7 +76,7 @@ class _NovelParser {
             slug: slug,
             name: decoded["name"],
             source: "wuxiaworld",
-            synopsis: decoded["description"],
+            synopsis: markdown.decompile(decoded["description"]),
             posterImage: decoded["image"],
           );
         }
@@ -114,7 +115,7 @@ class _SearchResultParser {
       slug: map["slug"],
       name: map["name"],
       source: "wuxiaworld",
-      synopsis: map["synopsis"],
+      synopsis: markdown.decompile(map["synopsis"]),
       posterImage: map["coverUrl"],
     );
   }
