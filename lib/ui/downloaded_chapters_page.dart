@@ -174,7 +174,12 @@ class _ChapterList extends HookWidget {
       };
 
     // Debounce the filter function
-    useDebouncedValue(value: pageState.chapterFilter.value, onTimeout: filter.value);
+    useDebouncedValue(
+      value: pageState.chapterFilter.value,
+      onTimeout: filter.value,
+      maxTimeout: const Duration(seconds: 1),
+      idleTimeout: const Duration(milliseconds: 200),
+    );
 
     // Auto update UI if chapters change
     useEffect(() {
