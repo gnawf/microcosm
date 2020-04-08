@@ -1,5 +1,6 @@
 import "dart:async";
 
+import "package:app/hooks/use_debounced_value.dart";
 import "package:app/hooks/use_list_state.hook.dart";
 import "package:app/models/novel.dart";
 import "package:app/sources/source.dart";
@@ -161,7 +162,7 @@ class _SearchResults extends HookWidget {
     }
 
     // Invokes search after the search field is stable or timeout
-    _useDebouncedSearch(searchFieldController.text, search);
+    useDebouncedValue(value: searchFieldController.text, onTimeout: search);
 
     useValueChanged(source, (oldValue, oldResult) {
       results.value = [];
