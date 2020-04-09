@@ -5,7 +5,7 @@ import "package:app/sources/sources.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 
 PaginatedResource<Chapter> useChapters(String novelSource, String novelSlug) {
-  final source = useSource(id: novelSource)?.chapters;
+  final source = getSource(id: novelSource)?.chapters;
   final chapters = usePaginatedResource<Chapter>();
 
   useEffect(() {

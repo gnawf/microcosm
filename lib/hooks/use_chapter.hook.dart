@@ -19,12 +19,12 @@ Resource<Chapter> useChapter(Uri url) {
   // Get sources
   final dao = useChapterDao();
   final daoFetcher = (useState<GetChapter>()..value ??= _toGetChapter(dao)).value;
-  final upstreamFetcher = _save(useSource(url: url)?.chapters?.get, dao);
+  final upstreamFetcher = _save(getSource(url: url)?.chapters?.get, dao);
 
   // Fetches the chapter and updates the relevant state hooks
-  Future<void> stateAwareFetch(List<GetChapter> sources) async {
+  Future<void> stateAwareFetch(List<GetChapter> fetchers) async {
     final loadId = ++currentLoadId.value;
-    final value = await _fetch(url, sources);
+    final value = await _fetch(url, fetchers);
     if (loadId != currentLoadId.value) {
       return;
     }

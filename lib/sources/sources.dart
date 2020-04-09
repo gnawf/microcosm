@@ -3,7 +3,7 @@ import "package:app/sources/source.dart";
 import "package:app/sources/volare/volare.dart";
 import "package:app/sources/wuxia_world/wuxia_world.dart";
 
-final _sources = [
+final sources = [
   WuxiaWorld(),
   Volare(),
   ReadNovelFull(),
@@ -11,18 +11,14 @@ final _sources = [
 
 final _sourcesMap = _toMap();
 
-Source useSource({String id, String host, Uri url}) {
+Source getSource({String id, String host, Uri url}) {
   host ??= url?.host;
   return _sourcesMap[_key(id: id, host: host)];
 }
 
-List<Source> useSources() {
-  return _sources;
-}
-
 Map<String, Source> _toMap() {
   final map = <String, Source>{};
-  for (final source in _sources) {
+  for (final source in sources) {
     final idKey = _key(id: source.id);
     assert(!map.containsKey(idKey), "No two sources can share the same id: ${source.id}");
     map[idKey] = source;

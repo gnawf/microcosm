@@ -24,7 +24,7 @@ GetNovel _save(GetNovel fetcher, _SaveNovel save) {
 
 Resource<Novel> useNovel(String source, String slug, {bool live = true}) {
   final dao = useNovelDao();
-  final novelSource = useSource(id: source).novels;
+  final novelSource = getSource(id: source).novels;
   final novel = useResource<Novel>();
 
   useEffect(() {

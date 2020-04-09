@@ -75,7 +75,7 @@ class DownloadsManager {
     final url = Uri.parse(json["url"]);
     final body = json["body"];
 
-    final source = useSource(url: url);
+    final source = getSource(url: url);
     final chapter = await source.chapters.parseGet(url, body);
     await _chapterDao.upsert(chapter);
     print("Upserted ${chapter.title}");

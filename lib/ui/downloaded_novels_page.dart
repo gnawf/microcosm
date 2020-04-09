@@ -64,7 +64,7 @@ class _NovelListTile extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final router = useRouter();
-    final source = useSource(id: novel.source);
+    final source = getSource(id: novel.source);
 
     return ListTile(
       onTap: () {

@@ -148,7 +148,7 @@ class _DownloadActions extends HookWidget {
   Widget build(BuildContext context) {
     final state = _usePageState();
     final anchor = state.anchorChapter.value.data;
-    final source = useSource(id: anchor.novelSource);
+    final source = getSource(id: anchor.novelSource);
     final theme = useTheme();
     final platformSupported = defaultTargetPlatform == TargetPlatform.android;
 

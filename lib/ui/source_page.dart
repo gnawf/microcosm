@@ -50,7 +50,7 @@ class _PageState extends StatelessWidget {
     @required Widget child,
   }) {
     final isGridView = useState(true);
-    final source = useSource(id: sourceId);
+    final source = getSource(id: sourceId);
 
     return _PageState._(
       key: key,

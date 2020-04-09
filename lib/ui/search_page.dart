@@ -49,8 +49,7 @@ class _PageState extends HookWidget {
   }) : assert(child != null);
 
   factory _PageState.useState({@required SearchPage parent, @required Widget child}) {
-    final initialSource = useSource(id: parent.sourceId);
-    final sources = useSources();
+    final initialSource = getSource(id: parent.sourceId);
     final source = useState(initialSource ?? sources[0]);
     final isLoading = useState(false);
     final searchFieldController = useTextEditingController();
@@ -80,7 +79,6 @@ class _PageState extends HookWidget {
 class _Body extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    final sources = useSources();
     final pageState = _usePageState();
     final source = pageState.source;
     final isLoading = pageState.isLoading;

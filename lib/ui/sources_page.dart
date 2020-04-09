@@ -33,8 +33,6 @@ class SourcesPage extends HookWidget {
 class _PageBody extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    final sources = useSources();
-
     return ListView.builder(
       padding: const EdgeInsets.symmetric(
         vertical: 12.0,

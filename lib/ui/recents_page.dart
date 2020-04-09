@@ -166,7 +166,7 @@ class _RecentsListEntry extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final chapterResource = _useChapter(this.chapter);
-    final source = useSource(id: chapterResource.data?.novelSource);
+    final source = getSource(id: chapterResource.data?.novelSource);
 
     switch (chapterResource.state) {
       case ResourceState.placeholder:
