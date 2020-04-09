@@ -4,7 +4,11 @@ import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 
 class SearchIconButton extends HookWidget {
-  const SearchIconButton();
+  SearchIconButton({
+    this.sourceId,
+  });
+
+  final String sourceId;
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +17,7 @@ class SearchIconButton extends HookWidget {
     return IconButton(
       icon: const Icon(MDIcons.magnify),
       tooltip: "Search",
-      onPressed: () => router.push().search(),
+      onPressed: () => router.push().search(sourceId: sourceId),
     );
   }
 }

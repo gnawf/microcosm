@@ -17,11 +17,11 @@ class SourcesPage extends HookWidget {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         leading: null,
-        title: const Text("Browse"),
+        title: const Text("Sources"),
         centerTitle: false,
-        actions: const [
+        actions: [
           SearchIconButton(),
-          SettingsIconButton(),
+          const SettingsIconButton(),
         ],
       ),
       body: _PageBody(),

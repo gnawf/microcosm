@@ -6,6 +6,7 @@ import "package:app/ui/router.hooks.dart";
 import "package:app/widgets/md_icons.dart";
 import "package:app/widgets/novel_sliver_grid.dart";
 import "package:app/widgets/novel_sliver_list.dart";
+import "package:app/widgets/search_icon_button.dart";
 import "package:app/widgets/settings_icon_button.dart";
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
@@ -71,16 +72,21 @@ class _PageState extends StatelessWidget {
   }
 }
 
-class _AppBar extends StatelessWidget implements PreferredSizeWidget {
+class _AppBar extends HookWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
 
   @override
   Widget build(BuildContext context) {
+    final pageState = _usePageState();
+
     return AppBar(
       title: _AppBarTitle(),
       centerTitle: false,
       actions: [
+        SearchIconButton(
+          sourceId: pageState.source.id,
+        ),
         _ChangeViewType(),
         const SettingsIconButton(),
       ],

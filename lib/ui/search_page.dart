@@ -15,9 +15,17 @@ import "package:flutter_hooks/flutter_hooks.dart";
 part "search_page.hooks.dart";
 
 class SearchPage extends HookWidget {
+  SearchPage({
+    Key key,
+    this.sourceId,
+  }) : super(key: key);
+
+  final String sourceId;
+
   @override
   Widget build(BuildContext context) {
     return _PageState.useState(
+      parent: this,
       child: Scaffold(
         appBar: AppBar(
           title: const Text("Search"),
@@ -40,9 +48,10 @@ class _PageState extends HookWidget {
     @required this.child,
   }) : assert(child != null);
 
-  factory _PageState.useState({@required Widget child}) {
+  factory _PageState.useState({@required SearchPage parent, @required Widget child}) {
+    final initialSource = useSource(id: parent.sourceId);
     final sources = useSources();
-    final source = useState(sources[0]);
+    final source = useState(initialSource ?? sources[0]);
     final isLoading = useState(false);
     final searchFieldController = useTextEditingController();
 

@@ -116,9 +116,9 @@ class _Routes<R> {
     });
   }
 
-  R search() {
+  R search({String sourceId}) {
     return _execute((BuildContext context) {
-      return SearchPage();
+      return SearchPage(sourceId: sourceId);
     });
   }
 
