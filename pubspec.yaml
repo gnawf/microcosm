@@ -1,6 +1,6 @@
 name: app
 description: A client for reading Xianxia & Wuxia novels
-version: 3.0.3+22
+version: 3.0.4+23
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
