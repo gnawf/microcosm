@@ -24,7 +24,6 @@ class MainActivity : FlutterActivity(), MethodCallHandler {
     // Set transparent status bar
     window.also {
       it.addFlags(FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-      it.addFlags(FLAG_TRANSLUCENT_NAVIGATION)
       it.clearFlags(FLAG_TRANSLUCENT_STATUS)
       it.statusBarColor = Color.TRANSPARENT
     }
