@@ -3,7 +3,9 @@ import "package:app/resource/resource.dart";
 import "package:app/sources/source.dart";
 import "package:app/sources/sources.dart";
 import "package:app/ui/router.hooks.dart";
+import "package:app/widgets/md_icons.dart";
 import "package:app/widgets/novel_sliver_grid.dart";
+import "package:app/widgets/novel_sliver_list.dart";
 import "package:app/widgets/settings_icon_button.dart";
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
@@ -21,18 +23,10 @@ class SourcePage extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final source = useSource(id: sourceId);
-
-    return _PageState(
-      source: source,
+    return _PageState.use(
+      sourceId: sourceId,
       child: Scaffold(
-        appBar: AppBar(
-          title: _AppBarTitle(),
-          centerTitle: false,
-          actions: const <Widget>[
-            SettingsIconButton(),
-          ],
-        ),
+        appBar: _AppBar(),
         body: _Novels(),
       ),
     );
@@ -40,11 +34,32 @@ class SourcePage extends HookWidget {
 }
 
 class _PageState extends StatelessWidget {
-  const _PageState({
+  const _PageState._({
     Key key,
+    @required this.isGridView,
     @required this.source,
     @required this.child,
-  }) : super(key: key);
+  })  : assert(source != null),
+        assert(child != null),
+        super(key: key);
+
+  factory _PageState.use({
+    Key key,
+    @required String sourceId,
+    @required Widget child,
+  }) {
+    final isGridView = useState(true);
+    final source = useSource(id: sourceId);
+
+    return _PageState._(
+      key: key,
+      isGridView: isGridView,
+      source: source,
+      child: child,
+    );
+  }
+
+  final ValueNotifier<bool> isGridView;
 
   final Source source;
 
@@ -56,12 +71,43 @@ class _PageState extends StatelessWidget {
   }
 }
 
+class _AppBar extends StatelessWidget implements PreferredSizeWidget {
+  @override
+  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      title: _AppBarTitle(),
+      centerTitle: false,
+      actions: [
+        _ChangeViewType(),
+        const SettingsIconButton(),
+      ],
+    );
+  }
+}
+
 class _AppBarTitle extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final state = _usePageState();
     final source = state.source;
     return Text(source.name);
+  }
+}
+
+class _ChangeViewType extends HookWidget {
+  @override
+  Widget build(BuildContext context) {
+    final pageState = _usePageState();
+
+    return IconButton(
+      onPressed: () {
+        pageState.isGridView.value = !pageState.isGridView.value;
+      },
+      icon: Icon(pageState.isGridView.value ? MDIcons.viewList : MDIcons.viewGrid),
+    );
   }
 }
 
@@ -90,16 +136,15 @@ class _Novels extends HookWidget {
 
     return CustomScrollView(
       slivers: <Widget>[
-        SliverPadding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 16.0,
-            vertical: 18.0,
-          ),
-          sliver: NovelSliverGrid(
-            novels: novels,
-            onTap: onTapNovel,
-          ),
-        ),
+        state.isGridView.value
+            ? NovelSliverGrid(
+                novels: novels,
+                onTap: onTapNovel,
+              )
+            : NovelSliverList(
+                novels: novels,
+                onTap: onTapNovel,
+              ),
       ],
     );
   }

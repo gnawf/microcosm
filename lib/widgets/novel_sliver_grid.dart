@@ -45,12 +45,18 @@ class _NovelSliverGridState extends State<NovelSliverGrid> {
   Widget build(BuildContext context) {
     final novels = widget.novels;
 
-    return CustomSliverGrid(
-      builder: _builder,
-      cellWidth: 90.0,
-      cellCount: novels.data.length + (novels.hasMore ? 1 : 0),
-      rowSpacing: 8.0,
-      columnSpacing: 16.0,
+    return SliverPadding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 16.0,
+        vertical: 18.0,
+      ),
+      sliver: CustomSliverGrid(
+        builder: _builder,
+        cellWidth: 90.0,
+        cellCount: novels.data.length + (novels.hasMore ? 1 : 0),
+        rowSpacing: 8.0,
+        columnSpacing: 16.0,
+      ),
     );
   }
 }
