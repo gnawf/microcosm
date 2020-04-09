@@ -3,7 +3,6 @@ import "dart:async";
 import "package:app/settings/settings.dart";
 import "package:app/ui/router.dart";
 import "package:app/widgets/md_icons.dart";
-import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 
 class HomePage extends StatefulWidget {
@@ -16,7 +15,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final _navigatorKey = GlobalKey<NavigatorState>();
 
-  final _indices = <int>[];
+  int _page;
 
   List<BottomNavigationBarItem> _bottomBarItems;
 
@@ -28,7 +27,7 @@ class _HomePageState extends State<HomePage> {
 
   Route _router(RouteSettings settings) {
     // Just return the route for the current index
-    return _route(_indices.last);
+    return _route(_page);
   }
 
   Route _route(int index) {
@@ -36,7 +35,7 @@ class _HomePageState extends State<HomePage> {
       return null;
     }
 
-    final routes = Router.routes();
+    final routes = Router.routes().useFadePageRoute();
 
     switch (index) {
       case 0:
@@ -64,25 +63,12 @@ class _HomePageState extends State<HomePage> {
     }
 
     // Handle case where there's no back button
-    if (defaultTargetPlatform == TargetPlatform.iOS) {
-      _navigatorKey.currentState?.popUntil((r) => r.isFirst);
-      if (_indices.first != index) {
-        // Clear the navigation stack & push the requested view
-        setState(() => _indices
-          ..clear()
-          ..add(index));
-        _navigatorKey.currentState?.pushReplacement(route);
-      }
-      return;
-    }
+    _navigatorKey.currentState?.popUntil((r) => r.isFirst);
 
-    // Push to the stack
-    setState(() => _indices.add(index));
-    // Wait for the view to be popped off the stack
-    await _navigatorKey.currentState?.push(route);
-    // Pop off the indices stack once the view is disposed of
-    if (mounted) {
-      setState(_indices.removeLast);
+    if (_page != index) {
+      // Clear the navigation stack & push the requested view
+      setState(() => _page = index);
+      _navigatorKey.currentState?.pushReplacement(route);
     }
   }
 
@@ -117,11 +103,9 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final settings = Settings.of(context);
 
-    if (_indices.isEmpty) {
-      // Note: the LandingPage indices currently maps to the bottom bar page indices
-      // But there is no guarantee that this will be the case in the future
-      _indices.add(settings.landingPage.index);
-    }
+    // Note: the LandingPage indices currently maps to the bottom bar page indices
+    // But there is no guarantee that this will be the case in the future
+    _page ??= settings.landingPage.index;
 
     return WillPopScope(
       // Pop the internal navigator first
@@ -143,7 +127,7 @@ class _HomePageState extends State<HomePage> {
         ),
         bottomNavigationBar: BottomNavigationBar(
           onTap: _pushPage,
-          currentIndex: _indices.last,
+          currentIndex: _page,
           items: _bottomBarItems,
           type: BottomNavigationBarType.fixed,
         ),

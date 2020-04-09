@@ -45,7 +45,7 @@ Route _useDialogPageRoute(WidgetBuilder builder, RouteSettings settings) {
 
 @immutable
 class _Routes<R> {
-  const _Routes(this._action, [this._routeBuilder = _useFadePageRoute]);
+  const _Routes(this._action, [this._routeBuilder = _useCupertinoPageRoute]);
 
   final RouteAction _action;
 
@@ -171,32 +171,29 @@ class _Routes<R> {
 ///
 /// e.g. Router.of(context).push().homePage()
 class Router {
-  Router.of(
-    this.context, {
-    this.rootNavigator = false,
-    this.nullOk = false,
-  });
+  Router(this._navigator);
 
-  final BuildContext context;
+  factory Router.from(NavigatorState navigator) {
+    return navigator != null ? Router(navigator) : null;
+  }
 
-  final bool rootNavigator;
+  factory Router.of(
+    BuildContext context, {
+    bool rootNavigator = false,
+    bool nullOk = false,
+  }) {
+    final navigator = Navigator.of(context, rootNavigator: rootNavigator, nullOk: nullOk);
+    return Router.from(navigator);
+  }
 
-  final bool nullOk;
-
-  NavigatorState get _navigator => Navigator.of(
-        context,
-        rootNavigator: rootNavigator,
-        nullOk: nullOk,
-      );
+  final NavigatorState _navigator;
 
   static _Routes<T> routes<T extends Object>() {
     return _Routes((route) => route);
   }
 
   _Routes<Future<T>> push<T extends Object>() {
-    return _Routes((route) {
-      return _navigator.push(route);
-    });
+    return _Routes(_navigator.push);
   }
 
   _Routes<Future<T>> pushReplacement<T extends Object, TO extends Object>({
