@@ -3,6 +3,7 @@ import "package:app/hooks/use_navigator_observers.dart";
 import "package:app/hooks/use_novel.hook.dart";
 import "package:app/models/chapter.dart";
 import "package:app/navigation/on_navigate.dart";
+import 'package:app/resource/paginated_resource.dart';
 import "package:app/resource/resource.dart";
 import "package:app/resource/resource.hooks.dart";
 import "package:app/sources/database/chapter_dao.dart";
@@ -83,78 +84,31 @@ class _Body extends HookWidget {
 
     useNavigatorObserver(observer.value);
 
-    return CustomScrollView(
-      slivers: [
-        SliverPadding(
-          padding: const EdgeInsets.symmetric(
-            vertical: 16.0,
-          ),
-          sliver: _RecentsList(),
-        ),
-      ],
-    );
+    return _RecentsList();
   }
 }
 
 class _RecentsList extends HookWidget {
-  SliverChildDelegate _placeholderDelegate() {
-    return const SliverChildListDelegate.fixed([]);
-  }
-
-  SliverChildDelegate _loadingDelegate() {
-    return const SliverChildListDelegate.fixed([
-      Center(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: CircularProgressIndicator(),
-        ),
-      ),
-    ]);
-  }
-
-  SliverChildDelegate _recentsDelegate(List<Chapter> data) {
-    return SliverChildBuilderDelegate(
-      (BuildContext context, int index) {
-        return _RecentsListEntry(data[index]);
-      },
-      childCount: data.length,
-    );
-  }
-
-  SliverChildDelegate _errorDelegate(Object error) {
-    return SliverChildListDelegate([
-      Center(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text("$error"),
-        ),
-      ),
-    ]);
-  }
-
   @override
   Widget build(BuildContext context) {
     final pageState = _usePageState();
-    final recents = pageState.recents;
-    SliverChildDelegate delegate;
+    final recentsResource = pageState.recents;
 
-    switch (recents.state) {
-      case ResourceState.placeholder:
-        delegate = _placeholderDelegate();
-        break;
-      case ResourceState.loading:
-        delegate = _loadingDelegate();
-        break;
-      case ResourceState.done:
-        delegate = _recentsDelegate(recents.data);
-        break;
-      case ResourceState.error:
-        delegate = _errorDelegate(recents.error);
-        break;
-    }
+    return ResourceBuilder(
+      resource: recentsResource,
+      doneBuilder: (BuildContext context, Resource<List<Chapter>> resource) {
+        final chapters = resource.data;
 
-    return SliverList(
-      delegate: delegate,
+        return ListView.builder(
+          padding: const EdgeInsets.symmetric(
+            vertical: 16.0,
+          ),
+          itemBuilder: (BuildContext context, int index) {
+            return _RecentsListEntry(chapters[index]);
+          },
+          itemCount: chapters.length,
+        );
+      },
     );
   }
 }

@@ -111,39 +111,16 @@ class _Body extends HookWidget {
 
 class _ChapterList extends HookWidget {
   static SliverChildDelegate _emptyDelegate() {
-    return SliverChildListDelegate([]);
-  }
-
-  static SliverChildDelegate _loadingDelegate() {
-    return SliverChildListDelegate(const [
-      Center(
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            vertical: 16.0,
-          ),
-          child: CircularProgressIndicator(),
-        ),
-      ),
-    ]);
+    return SliverChildListDelegate(const []);
   }
 
   static SliverChildDelegate _dataDelegate(PaginatedResource<Chapter> resource) {
     final chapters = resource.data;
 
     return SliverChildBuilderDelegate(
-      (BuildContext context, int index) {
-        return _ChapterListItem(chapter: chapters[index]);
-      },
+      (BuildContext context, int index) => _ChapterListItem(chapter: chapters[index]),
       childCount: chapters.length,
     );
-  }
-
-  static SliverChildDelegate _errorDelegate(Object error) {
-    return SliverChildListDelegate([
-      Center(
-        child: Text("$error"),
-      )
-    ]);
   }
 
   @override
@@ -152,28 +129,13 @@ class _ChapterList extends HookWidget {
     final novel = state.novel.data;
     final chaptersResource = useChapters(novel.source, novel.slug);
 
-    SliverChildDelegate delegate;
-
-    switch (chaptersResource.state) {
-      case ResourceState.placeholder:
-        delegate = _emptyDelegate();
-        break;
-      case ResourceState.loading:
-        delegate = _loadingDelegate();
-        break;
-      case ResourceState.done:
+    return ResourceBuilder(
+      resource: state.novel,
+      doneBuilder: (BuildContext context, Resource<Novel> novel) {
         final hasData = chaptersResource.data != null;
-        delegate = hasData ? _dataDelegate(chaptersResource) : _emptyDelegate();
-        break;
-      case ResourceState.error:
-        delegate = _errorDelegate(chaptersResource.error);
-        break;
-    }
-
-    assert(delegate != null);
-
-    return SliverList(
-      delegate: delegate,
+        final delegate = hasData ? _dataDelegate(chaptersResource) : _emptyDelegate();
+        return SliverList(delegate: delegate);
+      },
     );
   }
 }
