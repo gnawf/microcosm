@@ -213,11 +213,8 @@ class _SearchResult extends HookWidget {
       leading: SizedBox(
         width: 40.0,
         height: 60.0,
-        child: Hero(
-          tag: novel.slug,
-          child: ImageView(
-            image: novel.posterImage,
-          ),
+        child: ImageView(
+          image: novel.posterImage,
         ),
       ),
       title: Text(novel.name),
