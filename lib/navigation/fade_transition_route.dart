@@ -2,6 +2,9 @@ import "package:flutter/material.dart";
 
 typedef Widget PageBuilder(BuildContext context);
 
+final _zeroToOneTween = Tween(begin: 0.0, end: 1.0);
+final _oneToZeroTween = Tween(begin: 1.0, end: 0.0);
+
 Widget _transitionsBuilder(
   BuildContext context,
   Animation<double> animation,
@@ -9,9 +12,9 @@ Widget _transitionsBuilder(
   Widget child,
 ) {
   return FadeTransition(
-    opacity: Tween(begin: 0.0, end: 1.0).animate(animation),
+    opacity: _zeroToOneTween.animate(animation),
     child: FadeTransition(
-      opacity: Tween(begin: 1.0, end: 0.0).animate(secondaryAnimation),
+      opacity: _oneToZeroTween.animate(secondaryAnimation),
       child: child,
     ),
   );
