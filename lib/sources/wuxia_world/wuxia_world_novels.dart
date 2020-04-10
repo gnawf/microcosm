@@ -4,9 +4,9 @@ import "package:app/http/http.dart";
 import "package:app/models/novel.dart";
 import "package:app/sources/data.dart";
 import "package:app/sources/novel_source.dart";
+import "package:app/utils/html_decompiler.dart" as markdown;
 import "package:app/utils/map.extensions.dart";
 import "package:app/utils/parsing.extensions.dart";
-import "package:app/utils/html_decompiler.dart" as markdown;
 import "package:html/parser.dart" as html show parse;
 import "package:meta/meta.dart";
 

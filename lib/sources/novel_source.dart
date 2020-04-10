@@ -1,8 +1,8 @@
 import "dart:async";
 
-import "package:meta/meta.dart";
 import "package:app/models/novel.dart";
 import "package:app/sources/data.dart";
+import "package:meta/meta.dart";
 
 abstract class NovelSource {
   Future<Data<Novel>> get({String slug, Map<String, dynamic> params});

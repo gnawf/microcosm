@@ -1,7 +1,7 @@
 import "dart:async";
 
-import "package:meta/meta.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
+import "package:meta/meta.dart";
 
 typedef Consumer<T> = dynamic Function(T t);
 

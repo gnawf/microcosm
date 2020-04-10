@@ -1,10 +1,10 @@
 import "dart:convert";
 
-import "package:app/utils/html_decompiler.dart" as markdown;
 import "package:app/http/http.dart";
 import "package:app/models/novel.dart";
 import "package:app/sources/data.dart";
 import "package:app/sources/novel_source.dart";
+import "package:app/utils/html_decompiler.dart" as markdown;
 import "package:app/utils/map.extensions.dart";
 import "package:meta/meta.dart";
 
