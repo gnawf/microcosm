@@ -9,6 +9,7 @@ import "package:app/utils/scaffold.extensions.dart";
 import "package:app/widgets/chapter_overscoll_navigation.dart";
 import "package:app/widgets/mark_chapter_read.dart";
 import "package:app/widgets/md_icons.dart";
+import "package:app/widgets/resource_builder.dart";
 import "package:app/widgets/settings_icon_button.dart";
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
@@ -65,21 +66,20 @@ class _Title extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final pageState = _usePageState();
-    final chapter = pageState.chapter;
 
-    switch (chapter.state) {
-      case ResourceState.placeholder:
-        return const SizedBox.shrink();
-      case ResourceState.loading:
-        return const Text("Loading");
-      case ResourceState.done:
-        return Text(chapter.data?.title ?? "-");
-      case ResourceState.error:
-        return const Text("Error");
-    }
-
-    throw UnsupportedError("Switch was not exhaustive");
+    return ResourceBuilder(
+      resource: pageState.chapter,
+      loadingBuilder: _loadingBuilder,
+      doneBuilder: _doneBuilder,
+      errorBuilder: _errorBuilder,
+    );
   }
+
+  static Widget _loadingBuilder(BuildContext context) => const Text("Loading");
+
+  static Widget _doneBuilder(BuildContext context, Chapter chapter) => Text(chapter?.title ?? "Unknown");
+
+  static Widget _errorBuilder(BuildContext context, Object error) => const Text("Error");
 }
 
 class _Body extends HookWidget {
@@ -88,35 +88,27 @@ class _Body extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final pageState = _usePageState();
-    final chapter = pageState.chapter;
+    final chapterResource = pageState.chapter;
     final chapterNavigation = _useChapterNavigation();
     final styleSheet = _useMarkdownStyleSheet();
 
     // Automatically marks chapter as read after delay
-    useReadingLog(chapter: chapter.data);
+    useReadingLog(chapter: chapterResource.data);
 
-    switch (chapter.state) {
-      case ResourceState.placeholder:
-        return const SizedBox.shrink();
-      case ResourceState.loading:
-        return const Center(
-          child: CircularProgressIndicator(),
+    return ResourceBuilder(
+      resource: chapterResource,
+      doneBuilder: (BuildContext context, Chapter chapter) {
+        return RefreshIndicator(
+          onRefresh: chapterResource.refresh,
+          child: ChapterOverscrollNavigation(
+            onNavigate: chapterNavigation,
+            child: _MarkdownBody(
+              data: chapter?.content,
+              styleSheet: styleSheet,
+            ),
+          ),
         );
-      case ResourceState.error:
-        return Text("${chapter.error}");
-      case ResourceState.done:
-        break;
-    }
-
-    return RefreshIndicator(
-      onRefresh: chapter.refresh,
-      child: ChapterOverscrollNavigation(
-        onNavigate: chapterNavigation,
-        child: _MarkdownBody(
-          data: chapter.data?.content,
-          styleSheet: styleSheet,
-        ),
-      ),
+      },
     );
   }
 }

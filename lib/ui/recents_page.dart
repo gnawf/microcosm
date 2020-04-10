@@ -9,6 +9,7 @@ import "package:app/sources/database/chapter_dao.dart";
 import "package:app/sources/sources.dart";
 import "package:app/ui/router.hooks.dart";
 import "package:app/widgets/image_view.dart";
+import "package:app/widgets/resource_builder.dart";
 import "package:app/widgets/settings_icon_button.dart";
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
@@ -165,46 +166,48 @@ class _RecentsListEntry extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final chapterResource = _useChapter(this.chapter);
-    final source = getSource(id: chapterResource.data?.novelSource);
+    final chapterResource = _useChapter(chapter);
+    final onTap = _useOpenRecent(chapter);
 
-    switch (chapterResource.state) {
-      case ResourceState.placeholder:
-        return const SizedBox.shrink();
-      case ResourceState.loading:
-        return const ListTile(
-          leading: CircularProgressIndicator(),
-          title: Text("Loading"),
-        );
-      case ResourceState.done:
-        break;
-      case ResourceState.error:
+    return ResourceBuilder(
+      resource: chapterResource,
+      loadingBuilder: _loadingBuilder,
+      doneBuilder: (BuildContext context, Chapter chapter) {
+        final novel = chapter.novel;
+        final novelName = novel?.name ?? chapter.novelSlug ?? "Unknown";
+        final source = getSource(id: chapterResource.data?.novelSource);
+
         return ListTile(
-          title: const Text("An Error Ocurred"),
-          subtitle: Text("${chapterResource.error}"),
+          onTap: onTap,
+          leading: Container(
+            constraints: const BoxConstraints(
+              maxWidth: 40.0,
+              maxHeight: 60.0,
+            ),
+            child: ImageView(
+              image: novel?.posterImage,
+              fit: BoxFit.cover,
+            ),
+          ),
+          title: Text(chapter.title),
+          subtitle: Text("$novelName from ${source.name}"),
         );
-    }
+      },
+      errorBuilder: _errorBuilder,
+    );
+  }
 
-    final chapter = chapterResource.data;
-    final novel = chapter.novel;
-    final novelName = novel?.name ?? chapter.novelSlug ?? "Unknown";
-    final sourceName = source.name ?? chapter.novelSource ?? "Unknown";
-    final title = "$novelName from $sourceName";
+  static Widget _loadingBuilder(BuildContext context) {
+    return const ListTile(
+      leading: CircularProgressIndicator(),
+      title: Text("Loading"),
+    );
+  }
 
+  static Widget _errorBuilder(BuildContext context, Object error) {
     return ListTile(
-      onTap: _useOpenRecent(chapter),
-      leading: Container(
-        constraints: const BoxConstraints(
-          maxWidth: 40.0,
-          maxHeight: 60.0,
-        ),
-        child: ImageView(
-          image: novel?.posterImage,
-          fit: BoxFit.cover,
-        ),
-      ),
-      title: Text(chapter.title),
-      subtitle: Text(title),
+      title: const Text("An Error Ocurred"),
+      subtitle: Text("$error"),
     );
   }
 }

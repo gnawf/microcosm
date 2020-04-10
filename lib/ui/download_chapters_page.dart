@@ -11,6 +11,7 @@ import "package:app/resource/resource.dart";
 import "package:app/resource/resource.hooks.dart";
 import "package:app/sources/sources.dart";
 import "package:app/ui/router.hooks.dart";
+import "package:app/widgets/resource_builder.dart";
 import "package:app/widgets/settings_icon_button.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
@@ -111,34 +112,24 @@ class _Body extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final state = _usePageState();
-    final anchorChapter = state.anchorChapter.value;
 
-    switch (anchorChapter.state) {
-      case ResourceState.placeholder:
-        return const SizedBox.shrink();
-      case ResourceState.loading:
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
-      case ResourceState.done:
-        if (anchorChapter.data == null) {
+    return ResourceBuilder(
+      resource: state.anchorChapter.value,
+      doneBuilder: (BuildContext context, Chapter anchorChapter) {
+        if (anchorChapter == null) {
           return const Center(
             child: Text("Unable to grab anchor chapter"),
           );
         }
-        break;
-      case ResourceState.error:
-        return Center(
-          child: Text("${anchorChapter.error}"),
-        );
-    }
 
-    final waitingForUserInput = state.numToDownload.value == null;
-    return AnimatedCrossFade(
-      crossFadeState: waitingForUserInput ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-      firstChild: _DownloadActions(),
-      secondChild: waitingForUserInput ? const SizedBox.shrink() : _ProcessDownload(),
-      duration: const Duration(milliseconds: 400),
+        final waitingForUserInput = state.numToDownload.value == null;
+        return AnimatedCrossFade(
+          crossFadeState: waitingForUserInput ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+          firstChild: _DownloadActions(),
+          secondChild: waitingForUserInput ? const SizedBox.shrink() : _ProcessDownload(),
+          duration: const Duration(milliseconds: 400),
+        );
+      },
     );
   }
 }
@@ -173,7 +164,16 @@ class _DownloadActions extends HookWidget {
               ),
               onTap: () => state.requestDownload(count),
               title: Text("Download next $count chapters"),
+            )
+        else
+          const ListTile(
+            contentPadding: EdgeInsets.only(
+              left: 24.0,
+              right: 8.0,
             ),
+            title: Text("Your platform is not supported"),
+            enabled: false,
+          ),
         const Divider(),
         Padding(
           padding: const EdgeInsets.only(
@@ -223,30 +223,23 @@ class _ProcessDownload extends HookWidget {
         return () {};
       }
       _download(downloadsManager, chapters.data, anchorChapter.data, numToDownload);
-      // Close the page after 2 seconds
+      // Close the page after delay
       const delay = Duration(seconds: 1);
       final timer = Timer(delay, router.pop);
       return timer.cancel;
     }, [chapters.state]);
 
-    switch (chapters.state) {
-      case ResourceState.placeholder:
-        return const SizedBox.shrink();
-      case ResourceState.loading:
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
-      case ResourceState.done:
-        if (chapters.data == null) {
-          return const Center(
-            child: Text("Unable to grab chapter data"),
-          );
-        }
-        break;
-      case ResourceState.error:
-        return Center(
-          child: Text("${chapters.error}"),
-        );
+    return ResourceBuilder(
+      resource: chapters,
+      doneBuilder: _doneBuilder,
+    );
+  }
+
+  static Widget _doneBuilder(BuildContext context, List<Chapter> chapters) {
+    if (chapters == null) {
+      return const Center(
+        child: Text("Unable to grab chapter data"),
+      );
     }
 
     return const Center(

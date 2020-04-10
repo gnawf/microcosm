@@ -6,6 +6,7 @@ import "package:app/resource/paginated_resource.dart";
 import "package:app/resource/resource.dart";
 import "package:app/ui/novel_header.dart";
 import "package:app/ui/router.hooks.dart";
+import "package:app/widgets/resource_builder.dart";
 import "package:app/widgets/settings_icon_button.dart";
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
@@ -64,48 +65,38 @@ class _Title extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final pageState = _usePageState();
-    final novel = pageState.novel;
 
-    switch (novel.state) {
-      case ResourceState.placeholder:
-        return const SizedBox.shrink();
-      case ResourceState.loading:
-        return const Text("Loading");
-      case ResourceState.done:
-        return Text(novel.data?.name ?? "Unknown");
-      case ResourceState.error:
-        return const Text("Error");
-    }
-
-    throw UnsupportedError("Switch was not exhaustive");
+    return ResourceBuilder(
+      resource: pageState.novel,
+      loadingBuilder: _loadingBuilder,
+      doneBuilder: _doneBuilder,
+      errorBuilder: _errorBuilder,
+    );
   }
+
+  static Widget _loadingBuilder(BuildContext context) => const Text("Loading");
+
+  static Widget _doneBuilder(BuildContext context, Novel novel) => Text(novel?.name ?? "Unknown");
+
+  static Widget _errorBuilder(BuildContext context, Object error) => const Text("Error");
 }
 
 class _Body extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final pageState = _usePageState();
-    final novel = pageState.novel;
 
-    switch (novel.state) {
-      case ResourceState.placeholder:
-        return const SizedBox.shrink();
-      case ResourceState.loading:
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
-      case ResourceState.done:
-        break;
-      case ResourceState.error:
-        return Center(
-          child: Text("${novel.error}"),
-        );
-    }
+    return ResourceBuilder(
+      resource: pageState.novel,
+      doneBuilder: _doneBuilder,
+    );
+  }
 
+  static Widget _doneBuilder(BuildContext context, Novel novel) {
     return CustomScrollView(
       slivers: <Widget>[
         SliverToBoxAdapter(
-          child: NovelHeader(novel.data),
+          child: NovelHeader(novel),
         ),
         SliverPadding(
           padding: const EdgeInsets.only(top: 16.0, bottom: 8.0),
@@ -117,11 +108,11 @@ class _Body extends HookWidget {
 }
 
 class _ChapterList extends HookWidget {
-  SliverChildDelegate _emptyDelegate() {
+  static SliverChildDelegate _emptyDelegate() {
     return SliverChildListDelegate([]);
   }
 
-  SliverChildDelegate _loadingDelegate() {
+  static SliverChildDelegate _loadingDelegate() {
     return SliverChildListDelegate(const [
       Center(
         child: Padding(
@@ -134,7 +125,7 @@ class _ChapterList extends HookWidget {
     ]);
   }
 
-  SliverChildDelegate _dataDelegate(PaginatedResource<Chapter> resource) {
+  static SliverChildDelegate _dataDelegate(PaginatedResource<Chapter> resource) {
     final chapters = resource.data;
 
     return SliverChildBuilderDelegate(
@@ -145,7 +136,7 @@ class _ChapterList extends HookWidget {
     );
   }
 
-  SliverChildDelegate _errorDelegate(Object error) {
+  static SliverChildDelegate _errorDelegate(Object error) {
     return SliverChildListDelegate([
       Center(
         child: Text("$error"),
@@ -157,11 +148,11 @@ class _ChapterList extends HookWidget {
   Widget build(BuildContext context) {
     final state = _usePageState();
     final novel = state.novel.data;
-    final chapters = useChapters(novel.source, novel.slug);
+    final chaptersResource = useChapters(novel.source, novel.slug);
 
     SliverChildDelegate delegate;
 
-    switch (chapters.state) {
+    switch (chaptersResource.state) {
       case ResourceState.placeholder:
         delegate = _emptyDelegate();
         break;
@@ -169,11 +160,11 @@ class _ChapterList extends HookWidget {
         delegate = _loadingDelegate();
         break;
       case ResourceState.done:
-        final hasData = chapters.data != null;
-        delegate = hasData ? _dataDelegate(chapters) : _emptyDelegate();
+        final hasData = chaptersResource.data != null;
+        delegate = hasData ? _dataDelegate(chaptersResource) : _emptyDelegate();
         break;
       case ResourceState.error:
-        delegate = _errorDelegate(chapters.error);
+        delegate = _errorDelegate(chaptersResource.error);
         break;
     }
 
