@@ -26,16 +26,14 @@ class NovelPage extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final novel = useNovel(source, slug);
-
-    return _PageState(
-      novel: novel,
+    return _PageState.use(
+      parent: this,
       child: Scaffold(
         appBar: AppBar(
           title: _Title(),
           centerTitle: false,
-          actions: const <Widget>[
-            const SettingsIconButton(),
+          actions: const [
+            SettingsIconButton(),
           ],
         ),
         body: _Body(),
@@ -45,15 +43,33 @@ class NovelPage extends HookWidget {
 }
 
 class _PageState extends StatelessWidget {
-  const _PageState({
+  const _PageState._({
     Key key,
+    @required this.novel,
+    @required this.chapters,
     @required this.child,
-    this.novel,
-  }) : super(key: key);
+  })  : assert(novel != null),
+        assert(chapters != null),
+        assert(child != null),
+        super(key: key);
+
+  factory _PageState.use({Key key, @required NovelPage parent, @required Widget child}) {
+    final novel = useNovel(parent.source, parent.slug);
+    final chapters = useChapters(parent.source, parent.slug);
+
+    return _PageState._(
+      key: key,
+      novel: novel,
+      chapters: chapters,
+      child: child,
+    );
+  }
 
   final Widget child;
 
   final Resource<Novel> novel;
+
+  final PaginatedResource<Chapter> chapters;
 
   @override
   Widget build(BuildContext context) {
@@ -88,53 +104,60 @@ class _Body extends HookWidget {
 
     return ResourceBuilder(
       resource: pageState.novel,
-      doneBuilder: _doneBuilder,
-    );
-  }
+      doneBuilder: (BuildContext context, Resource<Novel> novelResource) {
+        final header = Padding(
+          padding: const EdgeInsets.only(
+            bottom: 8.0,
+          ),
+          child: NovelHeader(novelResource.data),
+        );
 
-  static Widget _doneBuilder(BuildContext context, Resource<Novel> resource) {
-    final novel = resource.data;
+        return ResourceBuilder(
+          resource: pageState.chapters,
+          loadingBuilder: (BuildContext context) {
+            return ListView(
+              children: [
+                header,
+                const Center(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      vertical: 24.0,
+                    ),
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
+              ],
+            );
+          },
+          doneBuilder: (BuildContext context, PaginatedResource<Chapter> chaptersResource) {
+            final chapters = chaptersResource.data;
 
-    return CustomScrollView(
-      slivers: <Widget>[
-        SliverToBoxAdapter(
-          child: NovelHeader(novel),
-        ),
-        SliverPadding(
-          padding: const EdgeInsets.only(top: 16.0, bottom: 8.0),
-          sliver: _ChapterList(),
-        ),
-      ],
-    );
-  }
-}
-
-class _ChapterList extends HookWidget {
-  static SliverChildDelegate _emptyDelegate() {
-    return SliverChildListDelegate(const []);
-  }
-
-  static SliverChildDelegate _dataDelegate(PaginatedResource<Chapter> resource) {
-    final chapters = resource.data;
-
-    return SliverChildBuilderDelegate(
-      (BuildContext context, int index) => _ChapterListItem(chapter: chapters[index]),
-      childCount: chapters.length,
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final state = _usePageState();
-    final novel = state.novel.data;
-    final chaptersResource = useChapters(novel.source, novel.slug);
-
-    return ResourceBuilder(
-      resource: state.novel,
-      doneBuilder: (BuildContext context, Resource<Novel> novel) {
-        final hasData = chaptersResource.data != null;
-        final delegate = hasData ? _dataDelegate(chaptersResource) : _emptyDelegate();
-        return SliverList(delegate: delegate);
+            return ListView.builder(
+              itemBuilder: (BuildContext context, int index) {
+                if (index == 0) {
+                  return header;
+                }
+                return _ChapterListItem(chapter: chapters[index - 1]);
+              },
+              itemCount: 1 + chapters.length,
+            );
+          },
+          emptyBuilder: (BuildContext context, PaginatedResource<Chapter> chaptersResource) {
+            return ListView(
+              children: [
+                header,
+                const Center(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      vertical: 24.0,
+                    ),
+                    child: Text("No chapters found"),
+                  ),
+                ),
+              ],
+            );
+          },
+        );
       },
     );
   }

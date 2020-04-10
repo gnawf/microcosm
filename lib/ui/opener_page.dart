@@ -38,8 +38,8 @@ class OpenerPage extends HookWidget {
         leading: null,
         title: const Text("Microcosm"),
         centerTitle: false,
-        actions: const <Widget>[
-          const SettingsIconButton(),
+        actions: const [
+          SettingsIconButton(),
         ],
       ),
       body: Padding(
