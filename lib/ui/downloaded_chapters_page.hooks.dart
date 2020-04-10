@@ -5,6 +5,7 @@ _PageState _usePageState() {
 }
 
 PaginatedResource<Chapter> _useDownloadedChapters(String novelSource, String novelSlug) {
+  final isDisposed = useIsDisposed();
   final chapterDao = useChapterDao();
   final chapters = usePaginatedResource<Chapter>();
 
@@ -18,11 +19,16 @@ PaginatedResource<Chapter> _useDownloadedChapters(String novelSource, String nov
           novelSlug: novelSlug,
           orderBy: "slug",
         );
+        if (isDisposed.value) {
+          return;
+        }
         chapters.value = PaginatedResource.data(value);
       } on Error catch (e, s) {
         print(e);
         print(s);
-        chapters.value = PaginatedResource.error(e);
+        if (!isDisposed.value) {
+          chapters.value = PaginatedResource.error(e);
+        }
       }
     }();
 

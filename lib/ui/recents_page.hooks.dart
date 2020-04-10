@@ -15,12 +15,17 @@ _PageState _usePageState() {
 }
 
 Resource<List<Chapter>> _useRecents() {
+  final isDisposed = useIsDisposed();
   final recents = useResource<List<Chapter>>();
   final dao = useChapterDao();
 
   useEffect(() {
     Future<void> execute() async {
-      recents.value = await _fetchRecents(dao, execute);
+      final result = await _fetchRecents(dao, execute);
+      if (isDisposed.value) {
+        return;
+      }
+      recents.value = result;
     }
 
     execute();

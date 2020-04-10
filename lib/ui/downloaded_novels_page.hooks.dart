@@ -1,6 +1,7 @@
 part of "downloaded_novels_page.dart";
 
 PaginatedResource<Novel> _useDownloadedNovels() {
+  final isDisposed = useIsDisposed();
   final novelDao = useNovelDao();
   final novels = usePaginatedResource<Novel>();
 
@@ -10,11 +11,16 @@ PaginatedResource<Novel> _useDownloadedNovels() {
     () async {
       try {
         final value = await novelDao.withDownloads();
+        if (isDisposed.value) {
+          return;
+        }
         novels.value = PaginatedResource.data(value);
       } on Error catch (e, s) {
         print(e);
         print(s);
-        novels.value = PaginatedResource.error(e);
+        if (!isDisposed.value) {
+          novels.value = PaginatedResource.error(e);
+        }
       }
     }();
 

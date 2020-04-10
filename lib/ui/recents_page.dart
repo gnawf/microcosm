@@ -1,9 +1,9 @@
 import "package:app/hooks/use_daos.hook.dart";
+import "package:app/hooks/use_is_disposed.hook.dart";
 import "package:app/hooks/use_navigator_observers.dart";
 import "package:app/hooks/use_novel.hook.dart";
 import "package:app/models/chapter.dart";
 import "package:app/navigation/on_navigate.dart";
-import 'package:app/resource/paginated_resource.dart';
 import "package:app/resource/resource.dart";
 import "package:app/resource/resource.hooks.dart";
 import "package:app/sources/database/chapter_dao.dart";

@@ -1,5 +1,6 @@
 import "dart:async";
 
+import "package:app/hooks/use_is_disposed.hook.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:meta/meta.dart";
 
@@ -18,6 +19,7 @@ void useDebouncedValue({
   assert(value != null);
   assert(onTimeout != null);
 
+  final isDisposed = useIsDisposed();
   final lastSearchAt = useState<DateTime>()..value ??= DateTime.now();
 
   useEffect(() {
@@ -30,6 +32,9 @@ void useDebouncedValue({
     }
 
     final timer = Timer(idleTimeout, () {
+      if (isDisposed.value) {
+        return;
+      }
       lastSearchAt.value = now.add(idleTimeout);
       onTimeout(value);
     });

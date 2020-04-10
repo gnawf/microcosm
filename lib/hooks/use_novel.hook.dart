@@ -1,6 +1,7 @@
 import "dart:async";
 
 import "package:app/hooks/use_daos.hook.dart";
+import "package:app/hooks/use_is_disposed.hook.dart";
 import "package:app/models/novel.dart";
 import "package:app/resource/resource.dart";
 import "package:app/resource/resource.hooks.dart";
@@ -23,6 +24,7 @@ GetNovel _save(GetNovel fetcher, _SaveNovel save) {
 }
 
 Resource<Novel> useNovel(String source, String slug, {bool live = true}) {
+  final isDisposed = useIsDisposed();
   final dao = useNovelDao();
   final novelSource = getSource(id: source).novels;
   final novel = useResource<Novel>();
@@ -39,14 +41,18 @@ Resource<Novel> useNovel(String source, String slug, {bool live = true}) {
       ]) {
         try {
           final value = await fetcher(slug: slug);
-          if (value.data != null) {
-            novel.value = Resource.data(value.data);
-            // Don't fetch live data, be happy with the first result
-            if (!live) {
-              break;
-            }
+          if (isDisposed.value) {
+            return;
           }
-        } catch (e, s) {
+          if (value.data == null) {
+            continue;
+          }
+          novel.value = Resource.data(value.data);
+          // Don't fetch live data, be happy with the first result
+          if (!live) {
+            break;
+          }
+        } on Error catch (e, s) {
           print(e);
           print(s);
         }
