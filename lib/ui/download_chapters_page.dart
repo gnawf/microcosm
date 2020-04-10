@@ -115,7 +115,9 @@ class _Body extends HookWidget {
 
     return ResourceBuilder(
       resource: state.anchorChapter.value,
-      doneBuilder: (BuildContext context, Chapter anchorChapter) {
+      doneBuilder: (BuildContext context, Resource<Chapter> res) {
+        final anchorChapter = res.data;
+
         if (anchorChapter == null) {
           return const Center(
             child: Text("Unable to grab anchor chapter"),
@@ -235,7 +237,9 @@ class _ProcessDownload extends HookWidget {
     );
   }
 
-  static Widget _doneBuilder(BuildContext context, List<Chapter> chapters) {
+  static Widget _doneBuilder(BuildContext context, PaginatedResource<Chapter> resource) {
+    final chapters = resource.data;
+
     if (chapters == null) {
       return const Center(
         child: Text("Unable to grab chapter data"),

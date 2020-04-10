@@ -1,5 +1,6 @@
 import "package:app/hooks/use_novels.hook.dart";
 import "package:app/models/novel.dart";
+import "package:app/resource/paginated_resource.dart";
 import "package:app/sources/source.dart";
 import "package:app/sources/sources.dart";
 import "package:app/ui/router.hooks.dart";
@@ -128,13 +129,13 @@ class _Novels extends HookWidget {
 
     return ResourceBuilder(
       resource: novelsResource,
-      doneBuilder: (BuildContext context, List<Novel> novels) {
+      doneBuilder: (BuildContext context, PaginatedResource<Novel> resource) {
         return CustomScrollView(
           slivers: [
             if (state.isGridView.value)
-              NovelSliverGrid(novels: novelsResource, onTap: onTapNovel)
+              NovelSliverGrid(novels: resource, onTap: onTapNovel)
             else
-              NovelSliverList(novels: novelsResource, onTap: onTapNovel),
+              NovelSliverList(novels: resource, onTap: onTapNovel),
           ],
         );
       },

@@ -1,9 +1,9 @@
 import "package:app/resource/resource.dart";
 import "package:flutter/material.dart";
 
-typedef WidgetBuilderWithData<T> = Widget Function(BuildContext context, T data);
+typedef WidgetBuilderWithData<ResourceType> = Widget Function(BuildContext context, ResourceType resource);
 
-class ResourceBuilder<T> extends StatelessWidget {
+class ResourceBuilder<ResourceType extends Resource<DataType>, DataType> extends StatelessWidget {
   const ResourceBuilder({
     Key key,
     @required this.resource,
@@ -18,15 +18,15 @@ class ResourceBuilder<T> extends StatelessWidget {
         assert(errorBuilder != null),
         super(key: key);
 
-  final Resource<T> resource;
+  final ResourceType resource;
 
   final WidgetBuilder placeholderBuilder;
 
   final WidgetBuilder loadingBuilder;
 
-  final WidgetBuilderWithData<T> doneBuilder;
+  final WidgetBuilderWithData<ResourceType> doneBuilder;
 
-  final WidgetBuilderWithData<Object> errorBuilder;
+  final WidgetBuilderWithData<ResourceType> errorBuilder;
 
   static Widget _placeholder(BuildContext context) => const SizedBox.shrink();
 
@@ -55,9 +55,9 @@ class ResourceBuilder<T> extends StatelessWidget {
       case ResourceState.loading:
         return loadingBuilder(context);
       case ResourceState.done:
-        return doneBuilder(context, resource.data);
+        return doneBuilder(context, resource);
       case ResourceState.error:
-        return errorBuilder(context, resource.error);
+        return errorBuilder(context, resource);
     }
 
     throw UnsupportedError("Switch was not exhaustive");

@@ -95,14 +95,14 @@ class _Title extends HookWidget {
     final pageState = _usePageState();
     return ResourceBuilder(
       resource: pageState.novel,
-      loadingBuilder: (BuildContext context) {
-        return const Text("Loading…");
-      },
-      doneBuilder: (BuildContext context, Novel novel) {
-        return Text(novel.name);
-      },
+      loadingBuilder: _loadingBuilder,
+      doneBuilder: _doneBuilder,
     );
   }
+
+  static Widget _loadingBuilder(BuildContext context) => const Text("Loading…");
+
+  static Widget _doneBuilder(BuildContext context, Resource<Novel> resource) => Text(resource.data.name);
 }
 
 class _Body extends HookWidget {
@@ -114,7 +114,9 @@ class _Body extends HookWidget {
 
     return ResourceBuilder(
       resource: pageState.chapters,
-      doneBuilder: (BuildContext context, List<Chapter> chapters) {
+      doneBuilder: (BuildContext context, PaginatedResource<Chapter> resource) {
+        final chapters = resource.data;
+
         return Column(
           children: <Widget>[
             _FilterField(),

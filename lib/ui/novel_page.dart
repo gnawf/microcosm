@@ -76,9 +76,9 @@ class _Title extends HookWidget {
 
   static Widget _loadingBuilder(BuildContext context) => const Text("Loading");
 
-  static Widget _doneBuilder(BuildContext context, Novel novel) => Text(novel?.name ?? "Unknown");
+  static Widget _doneBuilder(BuildContext context, Resource<Novel> novel) => Text(novel.data?.name ?? "Unknown");
 
-  static Widget _errorBuilder(BuildContext context, Object error) => const Text("Error");
+  static Widget _errorBuilder(BuildContext context, Resource<Novel> error) => const Text("Error");
 }
 
 class _Body extends HookWidget {
@@ -92,7 +92,9 @@ class _Body extends HookWidget {
     );
   }
 
-  static Widget _doneBuilder(BuildContext context, Novel novel) {
+  static Widget _doneBuilder(BuildContext context, Resource<Novel> resource) {
+    final novel = resource.data;
+
     return CustomScrollView(
       slivers: <Widget>[
         SliverToBoxAdapter(

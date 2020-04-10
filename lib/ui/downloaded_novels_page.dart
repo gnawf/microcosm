@@ -37,7 +37,9 @@ class _Body extends HookWidget {
 
     return ResourceBuilder(
       resource: novels,
-      doneBuilder: (BuildContext context, List<Novel> novels) {
+      doneBuilder: (BuildContext context, PaginatedResource<Novel> resource) {
+        final novels = resource.data;
+
         return ListView.builder(
           padding: const EdgeInsets.symmetric(
             vertical: 16.0,

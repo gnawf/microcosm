@@ -77,9 +77,11 @@ class _Title extends HookWidget {
 
   static Widget _loadingBuilder(BuildContext context) => const Text("Loading");
 
-  static Widget _doneBuilder(BuildContext context, Chapter chapter) => Text(chapter?.title ?? "Unknown");
+  static Widget _doneBuilder(BuildContext context, Resource<Chapter> resource) {
+    return Text(resource.data?.title ?? "Unknown");
+  }
 
-  static Widget _errorBuilder(BuildContext context, Object error) => const Text("Error");
+  static Widget _errorBuilder(BuildContext context, Resource<Chapter> error) => const Text("Error");
 }
 
 class _Body extends HookWidget {
@@ -97,9 +99,11 @@ class _Body extends HookWidget {
 
     return ResourceBuilder(
       resource: chapterResource,
-      doneBuilder: (BuildContext context, Chapter chapter) {
+      doneBuilder: (BuildContext context, Resource<Chapter> resource) {
+        final chapter = resource.data;
+
         return RefreshIndicator(
-          onRefresh: chapterResource.refresh,
+          onRefresh: resource.refresh,
           child: ChapterOverscrollNavigation(
             onNavigate: chapterNavigation,
             child: _MarkdownBody(

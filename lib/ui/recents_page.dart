@@ -172,7 +172,8 @@ class _RecentsListEntry extends HookWidget {
     return ResourceBuilder(
       resource: chapterResource,
       loadingBuilder: _loadingBuilder,
-      doneBuilder: (BuildContext context, Chapter chapter) {
+      doneBuilder: (BuildContext context, Resource<Chapter> resource) {
+        final chapter = resource.data;
         final novel = chapter.novel;
         final novelName = novel?.name ?? chapter.novelSlug ?? "Unknown";
         final source = getSource(id: chapterResource.data?.novelSource);
@@ -204,10 +205,10 @@ class _RecentsListEntry extends HookWidget {
     );
   }
 
-  static Widget _errorBuilder(BuildContext context, Object error) {
+  static Widget _errorBuilder(BuildContext context, Resource<Chapter> resource) {
     return ListTile(
       title: const Text("An Error Ocurred"),
-      subtitle: Text("$error"),
+      subtitle: Text("${resource.error}"),
     );
   }
 }
