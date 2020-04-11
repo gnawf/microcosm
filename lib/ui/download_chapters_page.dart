@@ -269,7 +269,13 @@ extension _ChapterSearch on List<Chapter> {
       return 0;
     }
 
-    final numberRegex = RegExp(r"^((.*[^\d])|)" + numberMatches.map((e) => e[0]).join(r"[^\d]+") + r"(([^\d].*)|)$");
+    // We are trying to create a regex that matches string with the exact same number occurrences
+    // e.g. for "Book 14 Chapter 9" the value of numberMatches is [14, 9]
+    // Then we create a regex ^[^\d*]14[^\d]+9[^\d+]$ i.e. no numbers, match 14, no numbers, match 9, no numbers
+    // We know there can be no number x between 14 and 9 as otherwise numberMatches would be [14, x, 9]
+    final matchNumbers = numberMatches.map((e) => e[0]).join(r"[^\d]+");
+    final numberRegex = RegExp(r"^[^\d]*" + matchNumbers + r"[^\d]*$");
+
     var candidate = -1;
     for (var i = 0; i < length; i++) {
       if (numberRegex.matchAsPrefix(this[i].title) != null) {
