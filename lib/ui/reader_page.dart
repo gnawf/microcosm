@@ -6,6 +6,7 @@ import "package:app/models/chapter.dart";
 import "package:app/resource/resource.dart";
 import "package:app/ui/router.hooks.dart";
 import "package:app/utils/scaffold.extensions.dart";
+import "package:app/utils/url_launcher.dart";
 import "package:app/widgets/chapter_overscoll_navigation.dart";
 import "package:app/widgets/mark_chapter_read.dart";
 import "package:app/widgets/md_icons.dart";
@@ -109,6 +110,7 @@ class _Body extends HookWidget {
             child: _MarkdownBody(
               data: chapter?.content,
               styleSheet: styleSheet,
+              onTapLink: (link) => onTapLink(context, link),
             ),
           ),
         );
