@@ -56,23 +56,25 @@ MarkdownStyleSheet _useMarkdownStyleSheet() {
   final theme = useTheme();
   final settings = useSettings();
   final readerFontSize = settings.readerFontSize;
+  final readerAlignment = settings.readerAlignment;
 
-  final styleSheet = useState()..value ??= _createMarkdownStyleSheet(theme, readerFontSize);
+  final styleSheet = useState()..value ??= _createMarkdownStyleSheet(theme, readerFontSize, readerAlignment);
 
-  // Cause re-render when font size changes
+  // Cause re-render when dependencies change
   useListenable(settings.readerFontSizeChanges);
+  useListenable(settings.readerAlignmentChanges);
 
   // Update stylesheet on future changes
-  for (final dependency in [readerFontSize, theme.textTheme.bodyText2.color]) {
+  for (final dependency in [readerAlignment, readerFontSize, theme.textTheme.bodyText2.color]) {
     useValueChanged(dependency, (oldValue, oldResult) {
-      styleSheet.value = _createMarkdownStyleSheet(theme, readerFontSize);
+      styleSheet.value = _createMarkdownStyleSheet(theme, readerFontSize, readerAlignment);
     });
   }
 
   return styleSheet.value;
 }
 
-MarkdownStyleSheet _createMarkdownStyleSheet(ThemeData theme, double fontSize) {
+MarkdownStyleSheet _createMarkdownStyleSheet(ThemeData theme, double fontSize, WrapAlignment textAlign) {
   final defaults = theme.textTheme;
   final fontSizeScale = fontSize / defaults.bodyText2.fontSize;
 
@@ -87,6 +89,6 @@ MarkdownStyleSheet _createMarkdownStyleSheet(ThemeData theme, double fontSize) {
       ),
     ),
   ).copyWith(
-    textAlign: WrapAlignment.spaceBetween,
+    textAlign: textAlign,
   );
 }

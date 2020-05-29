@@ -27,6 +27,8 @@ class PopupSettings extends HookWidget {
 class _Popup extends HookWidget {
   @override
   Widget build(BuildContext context) {
+    final settings = _useSettings();
+
     final router = useRouter();
 
     final controller = useAnimationController(
@@ -41,10 +43,8 @@ class _Popup extends HookWidget {
     final widthAnim = useAnim(controller, widthTween.value, curve: widthCurve);
 
     const heightCurve = Interval(0.25, 1.0, curve: Curves.easeInCubic);
-    final heightTween = useState<Tween>()..value ??= Tween(begin: 48.0, end: 424.0);
+    final heightTween = useState<Tween>()..value ??= Tween(begin: 48.0, end: 88.0 + 56.0 * settings.length);
     final heightAnim = useAnim(controller, heightTween.value, curve: heightCurve);
-
-    final settings = _useSettings();
 
     useEffect(() {
       controller.forward();
@@ -115,6 +115,7 @@ List<Widget> _useSettings() {
       _AccentColorSetting(),
       _ReaderFontSizeSetting(),
       _LandingPageSetting(),
+      _ReaderAlignmentSetting(),
     ];
     return () {};
   });
@@ -125,6 +126,8 @@ List<Widget> _useSettings() {
   useListenable(changes.primarySwatchChanges);
   useListenable(changes.accentColorChanges);
   useListenable(changes.readerFontSizeChanges);
+  useListenable(changes.landingPageChanges);
+  useListenable(changes.readerAlignmentChanges);
 
   return settings.value;
 }

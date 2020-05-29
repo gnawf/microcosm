@@ -55,6 +55,13 @@ class SettingsState extends State<Settings> {
     deserializer: _landingPageDeserializer,
   );
 
+  final _readerAlignment = Setting<int, WrapAlignment>(
+    key: "readerAlignment",
+    defaultValue: WrapAlignment.spaceBetween,
+    serializer: _readerAlignmentSerializer,
+    deserializer: _readerAlignmentDeserializer,
+  );
+
   ChangeNotifier get brightnessChanges => _brightness;
 
   Brightness get brightness => _brightness.value;
@@ -87,11 +94,21 @@ class SettingsState extends State<Settings> {
 
   set readerFontSize(double value) => _readerFontSize.value = value;
 
+  ChangeNotifier get landingPageChanges => _landingPage;
+
   LandingPage get landingPage => _landingPage.value;
 
   LandingPage get defaultLandingPage => _landingPage.defaultValue;
 
   set landingPage(LandingPage value) => _landingPage.value = value;
+
+  ChangeNotifier get readerAlignmentChanges => _readerAlignment;
+
+  WrapAlignment get readerAlignment => _readerAlignment.value;
+
+  WrapAlignment get defaultReaderAlignment => _readerAlignment.defaultValue;
+
+  set readerAlignment(WrapAlignment value) => _readerAlignment.value = value;
 
   @override
   Widget build(BuildContext context) {
@@ -155,3 +172,18 @@ final _intToLandingPage = _landingPageToInt.map((k, v) => MapEntry(v, k));
 int _landingPageSerializer(LandingPage page) => _landingPageToInt[page];
 
 LandingPage _landingPageDeserializer(int int) => _intToLandingPage[int];
+
+const _readerAlignmentToInt = {
+  WrapAlignment.start: 0,
+  WrapAlignment.end: 1,
+  WrapAlignment.center: 2,
+  WrapAlignment.spaceBetween: 3,
+  WrapAlignment.spaceAround: 4,
+  WrapAlignment.spaceEvenly: 5,
+};
+
+final _intToReaderAlignment = _readerAlignmentToInt.map((k, v) => MapEntry(v, k));
+
+int _readerAlignmentSerializer(WrapAlignment page) => _readerAlignmentToInt[page];
+
+WrapAlignment _readerAlignmentDeserializer(int int) => _intToReaderAlignment[int];

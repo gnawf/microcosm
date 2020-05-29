@@ -166,3 +166,55 @@ Text _landingPageToText(LandingPage page) {
 
   throw UnsupportedError("Unknown landing page $page");
 }
+
+class _ReaderAlignmentSetting extends HookWidget {
+  @override
+  Widget build(BuildContext context) {
+    final settings = Settings.of(context);
+    final setting = useState(settings.readerAlignment);
+    const supportedValues = const [
+      WrapAlignment.start,
+      WrapAlignment.end,
+      WrapAlignment.center,
+      WrapAlignment.spaceBetween,
+    ];
+
+    return ListTile(
+      leading: const Icon(MDIcons.formatAlignLeft),
+      title: const Text("Reader Text"),
+      trailing: DropdownButton<WrapAlignment>(
+        items: [
+          for (final page in supportedValues)
+            DropdownMenuItem(
+              value: page,
+              child: _wrapAlignmentToText(page),
+            ),
+        ],
+        value: setting.value,
+        onChanged: (WrapAlignment alignment) {
+          setting.value = alignment;
+          settings.readerAlignment = alignment;
+        },
+      ),
+    );
+  }
+}
+
+Text _wrapAlignmentToText(WrapAlignment alignment) {
+  switch (alignment) {
+    case WrapAlignment.start:
+      return const Text("Start");
+    case WrapAlignment.end:
+      return const Text("End");
+    case WrapAlignment.center:
+      return const Text("Center");
+    case WrapAlignment.spaceBetween:
+      return const Text("Justify");
+    case WrapAlignment.spaceAround:
+      return const Text("Space Around");
+    case WrapAlignment.spaceEvenly:
+      return const Text("Space Evenly");
+  }
+
+  throw UnsupportedError("Unknown landing page $alignment");
+}
