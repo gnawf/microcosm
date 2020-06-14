@@ -165,6 +165,7 @@ class _ChapterParser {
         }
       });
     });
+    article.querySelectorAll("script").forEach((e) => e.remove());
     // Remove chapter navigation, sometimes they're tagged with this class
     article.querySelectorAll(".chapter-nav").forEach((e) => e.remove());
   }
