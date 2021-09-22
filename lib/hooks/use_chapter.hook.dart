@@ -1,5 +1,6 @@
 import "dart:async";
 
+import "package:app/hooks/use_async_load_tracker.dart";
 import "package:app/hooks/use_daos.hook.dart";
 import "package:app/hooks/use_is_disposed.hook.dart";
 import "package:app/models/chapter.dart";
@@ -14,7 +15,7 @@ import "package:flutter_hooks/flutter_hooks.dart";
 Resource<Chapter> useChapter(Uri url) {
   // State
   final isDisposed = useIsDisposed();
-  final currentLoadId = useState(0);
+  final loadTracker = useAsyncLoadTracker();
   final refreshRequest = useState<Completer>(null);
   final chapter = useResource<Chapter>();
 
@@ -25,9 +26,9 @@ Resource<Chapter> useChapter(Uri url) {
 
   // Fetches the chapter and updates the relevant state hooks
   Future<void> stateAwareFetch(List<GetChapter> fetchers) async {
-    final loadId = ++currentLoadId.value;
+    final loadTicket = loadTracker.getTicket();
     final value = await _fetch(url, fetchers);
-    if (loadId != currentLoadId.value || isDisposed.value) {
+    if (loadTicket.isValid || isDisposed.value) {
       return;
     }
     chapter.value = Resource.data(value.data, onRefresh: () {
