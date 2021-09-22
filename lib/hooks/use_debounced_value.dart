@@ -20,7 +20,7 @@ void useDebouncedValue({
   assert(onTimeout != null);
 
   final isDisposed = useIsDisposed();
-  final lastSearchAt = useState<DateTime>()..value ??= DateTime.now();
+  final lastSearchAt = useState<DateTime>(null)..value ??= DateTime.now();
 
   useEffect(() {
     final now = DateTime.now();

@@ -45,7 +45,7 @@ class ChapterOverscrollNavigation extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final direction = useState<AxisDirection>();
+    final direction = useState<AxisDirection>(null);
     final mode = useState(_Mode.idle);
     final overscroll = useState(0.0);
 

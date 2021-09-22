@@ -110,7 +110,7 @@ class _Body extends HookWidget {
             child: _MarkdownBody(
               data: chapter?.content,
               styleSheet: styleSheet,
-              onTapLink: (link) => onTapLink(context, link),
+              onTapLink: (text, link, title) => onTapLink(context, link),
             ),
           ),
         );

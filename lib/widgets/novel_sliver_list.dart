@@ -32,8 +32,8 @@ class NovelSliverList extends HookWidget {
 }
 
 SliverChildDelegate _useListDelegate(PaginatedResource<Novel> novels, OnTapNovel onTap) {
-  final delegate = useState<SliverChildBuilderDelegate>();
-  final loaderKey = (useState<Key>()..value ??= uuid.key()).value;
+  final delegate = useState<SliverChildBuilderDelegate>(null);
+  final loaderKey = (useState<Key>(null)..value ??= uuid.key()).value;
 
   useEffect(() {
     final data = novels.data;

@@ -1,8 +1,6 @@
 import "package:app/models/chapter.dart";
 import "package:app/models/novel.dart";
-import "package:app/navigation/dialog_route.dart";
 import "package:app/navigation/fade_transition_route.dart";
-import "package:app/navigation/transitions.dart";
 import "package:app/ui/download_chapters_page.dart";
 import "package:app/ui/downloaded_chapters_page.dart";
 import "package:app/ui/downloaded_novels_page.dart";
@@ -15,13 +13,14 @@ import "package:app/ui/search_page.dart";
 import "package:app/ui/source_page.dart";
 import "package:app/ui/sources_page.dart";
 import "package:app/widgets/popup_settings.dart";
+import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 import "package:flutter/widgets.dart";
 import "package:meta/meta.dart";
 
-typedef RouteAction<R, T> = R Function(Route<T> route);
+typedef AppRouteAction<R, T> = R Function(Route<T> route);
 
-typedef RouteBuilder<T extends Route> = T Function(
+typedef AppRouteBuilder<T extends Route> = T Function(
   WidgetBuilder builder,
   RouteSettings settings,
 );
@@ -35,7 +34,7 @@ Route _useFadePageRoute(WidgetBuilder builder, RouteSettings settings) {
 }
 
 Route _useDialogPageRoute(WidgetBuilder builder, RouteSettings settings) {
-  return DialogRoute(
+  return RawDialogRoute(
     pageBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
       return builder(context);
     },
@@ -47,15 +46,15 @@ Route _useDialogPageRoute(WidgetBuilder builder, RouteSettings settings) {
 class _Routes<R> {
   const _Routes(this._action, [this._routeBuilder = _useCupertinoPageRoute]);
 
-  final RouteAction _action;
+  final AppRouteAction _action;
 
-  final RouteBuilder _routeBuilder;
+  final AppRouteBuilder _routeBuilder;
 
   R _execute(WidgetBuilder builder, [RouteSettings settings]) {
     return _action(_routeBuilder(builder, settings));
   }
 
-  _Routes<R> usePageRoute(RouteBuilder pageRouteBuilder) {
+  _Routes<R> usePageRoute(AppRouteBuilder pageRouteBuilder) {
     return _Routes(_action, pageRouteBuilder);
   }
 
@@ -169,21 +168,21 @@ class _Routes<R> {
 
 /// Idiomatic API for pushing routes
 ///
-/// e.g. Router.of(context).push().homePage()
-class Router {
-  Router(this._navigator);
+/// e.g. AppRouter.of(context).push().homePage()
+class AppRouter {
+  AppRouter(this._navigator);
 
-  factory Router.from(NavigatorState navigator) {
-    return navigator != null ? Router(navigator) : null;
+  factory AppRouter.from(NavigatorState navigator) {
+    return navigator != null ? AppRouter(navigator) : null;
   }
 
-  factory Router.of(
+  factory AppRouter.of(
     BuildContext context, {
     bool rootNavigator = false,
     bool nullOk = false,
   }) {
-    final navigator = Navigator.of(context, rootNavigator: rootNavigator, nullOk: nullOk);
-    return Router.from(navigator);
+    final navigator = Navigator.of(context, rootNavigator: rootNavigator);
+    return AppRouter.from(navigator);
   }
 
   final NavigatorState _navigator;

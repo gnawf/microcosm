@@ -26,7 +26,7 @@ class OpenerPage extends HookWidget {
       }
       try {
         final uri = Uri.parse(url.value.text);
-        Router.of(context).push().reader(url: uri);
+        AppRouter.of(context).push().reader(url: uri);
       } on FormatException {
         print("Unable to parse ${url.value.text}");
       }
@@ -86,7 +86,6 @@ class OpenerPage extends HookWidget {
           ],
         ),
       ),
-      resizeToAvoidBottomPadding: false,
     );
   }
 }

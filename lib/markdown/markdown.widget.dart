@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import "dart:convert";
 import "dart:io";
 
 import "package:flutter/cupertino.dart";
@@ -20,7 +21,7 @@ import "package:meta/meta.dart";
 /// See also:
 ///
 ///  * [Markdown], which is a scrolling container of Markdown.
-///  * [PerformantMarkdownBody], which is a non-scrolling container of Markdown.
+///  * [MarkdownBody], which is a non-scrolling container of Markdown.
 ///  * <https://github.github.com/gfm/>
 abstract class PerformantMarkdownWidget extends StatefulWidget {
   /// Creates a widget that parses and displays Markdown.
@@ -34,13 +35,19 @@ abstract class PerformantMarkdownWidget extends StatefulWidget {
     this.styleSheetTheme = MarkdownStyleSheetBaseTheme.material,
     this.syntaxHighlighter,
     this.onTapLink,
+    this.onTapText,
     this.imageDirectory,
+    this.blockSyntaxes,
+    this.inlineSyntaxes,
+    this.extensionSet,
     this.imageBuilder,
     this.checkboxBuilder,
+    this.bulletBuilder,
+    this.builders = const <String, MarkdownElementBuilder>{},
     this.fitContent = false,
-  })  : assert(data != null),
-        assert(selectable != null),
-        super(key: key);
+    this.listItemCrossAxisAlignment = MarkdownListItemCrossAxisAlignment.baseline,
+    this.softLineBreak = false,
+  }) : super(key: key);
 
   /// The Markdown to display.
   final String data;
@@ -68,8 +75,22 @@ abstract class PerformantMarkdownWidget extends StatefulWidget {
   /// Called when the user taps a link.
   final MarkdownTapLinkCallback onTapLink;
 
+  /// Default tap handler used when [selectable] is set to true
+  final VoidCallback onTapText;
+
   /// The base directory holding images referenced by Img tags with local or network file paths.
   final String imageDirectory;
+
+  /// Collection of custom block syntax types to be used parsing the Markdown data.
+  final List<md.BlockSyntax> blockSyntaxes;
+
+  /// Collection of custom inline syntax types to be used parsing the Markdown data.
+  final List<md.InlineSyntax> inlineSyntaxes;
+
+  /// Markdown syntax extension set
+  ///
+  /// Defaults to [md.ExtensionSet.gitHubFlavored]
+  final md.ExtensionSet extensionSet;
 
   /// Call when build an image widget.
   final MarkdownImageBuilder imageBuilder;
@@ -77,8 +98,38 @@ abstract class PerformantMarkdownWidget extends StatefulWidget {
   /// Call when build a checkbox widget.
   final MarkdownCheckboxBuilder checkboxBuilder;
 
+  /// Called when building a bullet
+  final MarkdownBulletBuilder bulletBuilder;
+
+  /// Render certain tags, usually used with [extensionSet]
+  ///
+  /// For example, we will add support for `sub` tag:
+  ///
+  /// ```dart
+  /// builders: {
+  ///   'sub': SubscriptBuilder(),
+  /// }
+  /// ```
+  ///
+  /// The `SubscriptBuilder` is a subclass of [MarkdownElementBuilder].
+  final Map<String, MarkdownElementBuilder> builders;
+
   /// Whether to allow the widget to fit the child content.
   final bool fitContent;
+
+  /// Controls the cross axis alignment for the bullet and list item content
+  /// in lists.
+  ///
+  /// Defaults to [MarkdownListItemCrossAxisAlignment.baseline], which
+  /// does not allow for intrinsic height measurements.
+  final MarkdownListItemCrossAxisAlignment listItemCrossAxisAlignment;
+
+  /// The soft line break is used to identify the spaces at the end of aline of
+  /// text and the leading spaces in the immediately following the line of text.
+  ///
+  /// Default these spaces are removed in accordance with the Markdown
+  /// specification on soft line breaks when lines of text are joined.
+  final bool softLineBreak;
 
   /// Subclasses should override this function to display the given children,
   /// which are the parsed representation of [data].
@@ -91,38 +142,19 @@ abstract class PerformantMarkdownWidget extends StatefulWidget {
 
 class _PerformantMarkdownWidgetState extends State<PerformantMarkdownWidget> implements MarkdownBuilderDelegate {
   List<Widget> _children;
-  List<md.Node> _markdownNodes;
-  MarkdownBuilder _markdownBuilder;
   final List<GestureRecognizer> _recognizers = <GestureRecognizer>[];
 
   @override
-  void initState() {
-    super.initState();
-    _parseMarkdown();
-  }
-
-  @override
   void didChangeDependencies() {
+    _parseMarkdown();
     super.didChangeDependencies();
-    _markdownBuilder ??= _newMarkdownBuilder();
   }
 
   @override
   void didUpdateWidget(PerformantMarkdownWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.selectable != oldWidget.selectable ||
-        widget.styleSheet != oldWidget.styleSheet ||
-        widget.imageDirectory != oldWidget.imageDirectory ||
-        widget.imageBuilder != oldWidget.imageBuilder ||
-        widget.checkboxBuilder != oldWidget.checkboxBuilder ||
-        widget.fitContent != oldWidget.fitContent) {
-      _markdownBuilder = _newMarkdownBuilder();
-    }
-    if (widget.data != oldWidget.data) {
+    if (widget.data != oldWidget.data || widget.styleSheet != oldWidget.styleSheet) {
       _parseMarkdown();
-    }
-    if (widget.styleSheet != oldWidget.styleSheet) {
-      _renderMarkdown();
     }
   }
 
@@ -132,59 +164,51 @@ class _PerformantMarkdownWidgetState extends State<PerformantMarkdownWidget> imp
     super.dispose();
   }
 
-  MarkdownBuilder _newMarkdownBuilder() {
+  void _parseMarkdown() {
     final MarkdownStyleSheet fallbackStyleSheet = _kFallbackStyle(context, widget.styleSheetTheme);
     final MarkdownStyleSheet styleSheet = fallbackStyleSheet.merge(widget.styleSheet);
 
-    return MarkdownBuilder(
+    _disposeRecognizers();
+
+    // Parse the source Markdown data into nodes of an Abstract Syntax Tree.
+    final astNodes = _isolateParseMarkdown(widget.data);
+
+    // Configure a Markdown widget builder to traverse the AST nodes and
+    // create a widget tree based on the elements.
+    final MarkdownBuilder builder = MarkdownBuilder(
       delegate: this,
       selectable: widget.selectable,
       styleSheet: styleSheet,
       imageDirectory: widget.imageDirectory,
       imageBuilder: widget.imageBuilder,
       checkboxBuilder: widget.checkboxBuilder,
+      bulletBuilder: widget.bulletBuilder,
+      builders: widget.builders,
       fitContent: widget.fitContent,
+      listItemCrossAxisAlignment: widget.listItemCrossAxisAlignment,
+      onTapText: widget.onTapText,
+      softLineBreak: widget.softLineBreak,
     );
-  }
 
-  Future<void> _parseMarkdown() async {
-    _renderMarkdown(
-      // Expensive operation – see [_isolateParseMarkdown] for more info
-      _markdownNodes = await compute(_isolateParseMarkdown, widget.data),
-    );
-  }
-
-  void _renderMarkdown([List<md.Node> nodes]) {
-    nodes ??= _markdownNodes;
-
-    if (nodes == null || !mounted) {
-      return;
-    }
-
-    final children = _markdownBuilder.build(nodes);
-
-    if (!mounted) {
-      return;
-    }
-
-    setState(() {
-      // Not so expensive operation that is much harder to run in isolate
-      _children = children;
-    });
+    _children = builder.build(astNodes);
   }
 
   void _disposeRecognizers() {
-    if (_recognizers.isEmpty) return;
-    final localRecognizers = List<GestureRecognizer>.from(_recognizers);
+    if (_recognizers.isEmpty) {
+      return;
+    }
+    final List<GestureRecognizer> localRecognizers = List<GestureRecognizer>.from(_recognizers);
     _recognizers.clear();
-    for (final recognizer in localRecognizers) recognizer.dispose();
+    for (final GestureRecognizer recognizer in localRecognizers) recognizer.dispose();
   }
 
   @override
-  GestureRecognizer createLink(String href) {
+  GestureRecognizer createLink(String text, String href, String title) {
     final TapGestureRecognizer recognizer = TapGestureRecognizer()
       ..onTap = () {
-        if (widget.onTapLink != null) widget.onTapLink(href);
+        if (widget.onTapLink != null) {
+          widget.onTapLink(text, href, title);
+        }
       };
     _recognizers.add(recognizer);
     return recognizer;
@@ -192,7 +216,7 @@ class _PerformantMarkdownWidgetState extends State<PerformantMarkdownWidget> imp
 
   @override
   TextSpan formatText(MarkdownStyleSheet styleSheet, String code) {
-    code = code.replaceAll(RegExp(r"\n$"), "");
+    code = code.replaceAll(RegExp(r'\n$'), '');
     if (widget.syntaxHighlighter != null) {
       return widget.syntaxHighlighter.format(code);
     }
@@ -227,11 +251,11 @@ final MarkdownStyleSheet Function(BuildContext, MarkdownStyleSheetBaseTheme) _kF
 /// https://github.com/dart-lang/sdk/issues/37774
 /// https://github.com/dart-lang/sdk/issues/39139
 List<md.Node> _isolateParseMarkdown(String data) {
-  final lines = data.split(RegExp(r"\r?\n"));
   final document = md.Document(
     extensionSet: md.ExtensionSet.gitHubFlavored,
     inlineSyntaxes: [TaskListSyntax()],
     encodeHtml: false,
   );
+  final List<String> lines = const LineSplitter().convert(data);
   return document.parseLines(lines);
 }

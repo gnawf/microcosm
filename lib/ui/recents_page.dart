@@ -70,7 +70,7 @@ class _Body extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final pageState = _usePageState();
-    final observer = useState<NavigatorObserver>();
+    final observer = useState<NavigatorObserver>(null);
 
     useEffect(() {
       observer.value = OnNavigate(onPop: (route, prevRoute) {

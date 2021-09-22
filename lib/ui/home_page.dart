@@ -35,7 +35,7 @@ class _HomePageState extends State<HomePage> {
       return null;
     }
 
-    final routes = Router.routes().useFadePageRoute();
+    final routes = AppRouter.routes().useFadePageRoute();
 
     switch (index) {
       case 0:

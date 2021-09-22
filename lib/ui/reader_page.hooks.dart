@@ -58,7 +58,7 @@ MarkdownStyleSheet _useMarkdownStyleSheet() {
   final readerFontSize = settings.readerFontSize;
   final readerAlignment = settings.readerAlignment;
 
-  final styleSheet = useState()..value ??= _createMarkdownStyleSheet(theme, readerFontSize, readerAlignment);
+  final styleSheet = useState(null)..value ??= _createMarkdownStyleSheet(theme, readerFontSize, readerAlignment);
 
   // Cause re-render when dependencies change
   useListenable(settings.readerFontSizeChanges);

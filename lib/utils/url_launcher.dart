@@ -20,7 +20,7 @@ Future<void> onTapLink(BuildContext context, String url) async {
   if (await canLaunch(url)) {
     await launch(url);
   } else {
-    final scaffold = Scaffold.of(context, nullOk: true);
+    final scaffold = ScaffoldMessenger.maybeOf(context);
     if (scaffold != null) {
       const text = const Text("Unable to open link");
       scaffold.showSnackBar(const SnackBar(content: text));

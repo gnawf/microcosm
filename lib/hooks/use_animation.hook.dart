@@ -2,7 +2,7 @@ import "package:flutter/animation.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 
 Animation<T> useAnim<T>(Animation parent, Animatable child, {Curve curve}) {
-  final animation = useState<Animation<T>>()
+  final animation = useState<Animation<T>>(null)
     ..value ??= child.animate(
       curve != null ? CurvedAnimation(curve: curve, parent: parent) : parent,
     );

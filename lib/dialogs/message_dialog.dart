@@ -42,7 +42,7 @@ class _Content extends MarkdownWidget {
           data: data,
           styleSheet: styleSheet ?? defaultStyleSheet(context),
           syntaxHighlighter: syntaxHighlighter,
-          onTapLink: (link) => urls.onTapLink(context, link),
+          onTapLink: (text, link, title) => urls.onTapLink(context, link),
           imageDirectory: imageDirectory,
         );
 

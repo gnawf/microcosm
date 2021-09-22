@@ -61,7 +61,7 @@ class _Source extends HookWidget {
       child: Card(
         child: InkWell(
           onTap: () {
-            Router.of(context).push().source(sourceId: source.id);
+            AppRouter.of(context).push().source(sourceId: source.id);
           },
           child: ListTile(
             title: Text(source.name),

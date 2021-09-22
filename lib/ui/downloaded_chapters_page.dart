@@ -171,7 +171,7 @@ class _ChapterList extends HookWidget {
     final pageState = _usePageState();
     final filtered = useState(this.chapters);
 
-    final filter = useState<Consumer<String>>()
+    final filter = useState<Consumer<String>>(null)
       ..value ??= (string) async {
         filtered.value = this.chapters.where((chapter) => chapter.title.containsIgnoreCase(string)).toList();
       };

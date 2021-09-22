@@ -39,11 +39,11 @@ class _Popup extends HookWidget {
     final maxWidth = screenWidth.clamp(0.0, 512.0);
 
     const widthCurve = Interval(0.0, 0.85, curve: Curves.easeOutCubic);
-    final widthTween = useState<Tween>()..value ??= Tween(begin: 0.0, end: maxWidth);
+    final widthTween = useState<Tween>(null)..value ??= Tween(begin: 0.0, end: maxWidth);
     final widthAnim = useAnim(controller, widthTween.value, curve: widthCurve);
 
     const heightCurve = Interval(0.25, 1.0, curve: Curves.easeInCubic);
-    final heightTween = useState<Tween>()..value ??= Tween(begin: 48.0, end: 88.0 + 56.0 * settings.length);
+    final heightTween = useState<Tween>(null)..value ??= Tween(begin: 48.0, end: 88.0 + 56.0 * settings.length);
     final heightAnim = useAnim(controller, heightTween.value, curve: heightCurve);
 
     useEffect(() {

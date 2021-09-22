@@ -10,6 +10,7 @@ import "package:app/resource/paginated_resource.dart";
 import "package:app/resource/resource.dart";
 import "package:app/resource/resource.hooks.dart";
 import "package:app/sources/sources.dart";
+import "package:app/ui/router.dart";
 import "package:app/ui/router.hooks.dart";
 import "package:app/widgets/resource_builder.dart";
 import "package:app/widgets/settings_icon_button.dart";

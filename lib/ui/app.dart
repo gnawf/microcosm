@@ -6,7 +6,7 @@ import "package:flutter_hooks/flutter_hooks.dart";
 
 Route _router(RouteSettings route) {
   assert(route.name == "/");
-  return Router.routes().home();
+  return AppRouter.routes().home();
 }
 
 class App extends HookWidget {

@@ -20,7 +20,7 @@ Resource<Chapter> useChapter(Uri url) {
 
   // Get sources
   final dao = useChapterDao();
-  final daoFetcher = (useState<GetChapter>()..value ??= _toGetChapter(dao)).value;
+  final daoFetcher = (useState<GetChapter>(null)..value ??= _toGetChapter(dao)).value;
   final upstreamFetcher = _save(getSource(url: url)?.chapters?.get, dao);
 
   // Fetches the chapter and updates the relevant state hooks
