@@ -36,15 +36,20 @@ class _Popup extends HookWidget {
     );
 
     final screenWidth = MediaQuery.of(context).size.width;
-    final maxWidth = screenWidth.clamp(0.0, 512.0);
+    final cardWidth = screenWidth.clamp(0.0, 512.0);
+    final cardHeight = 88.0 + 56.0 * settings.length;
 
     const widthCurve = Interval(0.0, 0.85, curve: Curves.easeOutCubic);
-    final widthTween = useState<Tween>(null)..value ??= Tween(begin: 0.0, end: maxWidth);
+    final widthTween = useState<Tween>(null)..value ??= Tween(begin: 0.0, end: 1.0);
     final widthAnim = useAnim(controller, widthTween.value, curve: widthCurve);
 
     const heightCurve = Interval(0.25, 1.0, curve: Curves.easeInCubic);
-    final heightTween = useState<Tween>(null)..value ??= Tween(begin: 48.0, end: 88.0 + 56.0 * settings.length);
+    final heightTween = useState<Tween>(null)..value ??= Tween(begin: 48.0 / cardHeight, end: 1.0);
     final heightAnim = useAnim(controller, heightTween.value, curve: heightCurve);
+
+    const opacityCurve = Interval(0.1, 1.0, curve: Curves.easeInQuint);
+    final opacityTween = useState<Tween>(null)..value ??= Tween(begin: 0.0, end: 1.0);
+    final opacityAnim = useAnim(controller, opacityTween.value, curve: opacityCurve);
 
     useEffect(() {
       controller.forward();
@@ -64,33 +69,45 @@ class _Popup extends HookWidget {
           child: AnimatedBuilder(
             animation: controller,
             builder: (BuildContext context, Widget child) {
-              return Container(
-                width: widthAnim.value,
-                height: heightAnim.value,
-                child: Card(
-                  child: GestureDetector(
-                    behavior: HitTestBehavior.opaque,
-                    onTap: () {},
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 16.0,
-                        horizontal: 8.0,
-                      ),
-                      child: Column(
-                        children: <Widget>[
-                          Center(
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 12.0,
-                              ),
-                              child: Text(
-                                "Settings",
-                                style: Theme.of(context).textTheme.headline6,
-                              ),
-                            ),
+              return Transform(
+                transform: Matrix4.diagonal3Values(
+                  widthAnim.value,
+                  heightAnim.value,
+                  1.0,
+                ),
+                alignment: Alignment.topRight,
+                child: Container(
+                  width: cardWidth,
+                  height: cardHeight,
+                  child: Card(
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      // This ensures the taps don't go through the card
+                      onTap: () {},
+                      child: Opacity(
+                        opacity: opacityAnim.value,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 16.0,
+                            horizontal: 8.0,
                           ),
-                          ...settings,
-                        ],
+                          child: Column(
+                            children: <Widget>[
+                              Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 12.0,
+                                  ),
+                                  child: Text(
+                                    "Settings",
+                                    style: Theme.of(context).textTheme.headline6,
+                                  ),
+                                ),
+                              ),
+                              ...settings,
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                   ),
