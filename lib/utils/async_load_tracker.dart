@@ -24,4 +24,5 @@ class LoadTicket {
   final AsyncLoadTracker _tracker;
 
   bool get isValid => _tracker.isTicketValid(this);
+  bool get isInvalid => !isValid;
 }

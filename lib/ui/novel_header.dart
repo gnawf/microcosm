@@ -1,7 +1,7 @@
-import "package:app/markdown/markdown.widget.dart";
 import "package:app/models/novel.dart";
 import "package:app/widgets/image_view.dart";
 import "package:flutter/material.dart";
+import "package:flutter_markdown/flutter_markdown.dart";
 
 class NovelHeader extends StatelessWidget {
   const NovelHeader(this.novel);
@@ -57,7 +57,7 @@ class NovelHeader extends StatelessWidget {
   }
 }
 
-class _NovelDescription extends PerformantMarkdownWidget {
+class _NovelDescription extends MarkdownWidget {
   _NovelDescription({
     @required String data,
   }) : super(data: data);

@@ -1,7 +1,6 @@
 import "package:app/hooks/use_chapter.hook.dart";
 import "package:app/hooks/use_settings.hook.dart";
 import "package:app/hooks/use_theme.hook.dart";
-import "package:app/markdown/markdown.widget.dart";
 import "package:app/models/chapter.dart";
 import "package:app/resource/resource.dart";
 import "package:app/ui/router.hooks.dart";
@@ -119,7 +118,7 @@ class _Body extends HookWidget {
   }
 }
 
-class _MarkdownBody extends PerformantMarkdownWidget {
+class _MarkdownBody extends MarkdownWidget {
   const _MarkdownBody({
     String data,
     MarkdownTapLinkCallback onTapLink,

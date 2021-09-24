@@ -28,7 +28,7 @@ Resource<Chapter> useChapter(Uri url) {
   Future<void> stateAwareFetch(List<GetChapter> fetchers) async {
     final loadTicket = loadTracker.getTicket();
     final value = await _fetch(url, fetchers);
-    if (loadTicket.isValid || isDisposed.value) {
+    if (loadTicket.isInvalid || isDisposed.value) {
       return;
     }
     chapter.value = Resource.data(value.data, onRefresh: () {
