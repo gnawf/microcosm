@@ -22,14 +22,20 @@ class App extends HookWidget {
     return MaterialApp(
       title: "Microcosm",
       theme: ThemeData(
-        primarySwatch: settings.primarySwatch,
         primaryColor: settings.primarySwatch,
         primaryColorLight: settings.primarySwatch[100],
         primaryColorDark: settings.primarySwatch[700],
-        accentColor: settings.accentColor,
         brightness: settings.brightness,
         canvasColor: amoled ? Colors.black : null,
-        typography: Typography.material2018(platform: defaultTargetPlatform),
+        typography: Typography.material2018(
+          platform: defaultTargetPlatform,
+        ),
+        colorScheme: ColorScheme.fromSwatch(
+          primarySwatch: settings.primarySwatch,
+          brightness: settings.brightness,
+        ).copyWith(
+          secondary: settings.accentColor,
+        ),
       ),
       onGenerateRoute: _router,
       debugShowCheckedModeBanner: false,
